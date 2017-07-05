@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 2.6)
+
+project (rest_server_cpp CXX)
+
+set(REST_SERVER_CPP_HEADERS rest_server_cpp.hpp)
+
+set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(REST_SERVER_CPP_CODEGEN_DIR "${PROJECT_BINARY_DIR}/codegen")
+
+PREPEND(REST_SERVER_CPP_HEADERS_PATHS ${PROJECT_SOURCE_DIR} ${REST_SERVER_CPP_HEADERS})
+
+CODEGEN_FILES(REST_SERVER_CPP_CODEGEN_SOURCES ${REST_SERVER_CPP_CODEGEN_DIR} ${REST_SERVER_CPP_HEADERS})
+
+add_custom_command(OUTPUT ${REST_SERVER_CPP_CODEGEN_SOURCES}
+    COMMAND ${NGREST_BIN_PATH}ngrestcg -i "${PROJECT_SOURCE_DIR}" -o ${REST_SERVER_CPP_CODEGEN_DIR} -t service ${REST_SERVER_CPP_HEADERS}
+    DEPENDS ${REST_SERVER_CPP_HEADERS_PATHS}
+)
+
+file(GLOB REST_SERVER_CPP_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp ${PROJECT_SOURCE_DIR}/*.hpp)
+
+list(APPEND REST_SERVER_CPP_SOURCES ${REST_SERVER_CPP_CODEGEN_SOURCES})
+
+include_directories(${PROJECT_SOURCE_DIR})
+
+add_library(rest_server_cpp MODULE ${REST_SERVER_CPP_SOURCES})
+
+set_target_properties(rest_server_cpp PROPERTIES PREFIX "")
+set_target_properties(rest_server_cpp PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SERVICES_DIR}"
+)
+
+target_link_libraries(rest_server_cpp ngrestutils ngrestcommon ngrestjson ngrestengine)
