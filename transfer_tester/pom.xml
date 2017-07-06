@@ -11,6 +11,7 @@
     <properties>
         <spring.version>4.3.9.RELEASE</spring.version>
         <jackson.version>2.8.9</jackson.version>
+        <idl-plugin.version>1.2.2</idl-plugin.version>
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
     </properties>
 
@@ -29,6 +30,32 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>idlj-maven-plugin</artifactId>
+                <version>${idl-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <compiler>idlj</compiler>
+                    <sources>
+                        <source>
+                            <includes>
+                                <include>CorbaInterface.idl</include>
+                            </includes>
+                        </source>
+                    </sources>
+                    <includeDirs>
+                        <includeDir>src/main/idl</includeDir>
+                    </includeDirs>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

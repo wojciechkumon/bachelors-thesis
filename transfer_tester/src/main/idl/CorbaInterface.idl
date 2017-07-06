@@ -1,0 +1,14 @@
+module pl {
+    module kumon {
+        module transfertester {
+            module tester {
+                module corba {
+
+                    interface CorbaConnector {
+                        string get();
+                    };
+                };
+            };
+        };
+    };
+};
