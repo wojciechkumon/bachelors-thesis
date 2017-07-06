@@ -5,6 +5,7 @@ import pl.kumon.transfertester.tester.file.FileTester;
 import pl.kumon.transfertester.tester.jni.JniTester;
 import pl.kumon.transfertester.tester.rest.RestProps;
 import pl.kumon.transfertester.tester.rest.RestTester;
+import pl.kumon.transfertester.tester.tcp.TcpProps;
 import pl.kumon.transfertester.tester.tcp.TcpTester;
 
 import java.util.function.Supplier;
@@ -32,8 +33,8 @@ public class TransferTesterBuilder {
     return new TransferTesterBuilder(() -> new RestTester(restProps));
   }
 
-  public static TransferTesterBuilder tcp() {
-    return new TransferTesterBuilder(TcpTester::new);
+  public static TransferTesterBuilder tcp(TcpProps tcpProps) {
+    return new TransferTesterBuilder(() -> new TcpTester(tcpProps));
   }
 
   public TransferTester build() {
