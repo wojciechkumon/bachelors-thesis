@@ -1,32 +1,47 @@
 package pl.kumon.transfertester.tester.rest;
 
-import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
-
 import pl.kumon.transfertester.metrics.Metrics;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TransferTester;
 
 import java.util.Objects;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+
 public class RestTester implements TransferTester {
-  private final RestOperations restOperations;
   private final RestProps restProps;
+  private final OkHttpClient httpClient;
 
   public RestTester(RestProps restProps) {
-    this(restProps, new RestTemplate());
+    this(restProps, new OkHttpClient());
   }
 
-  public RestTester(RestProps restProps, RestOperations restOperations) {
+  public RestTester(RestProps restProps, OkHttpClient httpClient) {
     Objects.requireNonNull(restProps.getUrl());
-    this.restOperations = restOperations;
+    Objects.requireNonNull(httpClient);
+    this.httpClient = httpClient;
     this.restProps = restProps;
   }
 
-  // TODO RestTester
+  @Override
   public Metrics test() {
-    String str = restOperations.getForObject(restProps.getUrl(), String.class);
-    return null;
+    Request request = buildRequest();
+    try {
+      long start = System.currentTimeMillis();
+      httpClient.newCall(request).execute();
+      long time = System.currentTimeMillis() - start;
+      return Metrics.of(time);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return Metrics.error();
+    }
+  }
+
+  private Request buildRequest() {
+    return new Request.Builder()
+        .url(restProps.getUrl())
+        .build();
   }
 
   public Metrics test(TestProps props) {
