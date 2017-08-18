@@ -1,6 +1,6 @@
 package pl.kumon.transfertester.tester.jni;
 
-public class JniExcecutor {
+public class JniExecutor {
 
   public native String stringFromJni();
 }
