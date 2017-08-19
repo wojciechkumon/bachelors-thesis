@@ -20,7 +20,7 @@ int handleClient(int new_conn_fd) {
     char messageFromClient[1024];
     recv(new_conn_fd, messageFromClient, 1024, 0);
     std::cout << messageFromClient << std::endl;
-    connectionStatus = send(new_conn_fd, "Welcome", (size_t) 7, 0);
+    connectionStatus = send(new_conn_fd, "Welcome\n", (size_t) 8, 0);
 
     if (connectionStatus == -1) {
         close(new_conn_fd);
