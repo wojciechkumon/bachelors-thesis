@@ -16,7 +16,7 @@ public class App {
         .build();
 
     Metrics metrics = tester.test();
-    System.out.println("Execution time: " + metrics.getExecutionTimeMillis() + "ms");
+    System.out.println(metrics);
   }
 }
 

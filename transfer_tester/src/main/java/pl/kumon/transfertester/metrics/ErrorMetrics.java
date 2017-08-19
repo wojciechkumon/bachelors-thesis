@@ -11,4 +11,9 @@ public class ErrorMetrics implements Metrics {
   public boolean isSuccess() {
     return false;
   }
+
+  @Override
+  public String toString() {
+    return "Execution error";
+  }
 }

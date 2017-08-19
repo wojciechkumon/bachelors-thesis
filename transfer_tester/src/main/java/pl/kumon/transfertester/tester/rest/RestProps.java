@@ -10,7 +10,7 @@ public class RestProps {
     return this;
   }
 
-  public String getUrl() {
+  String getUrl() {
     return url;
   }
 }

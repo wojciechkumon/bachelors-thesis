@@ -16,11 +16,11 @@ public class TcpProps {
     return this;
   }
 
-  public String getIp() {
+  String getIp() {
     return ip;
   }
 
-  public int getPort() {
+  int getPort() {
     return port;
   }
 }

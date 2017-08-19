@@ -17,7 +17,7 @@ public class RestTester implements TransferTester {
     this(restProps, new OkHttpClient());
   }
 
-  public RestTester(RestProps restProps, OkHttpClient httpClient) {
+  private RestTester(RestProps restProps, OkHttpClient httpClient) {
     Objects.requireNonNull(restProps.getUrl());
     Objects.requireNonNull(httpClient);
     this.httpClient = httpClient;

@@ -12,4 +12,9 @@ class StandardMetrics implements Metrics {
   public boolean isSuccess() {
     return true;
   }
+
+  @Override
+  public String toString() {
+    return "Execution time: " + executionTimeMillis + "ms";
+  }
 }
