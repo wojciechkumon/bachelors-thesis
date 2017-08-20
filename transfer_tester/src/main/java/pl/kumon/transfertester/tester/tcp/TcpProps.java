@@ -1,5 +1,8 @@
 package pl.kumon.transfertester.tester.tcp;
 
+import lombok.Getter;
+
+@Getter
 public class TcpProps {
   private String ip;
   private int port;
@@ -14,13 +17,5 @@ public class TcpProps {
   public TcpProps port(int port) {
     this.port = port;
     return this;
-  }
-
-  String getIp() {
-    return ip;
-  }
-
-  int getPort() {
-    return port;
   }
 }

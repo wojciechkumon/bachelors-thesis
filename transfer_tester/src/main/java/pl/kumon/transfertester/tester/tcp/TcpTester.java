@@ -1,8 +1,9 @@
 package pl.kumon.transfertester.tester.tcp;
 
 import pl.kumon.transfertester.metrics.Metrics;
+import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.tester.TransferTester;
+import pl.kumon.transfertester.tester.exception.TesterException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Objects;
 
-public class TcpTester implements TransferTester {
+public class TcpTester extends AbstractTransferTester {
   private final TcpProps tcpProps;
 
   public TcpTester(TcpProps tcpProps) {
@@ -23,8 +24,8 @@ public class TcpTester implements TransferTester {
     this.tcpProps = tcpProps;
   }
 
-  public Metrics test() {
-    long start = System.currentTimeMillis();
+  @Override
+  protected void execute() throws TesterException {
     try (Socket socket = new Socket(tcpProps.getIp(), tcpProps.getPort())) {
       OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
       writer.write("hello");
@@ -32,12 +33,11 @@ public class TcpTester implements TransferTester {
       BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       reader.readLine();
     } catch (IOException e) {
-      return Metrics.error();
+      throw new TesterException(e);
     }
-    long time = System.currentTimeMillis() - start;
-    return Metrics.of(time);
   }
 
+  @Override
   public Metrics test(TestProps props) {
     return null;
   }

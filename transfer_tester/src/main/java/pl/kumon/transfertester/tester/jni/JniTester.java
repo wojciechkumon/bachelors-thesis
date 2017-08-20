@@ -1,12 +1,12 @@
 package pl.kumon.transfertester.tester.jni;
 
 import pl.kumon.transfertester.metrics.Metrics;
+import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.tester.TransferTester;
 
 import java.net.URL;
 
-public class JniTester implements TransferTester {
+public class JniTester extends AbstractTransferTester {
 
   public JniTester() {
     String libraryName = System.mapLibraryName("JniExecutor");
@@ -17,13 +17,12 @@ public class JniTester implements TransferTester {
     System.load(libraryUrl.getPath());
   }
 
-  public Metrics test() {
-    long startMillis = System.currentTimeMillis();
+  @Override
+  protected void execute() {
     new JniExecutor().stringFromJni();
-    long time = System.currentTimeMillis() - startMillis;
-    return Metrics.of(time);
   }
 
+  @Override
   public Metrics test(TestProps props) {
     return null;
   }

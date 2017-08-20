@@ -1,6 +1,7 @@
 package pl.kumon.transfertester.tester;
 
 import pl.kumon.transfertester.tester.corba.CorbaTester;
+import pl.kumon.transfertester.tester.file.FileProps;
 import pl.kumon.transfertester.tester.file.FileTester;
 import pl.kumon.transfertester.tester.jni.JniTester;
 import pl.kumon.transfertester.tester.rest.RestProps;
@@ -21,8 +22,8 @@ public class TransferTesterBuilder {
     return new TransferTesterBuilder(CorbaTester::new);
   }
 
-  public static TransferTesterBuilder file() {
-    return new TransferTesterBuilder(FileTester::new);
+  public static TransferTesterBuilder file(FileProps fileProps) {
+    return new TransferTesterBuilder(() -> new FileTester(fileProps));
   }
 
   public static TransferTesterBuilder jni() {
