@@ -6,9 +6,11 @@ import pl.kumon.transfertester.tester.TransferTester;
 
 import java.util.Objects;
 
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
+@Slf4j
 public class RestTester implements TransferTester {
   private final RestProps restProps;
   private final OkHttpClient httpClient;
@@ -33,7 +35,7 @@ public class RestTester implements TransferTester {
       long time = System.currentTimeMillis() - start;
       return Metrics.of(time);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("RestTester exception", e);
       return Metrics.error();
     }
   }
