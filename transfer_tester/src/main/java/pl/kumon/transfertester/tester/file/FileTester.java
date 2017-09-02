@@ -47,8 +47,7 @@ public class FileTester extends AbstractTransferTester {
     try {
       writeToNewFile(randomPath);
       fakeResponseFile(randomName, responseFileName);
-      String response = responseFuture.get(this.props.getResponseTimeout(), this.props.getResponseTimeoutUnit());
-      System.out.println("async response: " + response);
+      responseFuture.get(this.props.getResponseTimeout(), this.props.getResponseTimeoutUnit());
     } catch (Exception e) {
       throw new TesterException(e);
     }

@@ -1,6 +1,14 @@
 package pl.kumon.transfertester.metrics;
 
+import pl.kumon.transfertester.tester.TestProps;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
 public class ErrorMetrics implements Metrics {
+  private final TestProps testProps;
 
   @Override
   public long getExecutionTimeMillis() {
@@ -14,6 +22,6 @@ public class ErrorMetrics implements Metrics {
 
   @Override
   public String toString() {
-    return "Execution error";
+    return "Execution error, testProps: " + testProps;
   }
 }

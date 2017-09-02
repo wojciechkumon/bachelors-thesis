@@ -1,5 +1,7 @@
 package pl.kumon.transfertester.metrics;
 
+import pl.kumon.transfertester.tester.TestProps;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -7,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 class StandardMetrics implements Metrics {
   private final long executionTimeMillis;
+  private final TestProps testProps;
 
   @Override
   public boolean isSuccess() {
@@ -15,6 +18,6 @@ class StandardMetrics implements Metrics {
 
   @Override
   public String toString() {
-    return "Execution time: " + executionTimeMillis + "ms";
+    return "Execution time: " + executionTimeMillis + "ms, testProps: " + testProps;
   }
 }

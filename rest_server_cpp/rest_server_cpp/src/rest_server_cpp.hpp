@@ -2,27 +2,25 @@
 #define REST_SERVER_CPP_H
 
 #include <ngrest/common/Service.h>
+#include <iostream>
 
 // '*location' comment sets resource path for this service
 // *location: rest_server_cpp
-class rest_server_cpp: public ngrest::Service
-{
+class rest_server_cpp : public ngrest::Service {
 public:
-    //! Dummy description for the operation
-    /*! Some detailed description of the operation */
-    // To invoke this operation from browser open: http://localhost:9098/rest_server_cpp/World!
-    //
-    // '*location' metacomment sets path to operation relative to service operation.
-    // Default value is operation name.
-    // This will bind "echo" method to resource path: http://host:port/rest_server_cpp/{text}
-    // *location: /{text}
-    //
+
+    // To invoke this operation send POST with "data" in json to: http://localhost:9098/rest_server_cpp/World!
     // '*method' metacomment sets HTTP method for the operation. GET is default method.
-    // *method: GET
+    // *method: POST
     //
-    std::string echo(const std::string& text)
-    {
-        return "Hi, hey, hello, " + text;
+    std::string testResult(const std::string data, const int responseSize) {
+        std::cout << "Data size received: " << data.length() << ", responseSize: " << responseSize << std::endl;
+
+        std::string responseLetters(responseSize, 'A');
+        for (int i = 0; i < responseSize; i++) {
+            responseLetters[i] = (rand() % 26) + 65;
+        }
+        return responseLetters;
     }
 };
 
