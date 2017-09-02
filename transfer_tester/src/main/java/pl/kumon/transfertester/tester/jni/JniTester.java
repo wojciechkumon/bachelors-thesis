@@ -1,6 +1,5 @@
 package pl.kumon.transfertester.tester.jni;
 
-import pl.kumon.transfertester.metrics.Metrics;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
 
@@ -18,12 +17,7 @@ public class JniTester extends AbstractTransferTester {
   }
 
   @Override
-  protected void execute() {
+  protected void execute(TestProps testProps) {
     new JniExecutor().stringFromJni();
-  }
-
-  @Override
-  public Metrics test(TestProps props) {
-    return null;
   }
 }

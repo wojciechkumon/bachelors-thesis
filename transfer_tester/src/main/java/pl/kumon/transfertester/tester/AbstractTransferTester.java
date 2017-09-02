@@ -10,11 +10,16 @@ public abstract class AbstractTransferTester implements TransferTester {
 
   @Override
   public Metrics test() {
+    return test(TestProps.simpleTestProps());
+  }
+
+  @Override
+  public Metrics test(TestProps testProps) {
     beforeTest();
     long start = System.currentTimeMillis();
 
     try {
-      execute();
+      execute(testProps);
     } catch (TesterException e) {
       log.error("TesterException", e);
       afterTest();
@@ -28,7 +33,7 @@ public abstract class AbstractTransferTester implements TransferTester {
 
   protected void beforeTest() {}
 
-  protected void afterTest() {}
+  protected abstract void execute(TestProps testProps) throws TesterException;
 
-  protected abstract void execute() throws TesterException;
+  protected void afterTest() {}
 }

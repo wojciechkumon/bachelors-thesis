@@ -1,6 +1,5 @@
 package pl.kumon.transfertester.tester.tcp;
 
-import pl.kumon.transfertester.metrics.Metrics;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.exception.TesterException;
@@ -25,7 +24,7 @@ public class TcpTester extends AbstractTransferTester {
   }
 
   @Override
-  protected void execute() throws TesterException {
+  protected void execute(TestProps testProps) throws TesterException {
     try (Socket socket = new Socket(tcpProps.getIp(), tcpProps.getPort())) {
       OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
       writer.write("hello");
@@ -35,10 +34,5 @@ public class TcpTester extends AbstractTransferTester {
     } catch (IOException e) {
       throw new TesterException(e);
     }
-  }
-
-  @Override
-  public Metrics test(TestProps props) {
-    return null;
   }
 }

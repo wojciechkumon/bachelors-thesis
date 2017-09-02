@@ -1,9 +1,10 @@
 package pl.kumon.transfertester.tester.rest;
 
-import pl.kumon.transfertester.metrics.Metrics;
+import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.tester.TransferTester;
+import pl.kumon.transfertester.tester.exception.TesterException;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 @Slf4j
-public class RestTester implements TransferTester {
+public class RestTester extends AbstractTransferTester {
   private final RestProps restProps;
   private final OkHttpClient httpClient;
 
@@ -27,16 +28,12 @@ public class RestTester implements TransferTester {
   }
 
   @Override
-  public Metrics test() {
+  public void execute(TestProps testProps) throws TesterException {
     Request request = buildRequest();
     try {
-      long start = System.currentTimeMillis();
       httpClient.newCall(request).execute();
-      long time = System.currentTimeMillis() - start;
-      return Metrics.of(time);
-    } catch (Exception e) {
-      log.error("RestTester exception", e);
-      return Metrics.error();
+    } catch (IOException e) {
+      throw new TesterException(e);
     }
   }
 
@@ -44,10 +41,5 @@ public class RestTester implements TransferTester {
     return new Request.Builder()
         .url(restProps.getUrl())
         .build();
-  }
-
-  @Override
-  public Metrics test(TestProps props) {
-    return null;
   }
 }

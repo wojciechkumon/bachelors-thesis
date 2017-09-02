@@ -2,7 +2,6 @@ package pl.kumon.transfertester.tester.file;
 
 import org.apache.commons.io.FileUtils;
 
-import pl.kumon.transfertester.metrics.Metrics;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.exception.TesterException;
@@ -40,15 +39,15 @@ public class FileTester extends AbstractTransferTester {
   }
 
   @Override
-  protected void execute() throws TesterException {
+  protected void execute(TestProps testProps) throws TesterException {
     String randomName = UUID.randomUUID().toString();
-    Path randomPath = props.getIntegrationDirectory().resolve(randomName);
-    String responseFileName = randomName + props.getResponseFileEnding();
+    Path randomPath = this.props.getIntegrationDirectory().resolve(randomName);
+    String responseFileName = randomName + this.props.getResponseFileEnding();
     Future<String> responseFuture = fileWatcher.getFileResponseWhenCreated(responseFileName);
     try {
       writeToNewFile(randomPath);
       fakeResponseFile(randomName, responseFileName);
-      String response = responseFuture.get(props.getResponseTimeout(), props.getResponseTimeoutUnit());
+      String response = responseFuture.get(this.props.getResponseTimeout(), this.props.getResponseTimeoutUnit());
       System.out.println("async response: " + response);
     } catch (Exception e) {
       throw new TesterException(e);
@@ -79,10 +78,5 @@ public class FileTester extends AbstractTransferTester {
   @Override
   protected void afterTest() {
     this.fileWatcher.stop();
-  }
-
-  @Override
-  public Metrics test(TestProps props) {
-    return null;
   }
 }
