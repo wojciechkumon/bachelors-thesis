@@ -14,11 +14,11 @@ import java.util.stream.IntStream;
 public class App {
 
   public static void main(String[] args) {
-    TransferTester tester = defaultRestTester();
+    TransferTester tester = defaultTcpTester();
 
     IntStream.range(0, 10)
         .forEach(x -> {
-          Metrics metrics = tester.test(TestProps.newTestProps(1_000, 1_000));
+          Metrics metrics = tester.test(TestProps.newTestProps(1_000, 500));
           System.out.println(metrics);
         });
   }

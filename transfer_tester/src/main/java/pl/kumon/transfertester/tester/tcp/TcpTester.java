@@ -1,14 +1,15 @@
 package pl.kumon.transfertester.tester.tcp;
 
+import org.apache.commons.io.IOUtils;
+
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.exception.TesterException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.Objects;
 
 public class TcpTester extends AbstractTransferTester {
@@ -26,13 +27,41 @@ public class TcpTester extends AbstractTransferTester {
   @Override
   protected void execute(TestProps testProps) throws TesterException {
     try (Socket socket = new Socket(tcpProps.getIp(), tcpProps.getPort())) {
-      OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
-      writer.write("hello");
-      writer.flush();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      reader.readLine();
+      writeRequest(testProps, socket);
+      readResponse(socket, testProps.getResponseSize());
     } catch (IOException e) {
       throw new TesterException(e);
     }
+  }
+
+  private void writeRequest(TestProps testProps, Socket socket) throws IOException {
+    OutputStream outputStream = socket.getOutputStream();
+    writeRequestBytesSize(testProps, outputStream);
+    writeResponseSize(testProps, outputStream);
+    writeRequestBytes(testProps, outputStream);
+    outputStream.flush();
+  }
+
+  private void writeRequestBytesSize(TestProps testProps, OutputStream outputStream) throws IOException {
+    writeIntegerAsBytes(testProps.getRequestBytes().length, outputStream);
+  }
+
+  private void writeResponseSize(TestProps testProps, OutputStream outputStream) throws IOException {
+    writeIntegerAsBytes(testProps.getResponseSize(), outputStream);
+  }
+
+  private void writeIntegerAsBytes(int intValue, OutputStream outputStream) throws IOException {
+    byte[] integerAsBytes = ByteBuffer.allocate(Integer.BYTES)
+        .putInt(intValue)
+        .array();
+    outputStream.write(integerAsBytes);
+  }
+
+  private void writeRequestBytes(TestProps testProps, OutputStream outputStream) throws IOException {
+    outputStream.write(testProps.getRequestBytes());
+  }
+
+  private void readResponse(Socket socket, int responseSize) throws IOException {
+    IOUtils.readFully(socket.getInputStream(), responseSize);
   }
 }
