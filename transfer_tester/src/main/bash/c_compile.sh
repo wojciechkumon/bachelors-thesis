@@ -5,8 +5,7 @@ C_CODE_PATH=${2:-../c}
 JAVA_CODE_PATH=${3:-../java}
 OUTPUT_PATH=${4:-././../../../target/classes}
 
-echo 'java_home'
-echo "${JAVA_HOME}"
+echo "JAVA_HOME: ${JAVA_HOME}"
 ${JAVA_HOME}/bin/javah -classpath ${JAVA_CODE_PATH} -d ${C_CODE_PATH} -jni pl.kumon.transfertester.tester.jni.JniExecutor
 
 PLATFORM='unknown';
