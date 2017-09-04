@@ -105,6 +105,9 @@
                 <configuration>
                     <executable>${basedir}/src/main/bash/c_compile.sh</executable>
                     <workingDirectory>src/main/bash</workingDirectory>
+                    <arguments>
+                        <argument>${java.home}</argument>
+                    </arguments>
                 </configuration>
             </plugin>
 
