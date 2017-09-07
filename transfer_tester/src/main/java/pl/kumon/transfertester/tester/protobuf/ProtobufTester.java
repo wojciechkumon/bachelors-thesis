@@ -4,10 +4,11 @@ import com.google.protobuf.ByteString;
 
 import org.apache.commons.io.IOUtils;
 
+import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.utils.IntConverter;
+import pl.kumon.transfertester.utils.ResponseValidator;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -31,7 +32,7 @@ public class ProtobufTester extends AbstractTransferTester {
   protected void execute(TestProps testProps) throws TesterException {
     Protobuf.Request request = buildRequest(testProps);
     Protobuf.Response response = sendRequest(request);
-    validateResponse(testProps, response);
+    ResponseValidator.validateLength(response.getResponse().size(), testProps);
   }
 
   private Protobuf.Request buildRequest(TestProps testProps) {
@@ -68,14 +69,5 @@ public class ProtobufTester extends AbstractTransferTester {
 
   private Protobuf.Response readResponse(Socket socket) throws IOException {
     return Protobuf.Response.parseFrom(socket.getInputStream());
-  }
-
-  private void validateResponse(TestProps testProps, Protobuf.Response response)
-      throws TesterException {
-    int actualSize = response.getResponse().size();
-    if (actualSize != testProps.getResponseSize()) {
-      throw new TesterException("Wrong response length: " + actualSize
-          + ", required: " + testProps.getResponseSize());
-    }
   }
 }

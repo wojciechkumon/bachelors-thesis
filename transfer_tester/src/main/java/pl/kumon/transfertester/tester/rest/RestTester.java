@@ -3,9 +3,10 @@ package pl.kumon.transfertester.tester.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.exception.TesterException;
+import pl.kumon.transfertester.utils.ResponseValidator;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 @Slf4j
 public class RestTester extends AbstractTransferTester {
@@ -39,14 +41,19 @@ public class RestTester extends AbstractTransferTester {
   public void execute(TestProps testProps) throws TesterException {
     try {
       Request request = buildRequest(testProps);
-      sendRequestAndReadResponse(request);
+      byte[] response = sendRequest(request);
+      ResponseValidator.validateLength(response, testProps);
     } catch (IOException e) {
       throw new TesterException(e);
     }
   }
 
-  private void sendRequestAndReadResponse(Request request) throws IOException {
-    httpClient.newCall(request).execute().body().bytes();
+  private byte[] sendRequest(Request request) throws IOException, TesterException {
+    ResponseBody responseBody = httpClient.newCall(request).execute().body();
+    if (responseBody == null) {
+      throw new TesterException("Null response body");
+    }
+    return responseBody.bytes();
   }
 
   private Request buildRequest(TestProps testProps) throws IOException {

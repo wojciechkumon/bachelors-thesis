@@ -2,10 +2,11 @@ package pl.kumon.transfertester.tester.tcp;
 
 import org.apache.commons.io.IOUtils;
 
+import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.utils.IntConverter;
+import pl.kumon.transfertester.utils.ResponseValidator;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,7 +31,7 @@ public class TcpTester extends AbstractTransferTester {
     try (Socket socket = new Socket(tcpProps.getIp(), tcpProps.getPort())) {
       writeRequest(testProps, socket);
       byte[] response = readResponse(socket, testProps.getResponseSize());
-      validateResponse(response, testProps);
+      ResponseValidator.validateLength(response, testProps);
     } catch (IOException e) {
       throw new TesterException(e);
     }
