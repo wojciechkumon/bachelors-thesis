@@ -1,7 +1,7 @@
 package pl.kumon.transfertester.tester;
 
 import pl.kumon.transfertester.metrics.Metrics;
-import pl.kumon.transfertester.tester.exception.TesterException;
+import pl.kumon.transfertester.exception.TesterException;
 
 import lombok.extern.slf4j.Slf4j;
 

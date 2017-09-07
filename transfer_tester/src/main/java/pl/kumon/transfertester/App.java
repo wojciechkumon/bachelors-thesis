@@ -17,10 +17,10 @@ public class App {
   public static void main(String[] args) {
     RunnerProps runnerProps = RunnerProps.builder()
         .numberOfTests(10)
-        .testProps(TestProps.newTestProps(1_000, 2_000_000))
+        .testProps(TestProps.newTestProps(100_000_000, 50_000_000))
         .build();
 
-    TransferTester tester = defaultJniTester();
+    TransferTester tester = defaultTcpTester();
 
     new TestRunner(runnerProps)
         .run(tester)

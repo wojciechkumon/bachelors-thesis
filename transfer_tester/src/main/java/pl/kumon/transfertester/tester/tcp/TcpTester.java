@@ -4,7 +4,7 @@ import org.apache.commons.io.IOUtils;
 
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.tester.exception.TesterException;
+import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.utils.IntConverter;
 
 import java.io.IOException;

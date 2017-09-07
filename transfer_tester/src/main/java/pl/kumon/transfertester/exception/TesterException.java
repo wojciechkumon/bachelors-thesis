@@ -1,4 +1,4 @@
-package pl.kumon.transfertester.tester.exception;
+package pl.kumon.transfertester.exception;
 
 public class TesterException extends Exception {
 

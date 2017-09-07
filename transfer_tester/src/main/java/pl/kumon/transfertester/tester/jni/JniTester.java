@@ -2,7 +2,7 @@ package pl.kumon.transfertester.tester.jni;
 
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.tester.exception.TesterException;
+import pl.kumon.transfertester.exception.TesterException;
 
 import java.net.URL;
 
