@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class App {
 
   public static void main(String[] args) {
+    // TODO mvnwrapper
     RunnerProps runnerProps = RunnerProps.builder()
         .numberOfTests(10)
         .testProps(TestProps.newTestProps(1_000, 2_000_000))

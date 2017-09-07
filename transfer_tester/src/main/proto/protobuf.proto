@@ -1,0 +1,13 @@
+syntax = "proto3";
+package transfertester;
+
+option java_package = "pl.kumon.transfertester.tester.protobuf";
+
+message Request {
+    int32 responseSize = 1;
+    bytes request = 2;
+}
+
+message Response {
+    bytes response = 1;
+}
