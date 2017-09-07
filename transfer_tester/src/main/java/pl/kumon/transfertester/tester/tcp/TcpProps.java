@@ -7,8 +7,6 @@ public class TcpProps {
   private String ip;
   private int port;
 
-  public TcpProps() {}
-
   public TcpProps ip(String ip) {
     this.ip = ip;
     return this;

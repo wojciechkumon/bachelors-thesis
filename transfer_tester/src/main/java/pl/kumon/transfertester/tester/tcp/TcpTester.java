@@ -5,11 +5,11 @@ import org.apache.commons.io.IOUtils;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.exception.TesterException;
+import pl.kumon.transfertester.utils.IntConverter;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 import java.util.Objects;
 
 public class TcpTester extends AbstractTransferTester {
@@ -19,7 +19,8 @@ public class TcpTester extends AbstractTransferTester {
     Objects.requireNonNull(tcpProps);
     Objects.requireNonNull(tcpProps.getIp());
     if (tcpProps.getPort() < 0 || tcpProps.getPort() > 65535) {
-      throw new IllegalArgumentException("Port value must be between 0 and 65535 but was: " + tcpProps.getPort());
+      throw new IllegalArgumentException("Port value must be between 0 and 65535 but was: "
+          + tcpProps.getPort());
     }
     this.tcpProps = tcpProps;
   }
@@ -28,7 +29,8 @@ public class TcpTester extends AbstractTransferTester {
   protected void execute(TestProps testProps) throws TesterException {
     try (Socket socket = new Socket(tcpProps.getIp(), tcpProps.getPort())) {
       writeRequest(testProps, socket);
-      readResponse(socket, testProps.getResponseSize());
+      byte[] response = readResponse(socket, testProps.getResponseSize());
+      validateResponse(response, testProps);
     } catch (IOException e) {
       throw new TesterException(e);
     }
@@ -51,17 +53,21 @@ public class TcpTester extends AbstractTransferTester {
   }
 
   private void writeIntegerAsBytes(int intValue, OutputStream outputStream) throws IOException {
-    byte[] integerAsBytes = ByteBuffer.allocate(Integer.BYTES)
-        .putInt(intValue)
-        .array();
-    outputStream.write(integerAsBytes);
+    outputStream.write(IntConverter.intToBytes(intValue));
   }
 
   private void writeRequestBytes(TestProps testProps, OutputStream outputStream) throws IOException {
-    outputStream.write(testProps.getRequestBytes());
+    IOUtils.writeChunked(testProps.getRequestBytes(), outputStream);
   }
 
-  private void readResponse(Socket socket, int responseSize) throws IOException {
-    IOUtils.readFully(socket.getInputStream(), responseSize);
+  private byte[] readResponse(Socket socket, int responseSize) throws IOException {
+    return IOUtils.readFully(socket.getInputStream(), responseSize);
+  }
+
+  private void validateResponse(byte[] response, TestProps testProps) throws TesterException {
+    if (response.length != testProps.getResponseSize()) {
+      throw new TesterException("Wrong response length: " + response.length
+          + ", required: " + testProps.getResponseSize());
+    }
   }
 }

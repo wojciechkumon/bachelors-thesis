@@ -8,8 +8,6 @@ public class RestProps {
   private String dataJsonKey;
   private String responseSizeJsonKey;
 
-  public RestProps() {}
-
   public RestProps url(String url) {
     this.url = url;
     return this;

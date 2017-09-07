@@ -14,8 +14,6 @@ public class FileProps {
   private Long scanIntervalMillis;
   private String responseFileEnding;
 
-  public FileProps() {}
-
   public FileProps integrationDirectory(String integrationDirectory) {
     this.integrationDirectory = Paths.get(integrationDirectory);
     return this;

@@ -4,6 +4,8 @@ import pl.kumon.transfertester.tester.corba.CorbaTester;
 import pl.kumon.transfertester.tester.file.FileProps;
 import pl.kumon.transfertester.tester.file.FileTester;
 import pl.kumon.transfertester.tester.jni.JniTester;
+import pl.kumon.transfertester.tester.protobuf.ProtobufProps;
+import pl.kumon.transfertester.tester.protobuf.ProtobufTester;
 import pl.kumon.transfertester.tester.rest.RestProps;
 import pl.kumon.transfertester.tester.rest.RestTester;
 import pl.kumon.transfertester.tester.tcp.TcpProps;
@@ -28,6 +30,10 @@ public class TransferTesterBuilder {
 
   public static TransferTesterBuilder jni() {
     return new TransferTesterBuilder(JniTester::new);
+  }
+
+  public static TransferTesterBuilder protobuf(ProtobufProps protobufProps) {
+    return new TransferTesterBuilder(() -> new ProtobufTester(protobufProps));
   }
 
   public static TransferTesterBuilder rest(RestProps restProps) {

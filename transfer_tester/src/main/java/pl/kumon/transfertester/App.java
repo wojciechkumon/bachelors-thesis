@@ -6,6 +6,7 @@ import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TransferTester;
 import pl.kumon.transfertester.tester.TransferTesterBuilder;
 import pl.kumon.transfertester.tester.file.FileProps;
+import pl.kumon.transfertester.tester.protobuf.ProtobufProps;
 import pl.kumon.transfertester.tester.rest.RestProps;
 import pl.kumon.transfertester.tester.tcp.TcpProps;
 
@@ -47,6 +48,12 @@ public class App {
   private static TransferTester defaultJniTester() {
     return TransferTesterBuilder
         .jni()
+        .build();
+  }
+
+  private static TransferTester defaultProtobufTester() {
+    return TransferTesterBuilder
+        .protobuf(new ProtobufProps().ip("localhost").port(5000))
         .build();
   }
 
