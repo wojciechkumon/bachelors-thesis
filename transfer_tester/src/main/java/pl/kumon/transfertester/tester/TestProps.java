@@ -1,5 +1,8 @@
 package pl.kumon.transfertester.tester;
 
+import com.google.common.base.Preconditions;
+
+import java.util.Objects;
 import java.util.Random;
 
 import lombok.Getter;
@@ -11,7 +14,9 @@ public class TestProps {
   private final int responseSize;
 
   private TestProps(byte[] requestBytes, int responseSize) {
-    this.requestBytes = requestBytes;
+    Preconditions.checkArgument(responseSize >= 0,
+        "Response size must be greater or equal 0 but was: %s", responseSize);
+    this.requestBytes = Objects.requireNonNull(requestBytes);
     this.responseSize = responseSize;
   }
 

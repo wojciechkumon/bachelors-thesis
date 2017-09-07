@@ -1,6 +1,7 @@
 package pl.kumon.transfertester;
 
-import pl.kumon.transfertester.metrics.Metrics;
+import pl.kumon.transfertester.runner.RunnerProps;
+import pl.kumon.transfertester.runner.TestRunner;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TransferTester;
 import pl.kumon.transfertester.tester.TransferTesterBuilder;
@@ -9,18 +10,21 @@ import pl.kumon.transfertester.tester.rest.RestProps;
 import pl.kumon.transfertester.tester.tcp.TcpProps;
 
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 public class App {
 
   public static void main(String[] args) {
-    TransferTester tester = defaultTcpTester();
+    RunnerProps runnerProps = RunnerProps.builder()
+        .numberOfTests(10)
+        .testProps(TestProps.newTestProps(1_000, 2_000_000))
+        .build();
 
-    IntStream.range(0, 10)
-        .forEach(x -> {
-          Metrics metrics = tester.test(TestProps.newTestProps(1_000, 500));
-          System.out.println(metrics);
-        });
+    TransferTester tester = defaultJniTester();
+
+    new TestRunner(runnerProps)
+        .run(tester)
+        .getMetrics()
+        .forEach(System.out::println);
   }
 
   private static TransferTester defaultCorbaTester() {
