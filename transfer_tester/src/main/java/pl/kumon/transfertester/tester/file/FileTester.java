@@ -2,9 +2,10 @@ package pl.kumon.transfertester.tester.file;
 
 import org.apache.commons.io.FileUtils;
 
+import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
-import pl.kumon.transfertester.exception.TesterException;
+import pl.kumon.transfertester.tester.TestType;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -77,5 +78,10 @@ public class FileTester extends AbstractTransferTester {
   @Override
   protected void afterTest() {
     this.fileWatcher.stop();
+  }
+
+  @Override
+  protected TestType testType() {
+    return TestType.FILE;
   }
 }

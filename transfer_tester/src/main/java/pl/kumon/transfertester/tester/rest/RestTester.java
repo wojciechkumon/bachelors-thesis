@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
+import pl.kumon.transfertester.tester.TestType;
 import pl.kumon.transfertester.utils.ResponseValidator;
 
 import java.io.IOException;
@@ -75,5 +76,10 @@ public class RestTester extends AbstractTransferTester {
     objectNode.put(props.getDataJsonKey(), testProps.getRequestBytes());
     objectNode.put(props.getResponseSizeJsonKey(), testProps.getResponseSize());
     return objectNode.toString();
+  }
+
+  @Override
+  protected TestType testType() {
+    return TestType.REST;
   }
 }

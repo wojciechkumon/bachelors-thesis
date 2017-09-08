@@ -1,6 +1,7 @@
 package pl.kumon.transfertester.metrics;
 
 import pl.kumon.transfertester.tester.TestProps;
+import pl.kumon.transfertester.tester.TestType;
 
 public interface Metrics {
   long getExecutionTimeMillis();
@@ -9,11 +10,13 @@ public interface Metrics {
 
   TestProps getTestProps();
 
-  static Metrics of(long executionTimeMillis, TestProps testProps) {
-    return new StandardMetrics(executionTimeMillis, testProps);
+  TestType getTestType();
+
+  static Metrics of(long executionTimeMillis, TestProps testProps, TestType testType) {
+    return new StandardMetrics(executionTimeMillis, testProps, testType);
   }
 
-  static Metrics error(TestProps testProps) {
-    return new ErrorMetrics(testProps);
+  static Metrics error(TestProps testProps, TestType testType) {
+    return new ErrorMetrics(testProps, testType);
   }
 }

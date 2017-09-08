@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
+import pl.kumon.transfertester.tester.TestType;
 import pl.kumon.transfertester.utils.IntConverter;
 import pl.kumon.transfertester.utils.ResponseValidator;
 
@@ -70,5 +71,10 @@ public class TcpTester extends AbstractTransferTester {
       throw new TesterException("Wrong response length: " + response.length
           + ", required: " + testProps.getResponseSize());
     }
+  }
+
+  @Override
+  protected TestType testType() {
+    return TestType.TCP;
   }
 }

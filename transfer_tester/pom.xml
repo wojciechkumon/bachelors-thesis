@@ -12,6 +12,7 @@
         <ok-http.version>3.8.1</ok-http.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-lang.version>3.6</commons-lang.version>
+        <commons-csv.version>1.5</commons-csv.version>
         <guava.version>23.0</guava.version>
         <protobuf.version>3.4.0</protobuf.version>
         <lombok.version>1.16.18</lombok.version>
@@ -39,6 +40,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>${commons-csv.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

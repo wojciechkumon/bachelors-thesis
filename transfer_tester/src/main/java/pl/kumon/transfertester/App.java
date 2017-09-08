@@ -26,7 +26,6 @@ public class App {
 
     new TestRunner(runnerProps)
         .run(tester)
-        .getMetrics()
         .forEach(System.out::println);
   }
 

@@ -7,6 +7,7 @@ import org.apache.commons.io.IOUtils;
 import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
+import pl.kumon.transfertester.tester.TestType;
 import pl.kumon.transfertester.utils.IntConverter;
 import pl.kumon.transfertester.utils.ResponseValidator;
 
@@ -69,5 +70,10 @@ public class ProtobufTester extends AbstractTransferTester {
 
   private Protobuf.Response readResponse(Socket socket) throws IOException {
     return Protobuf.Response.parseFrom(socket.getInputStream());
+  }
+
+  @Override
+  protected TestType testType() {
+    return TestType.PROTOBUF;
   }
 }

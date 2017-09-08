@@ -3,6 +3,7 @@ package pl.kumon.transfertester.tester.jni;
 import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
+import pl.kumon.transfertester.tester.TestType;
 import pl.kumon.transfertester.utils.ResponseValidator;
 
 import java.net.URL;
@@ -23,5 +24,10 @@ public class JniTester extends AbstractTransferTester {
     byte[] response = new JniExecutor()
         .requestJni(testProps.getRequestBytes(), testProps.getResponseSize());
     ResponseValidator.validateLength(response, testProps);
+  }
+
+  @Override
+  protected TestType testType() {
+    return TestType.JNI;
   }
 }
