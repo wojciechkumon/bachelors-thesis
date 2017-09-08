@@ -1,5 +1,7 @@
 package pl.kumon.transfertester;
 
+import org.apache.commons.lang3.SystemUtils;
+
 import pl.kumon.transfertester.runner.RunnerProps;
 import pl.kumon.transfertester.runner.TestRunner;
 import pl.kumon.transfertester.tester.TestProps;
@@ -16,11 +18,11 @@ public class App {
 
   public static void main(String[] args) {
     RunnerProps runnerProps = RunnerProps.builder()
-        .numberOfTests(10)
-        .testProps(TestProps.newTestProps(100_000_000, 50_000_000))
+        .numberOfTests(1)
+        .testProps(TestProps.newTestProps(1_000, 1_000))
         .build();
 
-    TransferTester tester = defaultTcpTester();
+    TransferTester tester = defaultFileTester();
 
     new TestRunner(runnerProps)
         .run(tester)
@@ -35,9 +37,15 @@ public class App {
   }
 
   private static TransferTester defaultFileTester() {
+    String directory = null;
+    if (SystemUtils.IS_OS_LINUX) {
+      directory = "/home/wojtas626/IdeaProjects/praca_inz/transfer_tester/integration_files";
+    } else if (SystemUtils.IS_OS_MAC) {
+      directory = "/Users/wojtas626/Projects/praca_inz/transfer_tester/integration_files";
+    }
     return TransferTesterBuilder
         .file(new FileProps()
-            .integrationDirectory("/Users/wojtas626/Projects/praca_inz/transfer_tester/integration_files")
+            .integrationDirectory(directory)
             .responseTimeoutUnit(TimeUnit.SECONDS)
             .responseTimeout(3)
             .scanIntervalMillis(20)
