@@ -1,7 +1,7 @@
 package pl.kumon.transfertester;
 
-import org.apache.commons.lang3.SystemUtils;
-
+import pl.kumon.transfertester.csv.CsvService;
+import pl.kumon.transfertester.metrics.Metrics;
 import pl.kumon.transfertester.runner.RunnerProps;
 import pl.kumon.transfertester.runner.TestRunner;
 import pl.kumon.transfertester.tester.TestProps;
@@ -12,21 +12,39 @@ import pl.kumon.transfertester.tester.protobuf.ProtobufProps;
 import pl.kumon.transfertester.tester.rest.RestProps;
 import pl.kumon.transfertester.tester.tcp.TcpProps;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
+import static java.nio.file.StandardOpenOption.WRITE;
 
 public class App {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     RunnerProps runnerProps = RunnerProps.builder()
-        .numberOfTests(1)
-        .testProps(TestProps.newTestProps(1_000, 1_000))
+        .numberOfTests(10)
+        .testProps(TestProps.newTestProps(10_000, 50_000))
         .build();
 
     TransferTester tester = defaultFileTester();
 
-    new TestRunner(runnerProps)
+    Stream<Metrics> metricsStream = new TestRunner(runnerProps)
         .run(tester)
-        .forEach(System.out::println);
+        .peek(System.out::println);
+
+    Path path = Paths.get("csv/report.csv").toAbsolutePath();
+    if (!Files.exists(path.getParent())) {
+      Files.createDirectory(path.getParent());
+    }
+    try (BufferedWriter writer = Files.newBufferedWriter(path, CREATE, WRITE, TRUNCATE_EXISTING)) {
+      new CsvService().writeMetrics(metricsStream, writer);
+    }
   }
 
   private static TransferTester defaultCorbaTester() {
@@ -36,15 +54,9 @@ public class App {
   }
 
   private static TransferTester defaultFileTester() {
-    String directory = null;
-    if (SystemUtils.IS_OS_LINUX) {
-      directory = "/home/wojtas626/IdeaProjects/praca_inz/transfer_tester/integration_files";
-    } else if (SystemUtils.IS_OS_MAC) {
-      directory = "/Users/wojtas626/Projects/praca_inz/transfer_tester/integration_files";
-    }
     return TransferTesterBuilder
         .file(new FileProps()
-            .integrationDirectory(directory)
+            .integrationDirectory(Paths.get("./integration_files"))
             .responseTimeoutUnit(TimeUnit.SECONDS)
             .responseTimeout(3)
             .scanIntervalMillis(20)

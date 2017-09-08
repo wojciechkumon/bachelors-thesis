@@ -1,7 +1,6 @@
 package pl.kumon.transfertester.tester.file;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
@@ -14,8 +13,8 @@ public class FileProps {
   private Long scanIntervalMillis;
   private String responseFileEnding;
 
-  public FileProps integrationDirectory(String integrationDirectory) {
-    this.integrationDirectory = Paths.get(integrationDirectory);
+  public FileProps integrationDirectory(Path integrationDirectory) {
+    this.integrationDirectory = integrationDirectory;
     return this;
   }
 

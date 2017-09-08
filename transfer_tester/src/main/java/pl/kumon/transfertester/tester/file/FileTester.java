@@ -18,12 +18,15 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
+import lombok.SneakyThrows;
+
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
 public class FileTester extends AbstractTransferTester {
   private final FileProps props;
   private final ResponseFileWatcher fileWatcher;
 
+  @SneakyThrows
   public FileTester(FileProps fileProps) {
     Objects.requireNonNull(fileProps.getIntegrationDirectory());
     Objects.requireNonNull(fileProps.getResponseTimeoutUnit());
@@ -32,6 +35,7 @@ public class FileTester extends AbstractTransferTester {
     Objects.requireNonNull(fileProps.getIntegrationDirectory());
     this.props = fileProps;
     this.fileWatcher = new ResponseFileWatcher(props.getIntegrationDirectory(), props.getScanIntervalMillis());
+    Files.createDirectories(props.getIntegrationDirectory());
   }
 
   @Override

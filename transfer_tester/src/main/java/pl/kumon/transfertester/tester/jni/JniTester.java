@@ -16,6 +16,7 @@ public class JniTester extends AbstractTransferTester {
     if (libraryUrl == null) {
       throw new RuntimeException("Error while obtaining Jni library");
     }
+    // TODO copy library from jar to user dir, remove old if exists and load from user dir
     System.load(libraryUrl.getPath());
   }
 
