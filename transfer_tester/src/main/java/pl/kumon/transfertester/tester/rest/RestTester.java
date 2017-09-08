@@ -9,6 +9,7 @@ import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.utils.ResponseValidator;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 public class RestTester extends AbstractTransferTester {
@@ -48,12 +51,15 @@ public class RestTester extends AbstractTransferTester {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private byte[] sendRequest(Request request) throws IOException, TesterException {
     ResponseBody responseBody = httpClient.newCall(request).execute().body();
     if (responseBody == null) {
       throw new TesterException("Null response body");
     }
-    return responseBody.bytes();
+    Map<String, String> map = objectMapper.readValue(responseBody.byteStream(), Map.class);
+    String result = map.get("result");
+    return result.getBytes(UTF_8);
   }
 
   private Request buildRequest(TestProps testProps) throws IOException {
