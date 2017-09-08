@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Future;
@@ -21,6 +20,8 @@ import java.util.concurrent.Future;
 import lombok.SneakyThrows;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
 
 public class FileTester extends AbstractTransferTester {
   private final FileProps props;
@@ -71,7 +72,7 @@ public class FileTester extends AbstractTransferTester {
   }
 
   private void writeToNewFile(Path tmpFilePath) throws IOException {
-    try (BufferedWriter writer = Files.newBufferedWriter(tmpFilePath, StandardOpenOption.CREATE)) {
+    try (BufferedWriter writer = Files.newBufferedWriter(tmpFilePath, CREATE, WRITE)) {
       writer.write("request file content");
       writer.flush();
     }
