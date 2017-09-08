@@ -6,10 +6,12 @@ import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TestType;
+import pl.kumon.transfertester.utils.IntConverter;
 
-import java.io.BufferedWriter;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,8 +53,8 @@ public class FileTester extends AbstractTransferTester {
     String responseFileName = randomName + this.props.getResponseFileEnding();
     Future<String> responseFuture = fileWatcher.getFileResponseWhenCreated(responseFileName);
     try {
-      writeToNewFile(randomPath);
-      fakeResponseFile(randomName, responseFileName);
+      writeToNewFile(randomPath, testProps);
+//      fakeResponseFile(randomName, responseFileName);
       responseFuture.get(this.props.getResponseTimeout(), this.props.getResponseTimeoutUnit());
     } catch (Exception e) {
       throw new TesterException(e);
@@ -71,13 +73,15 @@ public class FileTester extends AbstractTransferTester {
     }).start();
   }
 
-  private void writeToNewFile(Path tmpFilePath) throws IOException {
-    try (BufferedWriter writer = Files.newBufferedWriter(tmpFilePath, CREATE, WRITE)) {
-      writer.write("request file content");
-      writer.flush();
+  private void writeToNewFile(Path basePath, TestProps testProps) throws IOException {
+    Path tmpPath = basePath.getParent().resolve(basePath.getFileName() + "_request_tmp");
+    try (OutputStream outputStream = new BufferedOutputStream(Files.newOutputStream(tmpPath, CREATE, WRITE))) {
+      outputStream.write(IntConverter.intToBytes(testProps.getResponseSize()));
+      outputStream.write(testProps.getRequestBytes());
+      outputStream.flush();
     }
-    Path requestPath = tmpFilePath.getParent().resolve(tmpFilePath.getFileName() + "_request");
-    Files.move(tmpFilePath, requestPath, ATOMIC_MOVE);
+    Path requestPath = basePath.getParent().resolve(basePath.getFileName() + "_request");
+    Files.move(tmpPath, requestPath, ATOMIC_MOVE);
   }
 
   @Override
