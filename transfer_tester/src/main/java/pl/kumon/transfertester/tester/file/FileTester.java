@@ -26,7 +26,7 @@ public class FileTester extends AbstractTransferTester {
   private final FileProps props;
   private final ResponseFileWatcher fileWatcher;
 
-  @SneakyThrows
+  @SneakyThrows(IOException.class)
   public FileTester(FileProps fileProps) {
     Objects.requireNonNull(fileProps.getIntegrationDirectory());
     Objects.requireNonNull(fileProps.getResponseTimeoutUnit());

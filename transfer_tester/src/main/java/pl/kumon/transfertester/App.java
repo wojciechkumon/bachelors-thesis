@@ -8,6 +8,7 @@ import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TransferTester;
 import pl.kumon.transfertester.tester.TransferTesterBuilder;
 import pl.kumon.transfertester.tester.file.FileProps;
+import pl.kumon.transfertester.tester.jni.JniProps;
 import pl.kumon.transfertester.tester.protobuf.ProtobufProps;
 import pl.kumon.transfertester.tester.rest.RestProps;
 import pl.kumon.transfertester.tester.tcp.TcpProps;
@@ -32,7 +33,7 @@ public class App {
         .testProps(TestProps.newTestProps(10_000, 50_000))
         .build();
 
-    TransferTester tester = defaultFileTester();
+    TransferTester tester = defaultJniTester();
 
     Stream<Metrics> metricsStream = new TestRunner(runnerProps)
         .run(tester)
@@ -66,7 +67,7 @@ public class App {
 
   private static TransferTester defaultJniTester() {
     return TransferTesterBuilder
-        .jni()
+        .jni(new JniProps().appDirName(".transfer-tester"))
         .build();
   }
 

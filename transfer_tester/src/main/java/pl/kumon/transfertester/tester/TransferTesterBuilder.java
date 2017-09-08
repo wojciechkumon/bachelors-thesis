@@ -3,6 +3,7 @@ package pl.kumon.transfertester.tester;
 import pl.kumon.transfertester.tester.corba.CorbaTester;
 import pl.kumon.transfertester.tester.file.FileProps;
 import pl.kumon.transfertester.tester.file.FileTester;
+import pl.kumon.transfertester.tester.jni.JniProps;
 import pl.kumon.transfertester.tester.jni.JniTester;
 import pl.kumon.transfertester.tester.protobuf.ProtobufProps;
 import pl.kumon.transfertester.tester.protobuf.ProtobufTester;
@@ -28,8 +29,8 @@ public class TransferTesterBuilder {
     return new TransferTesterBuilder(() -> new FileTester(fileProps));
   }
 
-  public static TransferTesterBuilder jni() {
-    return new TransferTesterBuilder(JniTester::new);
+  public static TransferTesterBuilder jni(JniProps jniProps) {
+    return new TransferTesterBuilder(() -> new JniTester(jniProps));
   }
 
   public static TransferTesterBuilder protobuf(ProtobufProps protobufProps) {

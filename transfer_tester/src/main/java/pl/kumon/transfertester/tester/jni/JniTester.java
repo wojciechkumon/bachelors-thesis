@@ -6,18 +6,34 @@ import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TestType;
 import pl.kumon.transfertester.utils.ResponseValidator;
 
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import lombok.SneakyThrows;
 
 public class JniTester extends AbstractTransferTester {
 
-  public JniTester() {
+  @SneakyThrows(IOException.class)
+  public JniTester(JniProps jniProps) {
     String libraryName = System.mapLibraryName("JniExecutor");
-    URL libraryUrl = getClass().getClassLoader().getResource(libraryName);
-    if (libraryUrl == null) {
-      throw new RuntimeException("Error while obtaining Jni library");
+    Path libraryPath = copyLibraryToUserHome(jniProps, libraryName);
+    System.load(libraryPath.toString());
+  }
+
+  private Path copyLibraryToUserHome(JniProps jniProps, String libraryName) throws IOException {
+    Path dirToSaveLib = Paths.get(System.getProperty("user.home"), jniProps.getAppDirName());
+    Path pathToSaveLib = dirToSaveLib.resolve(libraryName);
+
+    Files.deleteIfExists(pathToSaveLib);
+    Files.createDirectories(dirToSaveLib);
+
+    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(libraryName)) {
+      Files.copy(inputStream, pathToSaveLib);
     }
-    // TODO copy library from jar to user dir, remove old if exists and load from user dir
-    System.load(libraryUrl.getPath());
+    return pathToSaveLib;
   }
 
   @Override

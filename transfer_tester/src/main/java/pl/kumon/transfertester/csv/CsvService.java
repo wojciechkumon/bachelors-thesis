@@ -11,7 +11,7 @@ import lombok.SneakyThrows;
 
 public class CsvService {
 
-  @SneakyThrows
+  @SneakyThrows(IOException.class)
   public void writeMetrics(Stream<Metrics> metricsStream, Writer writer) {
     Stream<String> csvRecords = mapToCsvRecords(metricsStream);
     printHeaders(writer);
@@ -33,7 +33,7 @@ public class CsvService {
     });
   }
 
-  @SneakyThrows
+  @SneakyThrows(IOException.class)
   private void printRecord(Writer writer, String csvRecord) {
     printLine(writer, csvRecord);
   }
