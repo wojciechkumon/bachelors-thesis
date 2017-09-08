@@ -1,5 +1,6 @@
 #include <jni.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "pl_kumon_transfertester_tester_jni_JniExecutor.h"
 
 void readRequest(JNIEnv *env, jbyteArray* requestBytes);

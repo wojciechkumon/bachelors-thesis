@@ -15,7 +15,7 @@ if [[ "$OS" == 'Darwin' ]]; then
     gcc -dynamiclib -o "${OUTPUT_PATH}/libJniExecutor.dylib" JniExecutor.o -framework JavaVM
     rm JniExecutor.o
 else
-    gcc -I"${JAVA_HOME}/include" -I"${JAVA_HOME}/include/linux" -o "${OUTPUT_PATH}/libJniExecutor.so" -shared "${C_CODE_PATH}/JniExecutor.c"
+    gcc -I"${JAVA_HOME}/include" -I"${JAVA_HOME}/include/linux" -o "${OUTPUT_PATH}/libJniExecutor.so" -shared "${C_CODE_PATH}/JniExecutor.c" -fPIC
 fi
 
 
