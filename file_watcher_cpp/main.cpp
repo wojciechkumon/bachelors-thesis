@@ -1,27 +1,23 @@
 #include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <cerrno>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fstream>
 #include <sys/inotify.h>
 #include <unistd.h>
-#include <time.h>
+#include <ctime>
 #include <vector>
 
 #define EVENT_SIZE  ( sizeof (struct inotify_event) )
 #define BUF_LEN     ( 1024 * ( EVENT_SIZE + 16 ) )
 #define TMP_REQUEST_ENDING "_request_tmp"
 #define REQUEST_ENDING "_request"
-#define BUFFER_SIZE 1024
+#define TMP_RESPONSE_ENDING "_response_tmp"
+#define RESPONSE_ENDING "_response"
 
 using namespace std;
 
 bool isFileCreated(struct inotify_event *event);
 
-void handleFile(char name[], const char *dirPath);
+void handleFile(char newFileNameChars[], const char *dirPath);
 
 bool isTmpRequestFile(string &fileName);
 
@@ -40,6 +36,8 @@ int readRequestAndResponseSize(string &path);
 vector<char> readAllBytes(string &path);
 
 int fromBytesToInt(vector<char> &bytes);
+
+void putBytesToResponseFile(const char *dirPath, string &baseFileName, int responseSize);
 
 
 int main() {
@@ -87,7 +85,6 @@ bool isFileCreated(struct inotify_event *event) {
 
 void handleFile(char newFileNameChars[], const char *dirPath) {
     string newFileName(newFileNameChars);
-    cout << "new file: " << newFileName << endl;
     if (!isTmpRequestFile(newFileName)) {
         return;
     }
@@ -110,11 +107,7 @@ void handleTmpRequestFile(string &tmpRequestFileName, const char *dirPath) {
 
     int responseSize = readRequestAndResponseSize(path);
 
-    // build response with correct size
-    string tmpFileName = baseFileName + "_tmp";
-    // save response to tmp file
-    // atomically rename tmp file to end with _response and start same as _request
-    string responseFileName = baseFileName + "_response";
+    putBytesToResponseFile(dirPath, baseFileName, responseSize);
 }
 
 string extractBaseFileName(string &fileName) {
@@ -128,35 +121,31 @@ bool fileExists(const std::string &name) {
 }
 
 void waitForRequestFile(string &path) {
+    bool exists = false;
     for (int i = 0; i < 1000; ++i) {
         if (fileExists(path)) {
+            exists = true;
             break;
         }
-        cout << "File not exists, counter: " << i << endl;
         sleepMillisecond();
     }
-    cout << "File exists! " << endl;
+    if (!exists) {
+        cout << "File still not exists! " << path << endl;
+    }
 }
 
 void sleepMillisecond() {
     struct timespec req = {0};
     req.tv_sec = 0;
     req.tv_nsec = 1000000L;
-    nanosleep(&req, (struct timespec *) NULL);
+    nanosleep(&req, (struct timespec *) nullptr);
 }
 
 int readRequestAndResponseSize(string &path) {
     // read 4 bytes response size
     // read whole request (to EOF)
     ifstream infile(path, ios::in | ios::binary);
-    cout << "File content:" << endl;
-
     vector<char> allBytes = readAllBytes(path);
-    for (int i = 0; i < allBytes.size(); ++i) {
-        cout << allBytes[i];
-    }
-    cout << endl;
-
     int responseSize = fromBytesToInt(allBytes);
     cout << "responseSize: " << responseSize << ", requestSize: " << (allBytes.size() - 4) << endl;
     return responseSize;
@@ -176,4 +165,26 @@ vector<char> readAllBytes(string &path) {
 
 int fromBytesToInt(vector<char> &bytes) {
     return (bytes[0] << 24) | ((bytes[1] << 16) & 16777215) | ((bytes[2] << 8) & 65535) | (bytes[3] & 255);
+}
+
+void putBytesToResponseFile(const char *dirPath, string &baseFileName, int responseSize) {
+    string tmpResponsePath(dirPath);
+    tmpResponsePath += "/" + baseFileName + TMP_RESPONSE_ENDING;
+
+    ofstream tmpResponseStream(tmpResponsePath);
+    if (tmpResponseStream.is_open()) {
+
+        for (int i = 0; i < responseSize; ++i) {
+            char randomLetter = (rand() % 26) + 65;
+            tmpResponseStream << randomLetter;
+        }
+        tmpResponseStream.close();
+    }
+
+    string responsePath(dirPath);
+    responsePath += "/" + baseFileName + RESPONSE_ENDING;
+    rename(tmpResponsePath.c_str(), responsePath.c_str());
+    // build response with correct size
+    // save response to tmp file
+    // atomically rename tmp file to end with _response and start same as _request
 }
