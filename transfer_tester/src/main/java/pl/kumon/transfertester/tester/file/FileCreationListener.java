@@ -5,7 +5,6 @@ import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class FileCreationListener extends FileAlterationListenerAdaptor {
   private final String fileNameToWaitFor;
-  private final CompletableFuture<String> responseFuture;
+  private final CompletableFuture<byte[]> responseFuture;
 
-  FileCreationListener(String fileNameToWaitFor, CompletableFuture<String> responseFuture) {
+  FileCreationListener(String fileNameToWaitFor, CompletableFuture<byte[]> responseFuture) {
     this.fileNameToWaitFor = fileNameToWaitFor;
     this.responseFuture = responseFuture;
   }
@@ -33,7 +32,7 @@ class FileCreationListener extends FileAlterationListenerAdaptor {
   }
 
   private void handleResponseFile(File file) throws IOException {
-    String response = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+    byte[] response = FileUtils.readFileToByteArray(file);
     responseFuture.complete(response);
   }
 }

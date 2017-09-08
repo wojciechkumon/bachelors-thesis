@@ -1,18 +1,15 @@
 package pl.kumon.transfertester.tester.file;
 
-import org.apache.commons.io.FileUtils;
-
 import pl.kumon.transfertester.exception.TesterException;
 import pl.kumon.transfertester.tester.AbstractTransferTester;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TestType;
 import pl.kumon.transfertester.utils.IntConverter;
+import pl.kumon.transfertester.utils.ResponseValidator;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -51,26 +48,17 @@ public class FileTester extends AbstractTransferTester {
     String randomName = UUID.randomUUID().toString();
     Path randomPath = this.props.getIntegrationDirectory().resolve(randomName);
     String responseFileName = randomName + this.props.getResponseFileEnding();
-    Future<String> responseFuture = fileWatcher.getFileResponseWhenCreated(responseFileName);
+    Future<byte[]> responseFuture = fileWatcher.getFileResponseWhenCreated(responseFileName);
     try {
       writeToNewFile(randomPath, testProps);
-//      fakeResponseFile(randomName, responseFileName);
-      responseFuture.get(this.props.getResponseTimeout(), this.props.getResponseTimeoutUnit());
+      byte[] response = responseFuture.get(this.props.getResponseTimeout(),
+          this.props.getResponseTimeoutUnit());
+      ResponseValidator.validateLength(response, testProps);
     } catch (Exception e) {
       throw new TesterException(e);
+    } finally {
+      removeCreatedFiles(randomName);
     }
-  }
-
-  private void fakeResponseFile(String randomName, String responseFileName) {
-    new Thread(() -> {
-      try {
-        File testFile = new File(props.getIntegrationDirectory() + "/" + randomName + "_tmp");
-        FileUtils.writeStringToFile(testFile, "response file content", StandardCharsets.UTF_8);
-        testFile.renameTo(new File(testFile.getParentFile(), responseFileName));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }).start();
   }
 
   private void writeToNewFile(Path basePath, TestProps testProps) throws IOException {
@@ -92,5 +80,17 @@ public class FileTester extends AbstractTransferTester {
   @Override
   protected TestType testType() {
     return TestType.FILE;
+  }
+
+  @SneakyThrows(IOException.class)
+  private void removeCreatedFiles(String randomName) {
+    Files.list(this.props.getIntegrationDirectory())
+        .filter(path -> path.getFileName().toString().startsWith(randomName))
+        .forEach(this::deleteFile);
+  }
+
+  @SneakyThrows(IOException.class)
+  private void deleteFile(Path path) {
+    Files.deleteIfExists(path);
   }
 }

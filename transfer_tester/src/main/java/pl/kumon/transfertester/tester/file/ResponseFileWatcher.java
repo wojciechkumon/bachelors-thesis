@@ -30,8 +30,8 @@ class ResponseFileWatcher {
     monitor.stop();
   }
 
-  Future<String> getFileResponseWhenCreated(String responseFileName) {
-    CompletableFuture<String> responseFuture = new CompletableFuture<>();
+  Future<byte[]> getFileResponseWhenCreated(String responseFileName) {
+    CompletableFuture<byte[]> responseFuture = new CompletableFuture<>();
     FileCreationListener fileCreationListener = new FileCreationListener(responseFileName, responseFuture);
     addListener(fileCreationListener);
     responseFuture.thenRun(this::clearListeners);
