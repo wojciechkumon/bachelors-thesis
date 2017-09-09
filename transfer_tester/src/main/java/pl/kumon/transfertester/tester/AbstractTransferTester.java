@@ -16,7 +16,7 @@ public abstract class AbstractTransferTester implements TransferTester {
   @Override
   public Metrics test(TestProps testProps) {
     beforeTest();
-    long start = System.currentTimeMillis();
+    long start = System.nanoTime();
 
     try {
       execute(testProps);
@@ -26,7 +26,7 @@ public abstract class AbstractTransferTester implements TransferTester {
       return Metrics.error(testProps, testType());
     }
 
-    long time = System.currentTimeMillis() - start;
+    long time = System.nanoTime() - start;
     afterTest();
     return Metrics.of(time, testProps, testType());
   }

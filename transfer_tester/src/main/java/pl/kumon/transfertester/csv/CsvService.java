@@ -19,7 +19,7 @@ public class CsvService {
   }
 
   private void printHeaders(Writer writer) throws IOException {
-    String headers = Stream.of("testType", "requestBytes", "responseBytes", "millis")
+    String headers = Stream.of("testType", "requestBytes", "responseBytes", "executionNanos")
         .collect(Collectors.joining(","));
     printLine(writer, headers);
   }
@@ -29,7 +29,7 @@ public class CsvService {
       int requestBytes = metrics.getTestProps().getRequestBytes().length;
       int responseBytes = metrics.getTestProps().getResponseSize();
       return String.format("%s,%d,%d,%d", metrics.getTestType(), requestBytes, responseBytes,
-          metrics.getExecutionTimeMillis());
+          metrics.getExecutionTimeNanos());
     });
   }
 

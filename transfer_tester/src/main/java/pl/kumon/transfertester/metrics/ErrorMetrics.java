@@ -13,7 +13,7 @@ public class ErrorMetrics implements Metrics {
   private final TestType testType;
 
   @Override
-  public long getExecutionTimeMillis() {
+  public long getExecutionTimeNanos() {
     return -1;
   }
 
@@ -24,6 +24,6 @@ public class ErrorMetrics implements Metrics {
 
   @Override
   public String toString() {
-    return "Execution error, testType: " + testType + ", testProps: " + testProps;
+    return "Execution error; testType: " + testType + "; testProps: " + testProps;
   }
 }

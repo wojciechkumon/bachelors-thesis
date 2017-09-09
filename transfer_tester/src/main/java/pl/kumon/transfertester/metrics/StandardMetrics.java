@@ -3,13 +3,16 @@ package pl.kumon.transfertester.metrics;
 import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TestType;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
 class StandardMetrics implements Metrics {
-  private final long executionTimeMillis;
+  private final long executionTimeNanos;
   private final TestProps testProps;
   private final TestType testType;
 
@@ -20,7 +23,8 @@ class StandardMetrics implements Metrics {
 
   @Override
   public String toString() {
-    return "Execution time: " + executionTimeMillis + "ms, testType: " + testType
-        + ", testProps: " + testProps;
+    String executionTime = NumberFormat.getNumberInstance(Locale.US).format(executionTimeNanos);
+    return "Execution time: " + executionTime + "ns; testType: " + testType
+        + "; testProps: " + testProps;
   }
 }
