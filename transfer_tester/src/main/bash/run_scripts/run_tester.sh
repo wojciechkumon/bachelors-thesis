@@ -13,3 +13,4 @@ function runTesterWithDefaultRequestResponseSizes { # testType, numberOfTests, w
 }
 
 runTesterWithDefaultRequestResponseSizes JNI 1000 100 csv
+runTesterWithDefaultRequestResponseSizes TCP 1000 100 csv
