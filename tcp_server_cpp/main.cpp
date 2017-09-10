@@ -26,11 +26,12 @@ void handleClient(int new_conn_fd) {
     recv(new_conn_fd, intBuffer, INT_SIZE, ZERO_OFFSET);
     int responseSize = fromBytesToInt(intBuffer);
 
-    int numberOfChunks = (requestSize / BUFFER_SIZE) + 1;
+    int numberOfChunks = (requestSize / BUFFER_SIZE);
     char messageFromClient[BUFFER_SIZE];
     for (int i = 0; i < numberOfChunks; i++) {
         recv(new_conn_fd, messageFromClient, BUFFER_SIZE, ZERO_OFFSET);
     }
+    recv(new_conn_fd, messageFromClient, requestSize % BUFFER_SIZE, ZERO_OFFSET);
 
     std::cout << "requestSize: " << requestSize << ", responseSize: " << responseSize
               << ", numberOfChunks: " << numberOfChunks << std::endl;
