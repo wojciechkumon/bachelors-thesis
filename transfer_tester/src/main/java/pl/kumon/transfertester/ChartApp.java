@@ -1,7 +1,7 @@
 package pl.kumon.transfertester;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 
 import pl.kumon.transfertester.csv.CsvReader;
 import pl.kumon.transfertester.metrics.Metrics;
@@ -22,26 +22,23 @@ public class ChartApp implements Runnable {
     Path csvDir = Paths.get(appProps.getOrDefault("csvSourceDirectory", "csv"));
     new CsvReader()
         .parseMetricInDir(csvDir)
-        .groupBy(metrics -> ImmutablePair.of(metrics.getRequestSize(), metrics.getResponseSize()))
-        .subscribe(
-            metricsGroup -> handleMetricsGroupedByDataSize(metricsGroup,
-                metricsGroup.getKey().getLeft(),
-                metricsGroup.getKey().getRight()));
-
+        .groupBy(this::byTestTypeAndDataSize)
+        .subscribe(this::handleMetricsGroupedByDataSizeAndTestType);
   }
 
-  private void handleMetricsGroupedByDataSize(GroupedObservable<? extends Pair<Integer, Integer>, Metrics> metricsGroup,
-                                              int requestSize, int responseSize) {
-    metricsGroup
-        .groupBy(Metrics::getTestType)
-        .subscribe(metrics -> handleMetricsGroupedByDataSizeAnTestType(metrics, requestSize,
-            responseSize, metrics.getKey()));
+  private Triple<TestType, Integer, Integer> byTestTypeAndDataSize(Metrics metrics) {
+    return ImmutableTriple.of(metrics.getTestType(), metrics.getRequestSize(), metrics.getResponseSize());
   }
 
-  private void handleMetricsGroupedByDataSizeAnTestType(GroupedObservable<TestType, Metrics> groupedMetrics,
-                                                        int requestSize, int responseSize, TestType testType) {
+  private void handleMetricsGroupedByDataSizeAndTestType(
+      GroupedObservable<Triple<TestType, Integer, Integer>, Metrics> groupedMetrics) {
+
+    TestType testType = groupedMetrics.getKey().getLeft();
+    int requestBytes = groupedMetrics.getKey().getMiddle();
+    int responseBytes = groupedMetrics.getKey().getRight();
+
     groupedMetrics.reduce(0, (integer, metrics) -> integer + 1)
-        .subscribe(amount -> System.out.println(testType + " "
-            + requestSize + " " + responseSize + " " + amount));
+        .subscribe(amount -> System.out.println(testType + " " + requestBytes
+            + " " + responseBytes + " " + amount));
   }
 }
