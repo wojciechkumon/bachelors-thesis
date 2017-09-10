@@ -1,6 +1,5 @@
 package pl.kumon.transfertester.metrics;
 
-import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TestType;
 
 public interface Metrics {
@@ -8,15 +7,17 @@ public interface Metrics {
 
   boolean isSuccess();
 
-  TestProps getTestProps();
+  int getRequestSize();
+
+  int getResponseSize();
 
   TestType getTestType();
 
-  static Metrics of(long executionTimeNanos, TestProps testProps, TestType testType) {
-    return new StandardMetrics(executionTimeNanos, testProps, testType);
+  static Metrics of(long executionTimeNanos, int requestSize, int responseSize, TestType testType) {
+    return new StandardMetrics(executionTimeNanos, requestSize, responseSize, testType);
   }
 
-  static Metrics error(TestProps testProps, TestType testType) {
-    return new ErrorMetrics(testProps, testType);
+  static Metrics error(int requestSize, int responseSize, TestType testType) {
+    return new ErrorMetrics(requestSize, responseSize, testType);
   }
 }

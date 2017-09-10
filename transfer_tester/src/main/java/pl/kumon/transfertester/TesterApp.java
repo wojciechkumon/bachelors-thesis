@@ -1,6 +1,6 @@
 package pl.kumon.transfertester;
 
-import pl.kumon.transfertester.csv.CsvService;
+import pl.kumon.transfertester.csv.CsvWriter;
 import pl.kumon.transfertester.metrics.Metrics;
 import pl.kumon.transfertester.runner.RunnerProps;
 import pl.kumon.transfertester.runner.TestRunner;
@@ -20,8 +20,10 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 public class TesterApp implements Runnable {
   private final AppProps appProps;
 
@@ -30,6 +32,7 @@ public class TesterApp implements Runnable {
     TestProps testProps = TestProps.newTestProps(
         appProps.getOrDefault("requestSize", 8_192),
         appProps.getOrDefault("responseSize", 65_536));
+    log.info("TestProps = " + testProps);
 
     RunnerProps runnerProps = RunnerProps.builder()
         .numberOfTests(appProps.getOrDefault("numberOfTests", 10))
@@ -45,7 +48,7 @@ public class TesterApp implements Runnable {
         .doOnNext(System.out::println);
 
     Path path = Paths.get(appProps.getOrDefault("csvFilePath", "csv/report.csv")).toAbsolutePath();
-    new CsvService(path)
+    new CsvWriter(path)
         .writeMetrics(metricsObservable);
   }
 

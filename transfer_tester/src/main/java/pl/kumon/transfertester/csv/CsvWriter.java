@@ -19,11 +19,11 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.nio.file.StandardOpenOption.WRITE;
 
 @Slf4j
-public class CsvService {
+public class CsvWriter {
   private final Path reportPath;
 
   @SneakyThrows(IOException.class)
-  public CsvService(Path reportPath) {
+  public CsvWriter(Path reportPath) {
     this.reportPath = reportPath;
     if (!Files.exists(reportPath.getParent())) {
       Files.createDirectory(reportPath.getParent());
@@ -48,8 +48,8 @@ public class CsvService {
 
   private Observable<String> mapToCsvRecords(Observable<Metrics> metricsObservable) {
     return metricsObservable.map(metrics -> {
-      int requestBytes = metrics.getTestProps().getRequestBytes().length;
-      int responseBytes = metrics.getTestProps().getResponseSize();
+      int requestBytes = metrics.getRequestSize();
+      int responseBytes = metrics.getResponseSize();
       return String.format("%s,%d,%d,%d", metrics.getTestType(), requestBytes, responseBytes,
           metrics.getExecutionTimeNanos());
     });

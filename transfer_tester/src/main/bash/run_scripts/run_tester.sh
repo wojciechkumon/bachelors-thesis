@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function runTester { # testType, requestSize, responseSize, numberOfTests, warmUpTests, csvDir
-    java -jar transfer-tester.jar testType=${1} requestSize=${2} responseSize=${3} numberOfTests=${4} warmUpTests=${5} csvFilePath=${6}/${1}_${2}_${3}.csv
+    java -jar transfer-tester.jar test testType=${1} requestSize=${2} responseSize=${3} numberOfTests=${4} warmUpTests=${5} csvFilePath=${6}/${1}_${2}_${3}.csv
 }
 
 function runTesterWithDefaultRequestResponseSizes { # testType, numberOfTests, warmUpTests, csvDir

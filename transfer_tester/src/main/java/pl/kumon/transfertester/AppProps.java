@@ -16,17 +16,11 @@ class AppProps {
 
   AppProps(String[] args) {
     Map<String, String> map = Arrays.stream(args)
-        .map(this::parseEntry)
+        .map(PROPS_PATTERN::matcher)
+        .filter(Matcher::matches)
+        .map(matcher -> ImmutablePair.of(matcher.group(1), matcher.group(2)))
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     this.props = Collections.unmodifiableMap(map);
-  }
-
-  private Map.Entry<String, String> parseEntry(String arg) {
-    Matcher matcher = PROPS_PATTERN.matcher(arg);
-    if (matcher.matches()) {
-      return ImmutablePair.of(matcher.group(1), matcher.group(2));
-    }
-    throw new RuntimeException("This arg is not property: " + arg);
   }
 
   String getOrDefault(String key, String defaultValue) {

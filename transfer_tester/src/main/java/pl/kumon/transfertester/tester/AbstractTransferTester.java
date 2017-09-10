@@ -23,12 +23,12 @@ public abstract class AbstractTransferTester implements TransferTester {
     } catch (TesterException e) {
       log.error("TesterException", e);
       afterTest();
-      return Metrics.error(testProps, testType());
+      return Metrics.error(testProps.getRequestBytes().length, testProps.getResponseSize(), testType());
     }
 
     long time = System.nanoTime() - start;
     afterTest();
-    return Metrics.of(time, testProps, testType());
+    return Metrics.of(time, testProps.getRequestBytes().length, testProps.getResponseSize(), testType());
   }
 
   protected void beforeTest() {}

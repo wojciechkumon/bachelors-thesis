@@ -1,6 +1,5 @@
 package pl.kumon.transfertester.metrics;
 
-import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TestType;
 
 import lombok.Getter;
@@ -9,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class ErrorMetrics implements Metrics {
-  private final TestProps testProps;
+  private final int requestSize;
+  private final int responseSize;
   private final TestType testType;
 
   @Override
@@ -24,6 +24,7 @@ public class ErrorMetrics implements Metrics {
 
   @Override
   public String toString() {
-    return "Execution error; testType: " + testType + "; testProps: " + testProps;
+    return "Execution error; testType: " + testType +
+        "; requestSize: " + requestSize + "; responseSize: " + responseSize;
   }
 }

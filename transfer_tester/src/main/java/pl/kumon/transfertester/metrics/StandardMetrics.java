@@ -1,6 +1,5 @@
 package pl.kumon.transfertester.metrics;
 
-import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TestType;
 
 import java.text.NumberFormat;
@@ -13,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 class StandardMetrics implements Metrics {
   private final long executionTimeNanos;
-  private final TestProps testProps;
+  private final int requestSize;
+  private final int responseSize;
   private final TestType testType;
 
   @Override
@@ -25,6 +25,6 @@ class StandardMetrics implements Metrics {
   public String toString() {
     String executionTime = NumberFormat.getNumberInstance(Locale.US).format(executionTimeNanos);
     return "Execution time: " + executionTime + "ns; testType: " + testType
-        + "; testProps: " + testProps;
+        + "; requestSize: " + requestSize + "; responseSize: " + responseSize;
   }
 }
