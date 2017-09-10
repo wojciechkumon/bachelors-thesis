@@ -36,6 +36,7 @@ public class TesterApp implements Runnable {
   public void run() {
     RunnerProps runnerProps = RunnerProps.builder()
         .numberOfTests(10)
+        .warmUpTests(10)
         .testProps(TestProps.newTestProps(10_000, 50_000))
         .build();
 

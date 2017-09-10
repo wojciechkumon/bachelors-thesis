@@ -15,7 +15,9 @@ public class TestRunner {
   }
 
   public Observable<Metrics> run(TransferTester transferTester) {
-    return Observable.range(0, runnerProps.getNumberOfTests())
-        .map(x -> transferTester.test(runnerProps.getTestProps()));
+    int totalTests = runnerProps.getNumberOfTests() + runnerProps.getWarmUpTests();
+    return Observable.range(0, totalTests)
+        .map(x -> transferTester.test(runnerProps.getTestProps()))
+        .skip(runnerProps.getWarmUpTests());
   }
 }
