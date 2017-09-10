@@ -14,26 +14,18 @@ import pl.kumon.transfertester.tester.protobuf.ProtobufProps;
 import pl.kumon.transfertester.tester.rest.RestProps;
 import pl.kumon.transfertester.tester.tcp.TcpProps;
 
-import java.io.BufferedWriter;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
-import static java.nio.file.StandardOpenOption.WRITE;
 
 @RequiredArgsConstructor
 public class TesterApp implements Runnable {
   private final AppProps appProps;
 
   @Override
-  @SneakyThrows
   public void run() {
     TestProps testProps = TestProps.newTestProps(
         appProps.getOrDefault("requestSize", 8_192),
@@ -53,12 +45,8 @@ public class TesterApp implements Runnable {
         .doOnNext(System.out::println);
 
     Path path = Paths.get(appProps.getOrDefault("csvFilePath", "csv/report.csv")).toAbsolutePath();
-    if (!Files.exists(path.getParent())) {
-      Files.createDirectory(path.getParent());
-    }
-    try (BufferedWriter writer = Files.newBufferedWriter(path, CREATE, WRITE, TRUNCATE_EXISTING)) {
-      new CsvService().writeMetrics(metricsObservable, writer);
-    }
+    new CsvService(path)
+        .writeMetrics(metricsObservable);
   }
 
   private TransferTester byTestType(TestType testType) {

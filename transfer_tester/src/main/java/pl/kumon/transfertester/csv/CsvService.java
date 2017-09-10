@@ -2,21 +2,42 @@ package pl.kumon.transfertester.csv;
 
 import pl.kumon.transfertester.metrics.Metrics;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.reactivex.Observable;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
+import static java.nio.file.StandardOpenOption.WRITE;
+
+@Slf4j
 public class CsvService {
+  private final Path reportPath;
 
   @SneakyThrows(IOException.class)
-  public void writeMetrics(Observable<Metrics> metricsObservable, Writer writer) {
-    Observable<String> csvRecords = mapToCsvRecords(metricsObservable);
-    printHeaders(writer);
-    csvRecords.forEach(csvRecord -> printRecord(writer, csvRecord));
+  public CsvService(Path reportPath) {
+    this.reportPath = reportPath;
+    if (!Files.exists(reportPath.getParent())) {
+      Files.createDirectory(reportPath.getParent());
+    }
+    log.info("Csv report path: " + reportPath);
+  }
+
+  @SneakyThrows(IOException.class)
+  public void writeMetrics(Observable<Metrics> metricsObservable) {
+    try (BufferedWriter writer = Files.newBufferedWriter(reportPath, CREATE, WRITE, TRUNCATE_EXISTING)) {
+      Observable<String> csvRecords = mapToCsvRecords(metricsObservable);
+      printHeaders(writer);
+      csvRecords.forEach(csvRecord -> printRecord(writer, csvRecord));
+    }
   }
 
   private void printHeaders(Writer writer) throws IOException {

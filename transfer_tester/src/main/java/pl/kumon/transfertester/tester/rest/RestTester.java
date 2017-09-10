@@ -39,6 +39,7 @@ public class RestTester extends AbstractTransferTester {
     Objects.requireNonNull(httpClient);
     this.httpClient = httpClient;
     this.props = props;
+    log.info(props.toString());
   }
 
   @Override

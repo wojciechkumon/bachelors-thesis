@@ -16,6 +16,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Objects;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ProtobufTester extends AbstractTransferTester {
   private final ProtobufProps protobufProps;
 
@@ -27,6 +30,7 @@ public class ProtobufTester extends AbstractTransferTester {
           + protobufProps.getPort());
     }
     this.protobufProps = protobufProps;
+    log.info(protobufProps.toString());
   }
 
   @Override

@@ -4,8 +4,10 @@ import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class FileProps {
   private Path integrationDirectory;
   private TimeUnit responseTimeoutUnit;

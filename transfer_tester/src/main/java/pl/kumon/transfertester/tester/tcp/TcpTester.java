@@ -14,6 +14,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Objects;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TcpTester extends AbstractTransferTester {
   private final TcpProps tcpProps;
 
@@ -25,6 +28,7 @@ public class TcpTester extends AbstractTransferTester {
           + tcpProps.getPort());
     }
     this.tcpProps = tcpProps;
+    log.info(tcpProps.toString());
   }
 
   @Override

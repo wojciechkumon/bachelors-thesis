@@ -6,8 +6,10 @@ import java.util.Objects;
 import java.util.Random;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
+@Slf4j
 public class TestProps {
   private static final TestProps SIMPLE_TEST_PROPS = new TestProps(new byte[0], 0);
   private final byte[] requestBytes;
@@ -32,6 +34,8 @@ public class TestProps {
   public static TestProps newTestProps(int requestSize, int responseSize) {
     byte[] requestBytes = new byte[requestSize];
     new Random().nextBytes(requestBytes);
-    return new TestProps(requestBytes, responseSize);
+    TestProps testProps = new TestProps(requestBytes, responseSize);
+    log.info("TestProps = " + testProps);
+    return testProps;
   }
 }

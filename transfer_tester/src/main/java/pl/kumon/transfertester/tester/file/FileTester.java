@@ -17,11 +17,13 @@ import java.util.UUID;
 import java.util.concurrent.Future;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.WRITE;
 
+@Slf4j
 public class FileTester extends AbstractTransferTester {
   private final FileProps props;
   private final ResponseFileWatcher fileWatcher;
@@ -36,6 +38,7 @@ public class FileTester extends AbstractTransferTester {
     this.props = fileProps;
     this.fileWatcher = new ResponseFileWatcher(props.getIntegrationDirectory(), props.getScanIntervalMillis());
     Files.createDirectories(props.getIntegrationDirectory());
+    log.info(fileProps.toString());
   }
 
   @Override

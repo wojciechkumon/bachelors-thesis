@@ -13,7 +13,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JniTester extends AbstractTransferTester {
 
   @SneakyThrows(IOException.class)
@@ -21,6 +23,7 @@ public class JniTester extends AbstractTransferTester {
     String libraryName = System.mapLibraryName("JniExecutor");
     Path libraryPath = copyLibraryToUserHome(jniProps, libraryName);
     System.load(libraryPath.toString());
+    log.info(jniProps.toString());
   }
 
   private Path copyLibraryToUserHome(JniProps jniProps, String libraryName) throws IOException {

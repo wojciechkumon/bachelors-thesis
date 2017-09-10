@@ -1,8 +1,10 @@
 package pl.kumon.transfertester.tester.rest;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class RestProps {
   private String url;
   private String dataJsonKey;

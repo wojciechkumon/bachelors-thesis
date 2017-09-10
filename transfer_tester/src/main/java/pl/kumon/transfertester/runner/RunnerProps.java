@@ -9,9 +9,11 @@ import java.util.Objects;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder
+@ToString
 public class RunnerProps {
   private final TestProps testProps;
   private final int numberOfTests;
