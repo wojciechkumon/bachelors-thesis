@@ -7,13 +7,14 @@ import java.io.Writer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.reactivex.Observable;
 import lombok.SneakyThrows;
 
 public class CsvService {
 
   @SneakyThrows(IOException.class)
-  public void writeMetrics(Stream<Metrics> metricsStream, Writer writer) {
-    Stream<String> csvRecords = mapToCsvRecords(metricsStream);
+  public void writeMetrics(Observable<Metrics> metricsObservable, Writer writer) {
+    Observable<String> csvRecords = mapToCsvRecords(metricsObservable);
     printHeaders(writer);
     csvRecords.forEach(csvRecord -> printRecord(writer, csvRecord));
   }
@@ -24,8 +25,8 @@ public class CsvService {
     printLine(writer, headers);
   }
 
-  private Stream<String> mapToCsvRecords(Stream<Metrics> metricsStream) {
-    return metricsStream.map(metrics -> {
+  private Observable<String> mapToCsvRecords(Observable<Metrics> metricsObservable) {
+    return metricsObservable.map(metrics -> {
       int requestBytes = metrics.getTestProps().getRequestBytes().length;
       int responseBytes = metrics.getTestProps().getResponseSize();
       return String.format("%s,%d,%d,%d", metrics.getTestType(), requestBytes, responseBytes,

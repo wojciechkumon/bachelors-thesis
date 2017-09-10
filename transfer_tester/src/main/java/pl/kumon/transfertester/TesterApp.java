@@ -18,8 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
+import io.reactivex.Observable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -41,16 +41,16 @@ public class TesterApp implements Runnable {
 
     TransferTester tester = defaultJniTester();
 
-    Stream<Metrics> metricsStream = new TestRunner(runnerProps)
+    Observable<Metrics> metricsObservable = new TestRunner(runnerProps)
         .run(tester)
-        .peek(System.out::println);
+        .doOnNext(System.out::println);
 
     Path path = Paths.get("csv/report.csv").toAbsolutePath();
     if (!Files.exists(path.getParent())) {
       Files.createDirectory(path.getParent());
     }
     try (BufferedWriter writer = Files.newBufferedWriter(path, CREATE, WRITE, TRUNCATE_EXISTING)) {
-      new CsvService().writeMetrics(metricsStream, writer);
+      new CsvService().writeMetrics(metricsObservable, writer);
     }
   }
 

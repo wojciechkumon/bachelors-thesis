@@ -4,8 +4,8 @@ import pl.kumon.transfertester.metrics.Metrics;
 import pl.kumon.transfertester.tester.TransferTester;
 
 import java.util.Objects;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
+import io.reactivex.Observable;
 
 public class TestRunner {
   private final RunnerProps runnerProps;
@@ -14,9 +14,8 @@ public class TestRunner {
     this.runnerProps = Objects.requireNonNull(runnerProps);
   }
 
-  public Stream<Metrics> run(TransferTester transferTester) {
-    return IntStream.range(0, runnerProps.getNumberOfTests())
-        .boxed()
+  public Observable<Metrics> run(TransferTester transferTester) {
+    return Observable.range(0, runnerProps.getNumberOfTests())
         .map(x -> transferTester.test(runnerProps.getTestProps()));
   }
 }
