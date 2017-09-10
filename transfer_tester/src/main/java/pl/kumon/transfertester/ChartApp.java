@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ChartApp implements Runnable {
-  private final String[] args;
+  private final AppProps appProps;
 
   @Override
   public void run() {
