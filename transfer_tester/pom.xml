@@ -13,6 +13,7 @@
         <ok-http.version>3.8.1</ok-http.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-lang.version>3.6</commons-lang.version>
+        <commons-math.version>3.6</commons-math.version>
         <commons-csv.version>1.5</commons-csv.version>
         <guava.version>23.0</guava.version>
         <protobuf.version>3.4.0</protobuf.version>
@@ -47,6 +48,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>${commons-math.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
