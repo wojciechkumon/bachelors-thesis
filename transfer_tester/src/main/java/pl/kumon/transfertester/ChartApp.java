@@ -27,6 +27,7 @@ public class ChartApp implements Runnable {
   @Override
   public void run() {
     Path csvDir = Paths.get(appProps.getOrDefault("csvSourceDirectory", "csv"));
+    Path chartDir = Paths.get(appProps.getOrDefault("chartOutputDirectory", "chart"));
 
     ChartService chartService = new ChartService();
     new CsvReader()
@@ -34,7 +35,7 @@ public class ChartApp implements Runnable {
         .groupBy(this::byTestTypeAndDataSize)
         .flatMap(this::toTestStats)
         .groupBy(stats -> ImmutablePair.of(stats.getRequestBytes(), stats.getResponseBytes()))
-        .map(groupedStats -> toChartData(groupedStats, csvDir))
+        .map(groupedStats -> toChartData(groupedStats, chartDir))
         .toList()
         .subscribe(chartService::saveCharts);
   }
@@ -84,10 +85,10 @@ public class ChartApp implements Runnable {
   }
 
   private ChartData toChartData(GroupedObservable<ImmutablePair<Integer, Integer>, TestExecutionStats> groupedStats,
-                                Path csvDir) {
+                                Path chartDir) {
     int requestBytes = groupedStats.getKey().getLeft();
     int responseBytes = groupedStats.getKey().getRight();
-    Path path = csvDir.resolve("chart_" + requestBytes + "_" + responseBytes + ".png");
+    Path path = chartDir.resolve("chart_" + requestBytes + "_" + responseBytes + ".png");
 
     return ChartData.builder()
         .requestBytes(requestBytes)
