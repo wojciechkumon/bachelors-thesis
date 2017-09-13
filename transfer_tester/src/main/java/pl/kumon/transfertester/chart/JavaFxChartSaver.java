@@ -5,7 +5,9 @@ import pl.kumon.transfertester.utils.Formatter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
@@ -30,7 +32,12 @@ public class JavaFxChartSaver extends Application {
   private static final String TITLE_FORMAT = "Request %s, response %s";
   private static final String X_AXIS_LABEL = "Test type";
   private static final String Y_AXIS_LABEL = "Execution time [ns]";
+  private static final String MIN = "Min";
+  private static final String FIRST_QUARTILE = "First quartile";
   private static final String MEDIAN = "Median";
+  private static final String THIRD_QUARTILE = "Third quartile";
+  private static final String MAX = "Max";
+
   static List<ChartData> chartDataList;
 
   @Override
@@ -50,8 +57,10 @@ public class JavaFxChartSaver extends Application {
     chart.setTitle(getTitle(data));
     xAxis.setLabel(X_AXIS_LABEL);
     yAxis.setLabel(Y_AXIS_LABEL);
-    XYChart.Series<String, Number> series = buildDataSeries(data);
-    return buildScene(chart, series);
+
+    List<TestExecutionStats> stats = data.getStats().toList().toMaybe().blockingGet();
+    List<XYChart.Series<String, Number>> seriesList = buildAllDataSeries(stats);
+    return buildScene(chart, seriesList);
   }
 
   private String getTitle(ChartData data) {
@@ -60,19 +69,35 @@ public class JavaFxChartSaver extends Application {
     return String.format(TITLE_FORMAT, requestSize, responseSize);
   }
 
-  private XYChart.Series<String, Number> buildDataSeries(ChartData data) {
-    XYChart.Series<String, Number> series = new XYChart.Series<>();
-    series.setName(MEDIAN);
+  private List<XYChart.Series<String, Number>> buildAllDataSeries(List<TestExecutionStats> stats) {
+    XYChart.Series<String, Number> minSeries = buildDataSeries(stats, MIN,
+        TestExecutionStats::getMinNanos);
+    XYChart.Series<String, Number> firstQuartileSeries = buildDataSeries(stats, FIRST_QUARTILE,
+        TestExecutionStats::getFirstQuartileNanos);
+    XYChart.Series<String, Number> medianSeries = buildDataSeries(stats, MEDIAN,
+        TestExecutionStats::getMedianNanos);
+    XYChart.Series<String, Number> thirdQuartileSeries = buildDataSeries(stats, THIRD_QUARTILE,
+        TestExecutionStats::getThirdQuartileNanos);
+    XYChart.Series<String, Number> maxSeries = buildDataSeries(stats, MAX,
+        TestExecutionStats::getMaxNanos);
 
-    data.getStats().blockingSubscribe(stats ->
-        series.getData().add(new XYChart.Data<>(stats.getTestType().name(), stats.getMedianNanos())));
+    return Arrays.asList(minSeries, firstQuartileSeries, medianSeries, thirdQuartileSeries, maxSeries);
+  }
+
+  private XYChart.Series<String, Number> buildDataSeries(List<TestExecutionStats> statsList, String name,
+                                                         Function<TestExecutionStats, Long> dataGetter) {
+    XYChart.Series<String, Number> series = new XYChart.Series<>();
+    series.setName(name);
+
+    statsList.forEach(stats ->
+        series.getData().add(new XYChart.Data<>(stats.getTestType().name(), dataGetter.apply(stats))));
     return series;
   }
 
-  private Scene buildScene(BarChart<String, Number> chart, XYChart.Series<String, Number> series) {
+  private Scene buildScene(BarChart<String, Number> chart, List<XYChart.Series<String, Number>> series) {
     Scene scene = new Scene(chart, WIDTH, HEIGHT);
     chart.setAnimated(false);
-    chart.getData().add(series);
+    chart.getData().addAll(series);
     return scene;
   }
 
