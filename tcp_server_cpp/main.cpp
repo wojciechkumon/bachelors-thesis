@@ -15,7 +15,7 @@ void sendResponse(int fd, int size);
 
 void fillBuffer(char buffer[1024], int fill);
 
-int fromBytesToInt(const char* bytes);
+int fromBytesToInt(const char *bytes);
 
 void handleClient(int new_conn_fd) {
     char intBuffer[4];
@@ -31,7 +31,7 @@ void handleClient(int new_conn_fd) {
     for (int i = 0; i < numberOfChunks; i++) {
         recv(new_conn_fd, messageFromClient, BUFFER_SIZE, ZERO_OFFSET);
     }
-    if (requestSize % BUFFER_SIZE > 0 ) {
+    if (requestSize % BUFFER_SIZE > 0) {
         recv(new_conn_fd, messageFromClient, requestSize % BUFFER_SIZE, ZERO_OFFSET);
     }
 
@@ -42,7 +42,7 @@ void handleClient(int new_conn_fd) {
     close(new_conn_fd);
 }
 
-int fromBytesToInt(const char* bytes) {
+int fromBytesToInt(const char *bytes) {
     return (bytes[0] << 24) | ((bytes[1] << 16) & 16777215) | ((bytes[2] << 8) & 65535) | (bytes[3] & 255);
 }
 
@@ -57,7 +57,7 @@ void sendResponse(int fd, int sizeToSend) {
     }
 }
 
-void fillBuffer(char* buffer, int sizeToFill) {
+void fillBuffer(char *buffer, int sizeToFill) {
     for (int i = 0; i < sizeToFill; i++) {
         buffer[i] = (rand() % 26) + 65;
     }
@@ -126,17 +126,27 @@ int main(int argc, char *argv[]) {
 
     printf("I am now accepting connections ...\n");
 
-    while (1) {
-        // Accept a new connection and return back the socket descriptor
+    while (true) {
         new_conn_fd = accept(listner, (struct sockaddr *) &client_addr, &addr_size);
         if (new_conn_fd < 0) {
             fprintf(stderr, "accept: %s\n", gai_strerror(new_conn_fd));
             continue;
         }
 
-        inet_ntop(client_addr.ss_family, get_in_addr((struct sockaddr *) &client_addr), s, sizeof s);
-        printf("I am now connected to %s \n", s);
-        handleClient(new_conn_fd);
+        int pid = fork();
+        if (pid < 0) {
+            close(new_conn_fd);
+            return -1;
+        } else if (pid > 0) {
+            // continue listening on socket in main process
+            continue;
+        } else {
+            // handle client in child process
+            inet_ntop(client_addr.ss_family, get_in_addr((struct sockaddr *) &client_addr), s, sizeof s);
+            printf("I am now connected to %s \n", s);
+            handleClient(new_conn_fd);
+            break;
+        }
     }
 
     return 0;
