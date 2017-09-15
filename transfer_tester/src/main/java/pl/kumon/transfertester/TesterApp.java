@@ -37,6 +37,7 @@ public class TesterApp implements Runnable {
     RunnerProps runnerProps = RunnerProps.builder()
         .numberOfTests(appProps.getOrDefault("numberOfTests", 10))
         .warmUpTests(appProps.getOrDefault("warmUpTests", 10))
+        .delayBetweenTestsMillis(appProps.getOrDefault("delayBetweenTestsMillis", 1000))
         .testProps(testProps)
         .build();
 
