@@ -43,12 +43,13 @@ public class CsvReader {
 
       return StreamSupport.stream(parser.spliterator(), false)
           .map(this::mapToMetrics)
+          .filter(metrics -> metrics.getExecutionTimeNanos() >= 0)
           .collect(toList());
     }
   }
 
   private Metrics mapToMetrics(CSVRecord record) {
-    int executionNanos = Integer.parseInt(record.get("executionNanos"));
+    long executionNanos = Long.parseLong(record.get("executionNanos"));
     int requestBytes = Integer.parseInt(record.get("requestBytes"));
     int responseBytes = Integer.parseInt(record.get("responseBytes"));
     TestType testType = TestType.valueOf(record.get("testType"));

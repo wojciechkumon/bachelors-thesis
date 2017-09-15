@@ -31,7 +31,9 @@ void handleClient(int new_conn_fd) {
     for (int i = 0; i < numberOfChunks; i++) {
         recv(new_conn_fd, messageFromClient, BUFFER_SIZE, ZERO_OFFSET);
     }
-    recv(new_conn_fd, messageFromClient, requestSize % BUFFER_SIZE, ZERO_OFFSET);
+    if (requestSize % BUFFER_SIZE > 0 ) {
+        recv(new_conn_fd, messageFromClient, requestSize % BUFFER_SIZE, ZERO_OFFSET);
+    }
 
     std::cout << "requestSize: " << requestSize << ", responseSize: " << responseSize
               << ", numberOfChunks: " << numberOfChunks << std::endl;

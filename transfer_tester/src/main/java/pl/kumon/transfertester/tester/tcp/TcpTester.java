@@ -46,6 +46,7 @@ public class TcpTester extends AbstractTransferTester {
     OutputStream outputStream = socket.getOutputStream();
     writeRequestBytesSize(testProps, outputStream);
     writeResponseSize(testProps, outputStream);
+    outputStream.flush();
     writeRequestBytes(testProps, outputStream);
     outputStream.flush();
   }
@@ -63,18 +64,11 @@ public class TcpTester extends AbstractTransferTester {
   }
 
   private void writeRequestBytes(TestProps testProps, OutputStream outputStream) throws IOException {
-    IOUtils.writeChunked(testProps.getRequestBytes(), outputStream);
+    IOUtils.write(testProps.getRequestBytes(), outputStream);
   }
 
   private byte[] readResponse(Socket socket, int responseSize) throws IOException {
     return IOUtils.readFully(socket.getInputStream(), responseSize);
-  }
-
-  private void validateResponse(byte[] response, TestProps testProps) throws TesterException {
-    if (response.length != testProps.getResponseSize()) {
-      throw new TesterException("Wrong response length: " + response.length
-          + ", required: " + testProps.getResponseSize());
-    }
   }
 
   @Override
