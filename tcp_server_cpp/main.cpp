@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -124,12 +124,12 @@ int main(int argc, char *argv[]) {
     // Calculate the size of the data structure
     addr_size = sizeof client_addr;
 
-    printf("I am now accepting connections ...\n");
+    printf("I am now accepting connections...\n");
 
     while (true) {
         new_conn_fd = accept(listner, (struct sockaddr *) &client_addr, &addr_size);
         if (new_conn_fd < 0) {
-            fprintf(stderr, "accept: %s\n", gai_strerror(new_conn_fd));
+            fprintf(stderr, "accept error: %s\n", gai_strerror(new_conn_fd));
             continue;
         }
 
