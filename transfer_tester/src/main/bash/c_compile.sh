@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-JAVA_HOME="${1}/.."
+JAVA_HOME="${1}"
 C_CODE_PATH=${2:-../c}
 JAVA_CODE_PATH=${3:-../java}
 OUTPUT_PATH=${4:-././../../../target/classes}

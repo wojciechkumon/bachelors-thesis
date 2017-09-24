@@ -113,7 +113,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <compiler>idlj</compiler>
+                    <compiler>glassfish</compiler>
                     <sources>
                         <source>
                             <includes>
@@ -154,8 +154,14 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.9</source>
+                    <target>1.9</target>
+                    <compilerArgs>
+                        <arg>--add-modules</arg>
+                        <arg>java.corba</arg>
+                        <arg>--add-modules</arg>
+                        <arg>java.xml.ws.annotation</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
@@ -213,7 +219,7 @@
                                 <resource>
                                     <directory>target</directory>
                                     <includes>
-                                        <include>${build.finalName}.jar</include>
+                                        <include>${project.build.finalName}.jar</include>
                                     </includes>
                                 </resource>
                             </resources>

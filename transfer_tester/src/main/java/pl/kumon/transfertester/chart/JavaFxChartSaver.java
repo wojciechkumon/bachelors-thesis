@@ -5,7 +5,6 @@ import pl.kumon.transfertester.utils.Formatter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -81,7 +80,7 @@ public class JavaFxChartSaver extends Application {
     XYChart.Series<String, Number> maxSeries = buildDataSeries(stats, MAX,
         TestExecutionStats::getMaxNanos);
 
-    return Arrays.asList(minSeries, firstQuartileSeries, medianSeries, thirdQuartileSeries, maxSeries);
+    return List.of(minSeries, firstQuartileSeries, medianSeries, thirdQuartileSeries, maxSeries);
   }
 
   private XYChart.Series<String, Number> buildDataSeries(List<TestExecutionStats> statsList, String name,
