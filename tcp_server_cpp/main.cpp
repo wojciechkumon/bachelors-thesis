@@ -132,22 +132,8 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "accept error: %s\n", gai_strerror(new_conn_fd));
             continue;
         }
-
-        int pid = fork();
-        if (pid < 0) {
-            close(new_conn_fd);
-            return -1;
-        } else if (pid > 0) {
-            // continue listening on socket in main process
-            continue;
-        } else {
-            // handle client in child process
-            inet_ntop(client_addr.ss_family, get_in_addr((struct sockaddr *) &client_addr), s, sizeof s);
-            printf("I am now connected to %s \n", s);
-            handleClient(new_conn_fd);
-            break;
-        }
+        inet_ntop(client_addr.ss_family, get_in_addr((struct sockaddr *) &client_addr), s, sizeof s);
+        printf("I am now connected to %s \n", s);
+        handleClient(new_conn_fd);
     }
-
-    return 0;
 }
