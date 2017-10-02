@@ -18,6 +18,7 @@ public class TestExecutionStats {
   private final long firstQuartileNanos;
   private final long medianNanos;
   private final long thirdQuartileNanos;
+  private final long percentile99Nanos;
   private final double standardDeviationNanos;
   private final double arithmeticMean;
 }

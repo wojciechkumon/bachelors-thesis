@@ -35,7 +35,7 @@ public class JavaFxChartSaver extends Application {
   private static final String FIRST_QUARTILE = "First quartile";
   private static final String MEDIAN = "Median";
   private static final String THIRD_QUARTILE = "Third quartile";
-  private static final String MAX = "Max";
+  private static final String PERCENTILE_99 = "Percentile 99";
 
   static List<ChartData> chartDataList;
 
@@ -77,10 +77,10 @@ public class JavaFxChartSaver extends Application {
         TestExecutionStats::getMedianNanos);
     XYChart.Series<String, Number> thirdQuartileSeries = buildDataSeries(stats, THIRD_QUARTILE,
         TestExecutionStats::getThirdQuartileNanos);
-    XYChart.Series<String, Number> maxSeries = buildDataSeries(stats, MAX,
-        TestExecutionStats::getMaxNanos);
+    XYChart.Series<String, Number> quartile99Series = buildDataSeries(stats, PERCENTILE_99,
+        TestExecutionStats::getPercentile99Nanos);
 
-    return List.of(minSeries, firstQuartileSeries, medianSeries, thirdQuartileSeries, maxSeries);
+    return List.of(minSeries, firstQuartileSeries, medianSeries, thirdQuartileSeries, quartile99Series);
   }
 
   private XYChart.Series<String, Number> buildDataSeries(List<TestExecutionStats> statsList, String name,

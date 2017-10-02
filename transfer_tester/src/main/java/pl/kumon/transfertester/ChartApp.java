@@ -67,6 +67,7 @@ public class ChartApp implements Runnable {
     long firstQuartile = (long) stats.getPercentile(25);
     long median = (long) stats.getPercentile(50);
     long thirdQuartile = (long) stats.getPercentile(75);
+    long percentile99Nanos = (long) stats.getPercentile(99);
     double standardDeviation = stats.getStandardDeviation();
     double mean = stats.getMean();
 
@@ -79,6 +80,7 @@ public class ChartApp implements Runnable {
         .firstQuartileNanos(firstQuartile)
         .medianNanos(median)
         .thirdQuartileNanos(thirdQuartile)
+        .percentile99Nanos(percentile99Nanos)
         .standardDeviationNanos(standardDeviation)
         .arithmeticMean(mean)
         .build();
