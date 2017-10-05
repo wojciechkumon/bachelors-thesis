@@ -80,7 +80,7 @@ public class TesterApp implements Runnable {
   private TransferTester fileTester() {
     String integrationDir = appProps.getOrDefault("fileIntegrationDirectory", "integration_files");
     int timeoutMillis = appProps.getOrDefault("fileResponseTimeoutMillis", 3_000);
-    int scanIntervalMillis = appProps.getOrDefault("fileScanIntervalMillis", 20);
+    int scanIntervalMillis = appProps.getOrDefault("fileScanIntervalMillis", 2);
     return TransferTesterBuilder
         .file(new FileProps()
             .integrationDirectory(Paths.get(integrationDir))
