@@ -35,8 +35,8 @@ public class TcpTester extends AbstractTransferTester {
   protected void execute(TestProps testProps) throws TesterException {
     try (Socket socket = new Socket(tcpProps.getIp(), tcpProps.getPort())) {
       writeRequest(testProps, socket);
-      byte[] response = readResponse(socket, testProps.getResponseSize());
-      ResponseValidator.validateLength(response, testProps);
+      int actualResponseLength = readResponse(socket, testProps.getResponseSize());
+      ResponseValidator.validateLength(actualResponseLength, testProps);
     } catch (IOException e) {
       throw new TesterException(e);
     }
@@ -67,8 +67,9 @@ public class TcpTester extends AbstractTransferTester {
     IOUtils.write(testProps.getRequestBytes(), outputStream);
   }
 
-  private byte[] readResponse(Socket socket, int responseSize) throws IOException {
-    return IOUtils.readFully(socket.getInputStream(), responseSize);
+  private int readResponse(Socket socket, int responseSize) throws IOException {
+    byte[] buffer = new byte[responseSize];
+    return IOUtils.read(socket.getInputStream(), buffer);
   }
 
   @Override
