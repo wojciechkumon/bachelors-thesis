@@ -2,6 +2,8 @@ package pl.kumon.transfertester.chart;
 
 import pl.kumon.transfertester.tester.TestType;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,6 +13,7 @@ import lombok.ToString;
 @ToString
 public class TestExecutionStats {
   private final TestType testType;
+  private final List<Long> dataSetNanos;
   private final int requestBytes;
   private final int responseBytes;
   private final long minNanos;

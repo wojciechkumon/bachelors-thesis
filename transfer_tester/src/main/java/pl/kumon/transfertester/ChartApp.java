@@ -59,9 +59,10 @@ public class ChartApp implements Runnable {
         .toObservable();
   }
 
-  private TestExecutionStats toStats(TestType testType, int requestBytes, int responseBytes, List<Long> list) {
+  private TestExecutionStats toStats(TestType testType, int requestBytes, int responseBytes,
+                                     List<Long> dataSetNanos) {
     DescriptiveStatistics stats = new DescriptiveStatistics();
-    list.forEach(stats::addValue);
+    dataSetNanos.forEach(stats::addValue);
     long min = (long) stats.getMin();
     long max = (long) stats.getMax();
     long firstQuartile = (long) stats.getPercentile(25);
@@ -73,6 +74,7 @@ public class ChartApp implements Runnable {
 
     return TestExecutionStats.builder()
         .testType(testType)
+        .dataSetNanos(dataSetNanos)
         .requestBytes(requestBytes)
         .responseBytes(responseBytes)
         .minNanos(min)
