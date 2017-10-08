@@ -5,7 +5,6 @@ public enum TestType {
   FILE,
   JNI,
   MOCK,
-  PROTOBUF,
   REST,
   TCP
 }

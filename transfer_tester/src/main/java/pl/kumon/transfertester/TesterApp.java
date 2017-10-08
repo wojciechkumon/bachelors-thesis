@@ -10,7 +10,6 @@ import pl.kumon.transfertester.tester.TransferTester;
 import pl.kumon.transfertester.tester.TransferTesterBuilder;
 import pl.kumon.transfertester.tester.file.FileProps;
 import pl.kumon.transfertester.tester.jni.JniProps;
-import pl.kumon.transfertester.tester.protobuf.ProtobufProps;
 import pl.kumon.transfertester.tester.rest.RestProps;
 import pl.kumon.transfertester.tester.tcp.TcpProps;
 
@@ -63,8 +62,6 @@ public class TesterApp implements Runnable {
         return jniTester();
       case MOCK:
         return mockTester();
-      case PROTOBUF:
-        return protobufTester();
       case REST:
         return restTester();
       case TCP:
@@ -102,14 +99,6 @@ public class TesterApp implements Runnable {
   private TransferTester mockTester() {
     return TransferTesterBuilder
         .mock()
-        .build();
-  }
-
-  private TransferTester protobufTester() {
-    String ip = appProps.getOrDefault("protobufIp", "localhost");
-    int port = appProps.getOrDefault("protobufPort", 5_000);
-    return TransferTesterBuilder
-        .protobuf(new ProtobufProps().ip(ip).port(port))
         .build();
   }
 
