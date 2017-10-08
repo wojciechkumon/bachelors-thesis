@@ -11,7 +11,7 @@ ${JAVA_HOME}/bin/javah -classpath ${JAVA_CODE_PATH} -d ${C_CODE_PATH} -jni pl.ku
 PLATFORM='unknown';
 OS=$(uname)
 if [[ "$OS" == 'Darwin' ]]; then
-    gcc -c -I/System/Library/Frameworks/JavaVM.framework/Headers "${C_CODE_PATH}/JniExecutor.c"
+    gcc -c -I"${JAVA_HOME}/include" -I"${JAVA_HOME}/include/darwin" "${C_CODE_PATH}/JniExecutor.c"
     gcc -dynamiclib -o "${OUTPUT_PATH}/libJniExecutor.dylib" JniExecutor.o -framework JavaVM
     rm JniExecutor.o
 else
