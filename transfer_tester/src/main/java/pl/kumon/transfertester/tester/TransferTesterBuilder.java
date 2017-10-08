@@ -5,6 +5,7 @@ import pl.kumon.transfertester.tester.file.FileProps;
 import pl.kumon.transfertester.tester.file.FileTester;
 import pl.kumon.transfertester.tester.jni.JniProps;
 import pl.kumon.transfertester.tester.jni.JniTester;
+import pl.kumon.transfertester.tester.mock.MockTester;
 import pl.kumon.transfertester.tester.protobuf.ProtobufProps;
 import pl.kumon.transfertester.tester.protobuf.ProtobufTester;
 import pl.kumon.transfertester.tester.rest.RestProps;
@@ -31,6 +32,10 @@ public class TransferTesterBuilder {
 
   public static TransferTesterBuilder jni(JniProps jniProps) {
     return new TransferTesterBuilder(() -> new JniTester(jniProps));
+  }
+
+  public static TransferTesterBuilder mock() {
+    return new TransferTesterBuilder(MockTester::new);
   }
 
   public static TransferTesterBuilder protobuf(ProtobufProps protobufProps) {

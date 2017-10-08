@@ -61,6 +61,8 @@ public class TesterApp implements Runnable {
         return fileTester();
       case JNI:
         return jniTester();
+      case MOCK:
+        return mockTester();
       case PROTOBUF:
         return protobufTester();
       case REST:
@@ -94,6 +96,12 @@ public class TesterApp implements Runnable {
   private TransferTester jniTester() {
     return TransferTesterBuilder
         .jni(new JniProps().appDirName(".transfer-tester"))
+        .build();
+  }
+
+  private TransferTester mockTester() {
+    return TransferTesterBuilder
+        .mock()
         .build();
   }
 

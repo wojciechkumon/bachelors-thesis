@@ -4,6 +4,7 @@ public enum TestType {
   CORBA,
   FILE,
   JNI,
+  MOCK,
   PROTOBUF,
   REST,
   TCP
