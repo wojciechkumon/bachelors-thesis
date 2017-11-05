@@ -1,0 +1,26 @@
+\chapter{Wstęp}
+
+Tworzenie programów to stosunkowo nowa dyscyplina, którą zajmują się ludzie. Zaczęło się od małych niezależnych aplikacji, by obecnie tworzyć duże rozproszone systemy. Przez cały ten okres narodziło się wiele problemów, które należy rozwiązać. Jednym z nich jest komunikacja. Z pozoru proste zagadnienie okazuje się być dość skomplikowanym.
+
+Procesy przestały być niezależne. Powody tej sytuacji to unikanie duplikacji istniejących funkcjonalności, konieczność przekazania informacji innemu oprogramowaniu, czy wykonanie algorytmu korzystajać z wydajniejszej, natywnej implementacji. Jak więc przesłać potrzebne dane? Sposobów jest wiele - zaczynąjąc od metod, które wymagają, aby procesy działały pod kontrolą tego samego systemu operacyjnego, kończąc na rozwiązaniach sieciowych, umożliwiających transport danych do dowolnie oddalonych maszyn.
+
+
+\section{Cel pracy}
+
+Celem pracy jest przebadanie kilku mechanizmów współdzielenia  danych pomiędzy programami w języku Java i C/C++. 
+Przykładowy scenariusz: główna część programu napisana jest w języku Java, natomiast część krytyczna ze względu na czas wykonywania napisana jest w języku C lub C++. Aby można było delegować zadanie z języka Java do C/C++ konieczne jest przekazywanie danych (w obie strony) pomiędzy tymi językami. Metody, które zostaną porównane:
+\begin{itemize}
+	\item JNI (ang. \textit{Java Native Interface})
+	\item CORBA (ang. \textit{Common Object Request Broker Architecture})
+	\item REST (ang. \textit{Representational State Transfer})
+	\item własny protokół oparty na gniazdach TCP (ang. \textit{Transmission Control Protocol})
+	\item komunikacja przez pliki
+\end{itemize}
+
+
+\section{Struktura pracy}
+
+W kolejnym rodziale pracy zostaną przedstawione stosowane sposoby komunikacji aplikacji.
+Rozdział trzeci poświęcony jest metodologii testów oraz implementacji.
+Czwarty rodział zawiera prezentację uzyskanych wyników.
+Ostatni rozdział zawiera podsumowanie.
