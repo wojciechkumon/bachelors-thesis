@@ -8,7 +8,7 @@ $(STUBS): ./echo.idl
 	omniidl -bcxx ./echo.idl
 
 main: main.cpp $(STUBS)
-	g++ -o main $(LIBS) main.cpp $(STUBS)
+	g++ -o main main.cpp $(STUBS) $(LIBS)
 
 clean:
-	rm -f client server $(STUBS) $(STUB_HEADERS)
+	rm -f main $(STUBS) $(STUB_HEADERS)
