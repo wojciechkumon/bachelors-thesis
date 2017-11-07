@@ -30,6 +30,7 @@ public class FileTester extends AbstractTransferTester {
 
   @SneakyThrows(IOException.class)
   public FileTester(FileProps fileProps) {
+    super(TestType.FILE);
     Objects.requireNonNull(fileProps.getIntegrationDirectory());
     Objects.requireNonNull(fileProps.getResponseTimeoutUnit());
     Objects.requireNonNull(fileProps.getResponseTimeout());
@@ -78,11 +79,6 @@ public class FileTester extends AbstractTransferTester {
   @Override
   protected void afterTest() {
     this.fileWatcher.stop();
-  }
-
-  @Override
-  protected TestType testType() {
-    return TestType.FILE;
   }
 
   @SneakyThrows(IOException.class)

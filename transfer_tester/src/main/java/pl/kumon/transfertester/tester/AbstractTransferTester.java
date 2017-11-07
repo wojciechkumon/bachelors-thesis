@@ -7,6 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class AbstractTransferTester implements TransferTester {
+  private final TestType testType;
+
+  public AbstractTransferTester(TestType testType) {
+    this.testType = testType;
+  }
 
   @Override
   public Metrics test() {
@@ -23,12 +28,12 @@ public abstract class AbstractTransferTester implements TransferTester {
     } catch (TesterException e) {
       log.error("TesterException", e);
       afterTest();
-      return Metrics.error(testProps.getRequestBytes().length, testProps.getResponseSize(), testType());
+      return Metrics.error(testProps.getRequestBytes().length, testProps.getResponseSize(), testType);
     }
 
     long time = System.nanoTime() - start;
     afterTest();
-    return Metrics.of(time, testProps.getRequestBytes().length, testProps.getResponseSize(), testType());
+    return Metrics.of(time, testProps.getRequestBytes().length, testProps.getResponseSize(), testType);
   }
 
   protected void beforeTest() {}
@@ -36,6 +41,4 @@ public abstract class AbstractTransferTester implements TransferTester {
   protected abstract void execute(TestProps testProps) throws TesterException;
 
   protected void afterTest() {}
-
-  protected abstract TestType testType();
 }

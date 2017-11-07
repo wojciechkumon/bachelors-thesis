@@ -8,6 +8,10 @@ import pl.kumon.transfertester.utils.ResponseValidator;
 
 public class MockTester extends AbstractTransferTester {
 
+  public MockTester() {
+    super(TestType.MOCK);
+  }
+
   @Override
   protected void execute(TestProps testProps) throws TesterException {
     byte[] mockResponse = getMockResponse(testProps.getResponseSize());
@@ -20,10 +24,5 @@ public class MockTester extends AbstractTransferTester {
       response[i] = (byte) (i % 128);
     }
     return response;
-  }
-
-  @Override
-  protected TestType testType() {
-    return TestType.MOCK;
   }
 }

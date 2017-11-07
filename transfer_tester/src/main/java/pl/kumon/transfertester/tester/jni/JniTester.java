@@ -20,6 +20,7 @@ public class JniTester extends AbstractTransferTester {
 
   @SneakyThrows(IOException.class)
   public JniTester(JniProps jniProps) {
+    super(TestType.JNI);
     String libraryName = System.mapLibraryName("JniExecutor");
     Path libraryPath = copyLibraryToUserHome(jniProps, libraryName);
     System.load(libraryPath.toString());
@@ -44,10 +45,5 @@ public class JniTester extends AbstractTransferTester {
     byte[] response = new JniExecutor()
         .requestJni(testProps.getRequestBytes(), testProps.getResponseSize());
     ResponseValidator.validateLength(response, testProps);
-  }
-
-  @Override
-  protected TestType testType() {
-    return TestType.JNI;
   }
 }

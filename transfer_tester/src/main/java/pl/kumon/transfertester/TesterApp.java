@@ -8,6 +8,7 @@ import pl.kumon.transfertester.tester.TestProps;
 import pl.kumon.transfertester.tester.TestType;
 import pl.kumon.transfertester.tester.TransferTester;
 import pl.kumon.transfertester.tester.TransferTesterBuilder;
+import pl.kumon.transfertester.tester.corba.CorbaProps;
 import pl.kumon.transfertester.tester.file.FileProps;
 import pl.kumon.transfertester.tester.jni.JniProps;
 import pl.kumon.transfertester.tester.rest.RestProps;
@@ -71,8 +72,9 @@ public class TesterApp implements Runnable {
   }
 
   private TransferTester corbaTester() {
+    String ior = appProps.getOrDefault("corbaIor", null);
     return TransferTesterBuilder
-        .corba()
+        .corba(new CorbaProps(ior))
         .build();
   }
 

@@ -34,6 +34,7 @@ public class RestTester extends AbstractTransferTester {
   }
 
   private RestTester(RestProps props, OkHttpClient httpClient, ObjectMapper objectMapper) {
+    super(TestType.REST);
     this.objectMapper = objectMapper;
     Objects.requireNonNull(props.getUrl());
     Objects.requireNonNull(httpClient);
@@ -77,10 +78,5 @@ public class RestTester extends AbstractTransferTester {
     objectNode.put(props.getDataJsonKey(), testProps.getRequestBytes());
     objectNode.put(props.getResponseSizeJsonKey(), testProps.getResponseSize());
     return objectNode.toString();
-  }
-
-  @Override
-  protected TestType testType() {
-    return TestType.REST;
   }
 }

@@ -1,5 +1,6 @@
 package pl.kumon.transfertester.tester;
 
+import pl.kumon.transfertester.tester.corba.CorbaProps;
 import pl.kumon.transfertester.tester.corba.CorbaTester;
 import pl.kumon.transfertester.tester.file.FileProps;
 import pl.kumon.transfertester.tester.file.FileTester;
@@ -20,8 +21,8 @@ public class TransferTesterBuilder {
     this.instanceSupplier = instanceSupplier;
   }
 
-  public static TransferTesterBuilder corba() {
-    return new TransferTesterBuilder(CorbaTester::new);
+  public static TransferTesterBuilder corba(CorbaProps corbaProps) {
+    return new TransferTesterBuilder(() -> new CorbaTester(corbaProps));
   }
 
   public static TransferTesterBuilder file(FileProps fileProps) {

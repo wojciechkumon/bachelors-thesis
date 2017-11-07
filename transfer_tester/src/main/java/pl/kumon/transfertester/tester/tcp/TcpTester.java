@@ -21,6 +21,7 @@ public class TcpTester extends AbstractTransferTester {
   private final TcpProps tcpProps;
 
   public TcpTester(TcpProps tcpProps) {
+    super(TestType.TCP);
     Objects.requireNonNull(tcpProps);
     Objects.requireNonNull(tcpProps.getIp());
     if (tcpProps.getPort() < 0 || tcpProps.getPort() > 65535) {
@@ -70,10 +71,5 @@ public class TcpTester extends AbstractTransferTester {
   private int readResponse(Socket socket, int responseSize) throws IOException {
     byte[] buffer = new byte[responseSize];
     return IOUtils.read(socket.getInputStream(), buffer);
-  }
-
-  @Override
-  protected TestType testType() {
-    return TestType.TCP;
   }
 }
