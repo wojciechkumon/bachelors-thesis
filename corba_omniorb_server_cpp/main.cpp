@@ -1,41 +1,27 @@
 #include <iostream>
 #include <omniORB4/CORBA.h>
-#include "echo.hh"
+#include "CorbaInterface.hh"
 
 using namespace std;
 
-class Echo_i : public POA_Echo,
-               public PortableServer::RefCountServantBase {
+class CorbaConnectorImpl : public POA_pl::kumon::transfertester::tester::corba::CorbaConnector,
+                           public PortableServer::RefCountServantBase {
 public:
-    inline Echo_i() {}
+    inline CorbaConnectorImpl() {}
 
-    virtual ~Echo_i() {}
+    virtual ~CorbaConnectorImpl() {}
 
-    virtual char *echoString(const char *mesg);
+    virtual char *get(CORBA::Long responseSize, const char *request);
 };
 
-char *Echo_i::echoString(const char *mesg) {
-    return CORBA::string_dup(mesg);
-}
-
-
-void hello(CORBA::Object_ptr obj) {
-    Echo_var e = Echo::_narrow(obj);
-
-    if (CORBA::is_nil(e)) {
-        cerr << "cannot invoke on a nil object reference." << endl;
-        return;
+char *CorbaConnectorImpl::get(CORBA::Long responseSize, const char *request) {
+    char *response = new char[responseSize + 1];
+    for (int i = 0; i < responseSize; i++) {
+        response[i] = (rand() % 26) + 65;
     }
-
-    CORBA::String_var src = (const char *) "Hello!";
-    CORBA::String_var dest;
-
-    dest = e->echoString(src);
-
-    cerr << "I said,\"" << src << "\"."
-         << " The Object said,\"" << dest << "\"" << endl;
+    response[responseSize] = '\0';
+    return CORBA::string_dup(response);
 }
-
 
 int main(int argc, char **argv) {
     CORBA::ORB_ptr orb = CORBA::ORB_init(argc, argv, "omniORB4");
@@ -43,17 +29,16 @@ int main(int argc, char **argv) {
     CORBA::Object_var obj = orb->resolve_initial_references("RootPOA");
     PortableServer::POA_var poa = PortableServer::POA::_narrow(obj);
 
-    Echo_i *myecho = new Echo_i();
-    PortableServer::ObjectId_var myechoid = poa->activate_object(myecho);
+    CorbaConnectorImpl *connector = new CorbaConnectorImpl();
+    poa->activate_object(connector);
 
-    Echo_var myechoref = myecho->_this();
-    myecho->_remove_ref();
+    CORBA::String_var ior(orb->object_to_string(connector->_this()));
+    cout << ior << endl;
 
     PortableServer::POAManager_var pman = poa->the_POAManager();
     pman->activate();
 
-    hello(myechoref);
-
+    orb->run();
     orb->destroy();
     return 0;
 }

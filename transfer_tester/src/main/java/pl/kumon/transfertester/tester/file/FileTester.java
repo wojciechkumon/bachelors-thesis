@@ -43,7 +43,7 @@ public class FileTester extends AbstractTransferTester {
   }
 
   @Override
-  protected void beforeTest() {
+  protected void beforeTest(TestProps testProps) {
     this.fileWatcher.start();
   }
 

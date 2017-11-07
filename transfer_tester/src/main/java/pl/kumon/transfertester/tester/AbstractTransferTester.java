@@ -20,7 +20,7 @@ public abstract class AbstractTransferTester implements TransferTester {
 
   @Override
   public Metrics test(TestProps testProps) {
-    beforeTest();
+    beforeTest(testProps);
     long start = System.nanoTime();
 
     try {
@@ -36,7 +36,7 @@ public abstract class AbstractTransferTester implements TransferTester {
     return Metrics.of(time, testProps.getRequestBytes().length, testProps.getResponseSize(), testType);
   }
 
-  protected void beforeTest() {}
+  protected void beforeTest(TestProps testProps) {}
 
   protected abstract void execute(TestProps testProps) throws TesterException;
 

@@ -1,11 +1,11 @@
 LIBS = -lomnithread -lomniORB4
-STUBS = echoSK.cc
-STUB_HEADERS = echo.hh
+STUBS = CorbaInterfaceSK.cc
+STUB_HEADERS = CorbaInterface.hh
 
 all: main
 
-$(STUBS): ./echo.idl
-	omniidl -bcxx ./echo.idl
+$(STUBS): CorbaInterface.idl
+	omniidl -bcxx CorbaInterface.idl
 
 main: main.cpp $(STUBS)
 	g++ -o main main.cpp $(STUBS) $(LIBS)
