@@ -11,6 +11,6 @@ public class Formatter {
     }
     int exp = (int) (Math.log(bytes) / Math.log(UNIT));
     String pre = "KMGTPE".charAt(exp - 1) + "i";
-    return String.format("%.1f %sB", bytes / Math.pow(UNIT, exp), pre);
+    return String.format("%.1f%sB", bytes / Math.pow(UNIT, exp), pre);
   }
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
@@ -29,17 +30,16 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 public class JavaFxChartSaver extends Application {
+  private static final String TITLE_FORMAT = "Żądanie %s, odpowiedź %s";
+  private static final String TEST_TYPE = "Typ testu";
+  private static final String EXECUTION_TIME_NS = "Czas wykonania [ns]";
+  private static final String MEDIAN = "Mediana";
+  private static final String STANDARD_DEVIATION = "Odchylenie standardowe";
+  private static final String OCCURRENCES = "Occurrences";
+  private static final String EXECUTION_TIME_MICROS = "Czas wykonania [\u00B5s]";
   private static final String PNG = "PNG";
   private static final int WIDTH = 800;
   private static final int HEIGHT = 600;
-  private static final String TITLE_FORMAT = "Request %s, response %s";
-  private static final String X_AXIS_LABEL = "Test type";
-  private static final String Y_AXIS_LABEL = "Execution time [ns]";
-  private static final String MIN = "Min";
-  private static final String FIRST_QUARTILE = "First quartile";
-  private static final String MEDIAN = "Median";
-  private static final String THIRD_QUARTILE = "Third quartile";
-  private static final String PERCENTILE_99 = "Percentile 99";
   private static final int NUMBER_OF_GROUPS = 40;
 
   static List<ChartData> chartDataList;
@@ -48,6 +48,7 @@ public class JavaFxChartSaver extends Application {
   public void start(Stage stage) throws Exception {
     chartDataList.forEach(chartData -> {
       List<TestExecutionStats> stats = chartData.getStats()
+          .sorted(Comparator.comparing(TestExecutionStats::getTestType))
           .toList()
           .toMaybe()
           .blockingGet();
@@ -64,8 +65,8 @@ public class JavaFxChartSaver extends Application {
     NumberAxis yAxis = new NumberAxis();
     BarChart<String, Number> chart = new BarChart<>(xAxis, yAxis);
     chart.setTitle(getTitle(data));
-    xAxis.setLabel(X_AXIS_LABEL);
-    yAxis.setLabel(Y_AXIS_LABEL);
+    xAxis.setLabel(TEST_TYPE);
+    yAxis.setLabel(EXECUTION_TIME_NS);
 
     List<XYChart.Series<String, Number>> seriesList = buildAllDataSeries(stats);
     return buildScene(chart, seriesList);
@@ -78,22 +79,15 @@ public class JavaFxChartSaver extends Application {
   }
 
   private List<XYChart.Series<String, Number>> buildAllDataSeries(List<TestExecutionStats> stats) {
-    XYChart.Series<String, Number> minSeries = buildDataSeries(stats, MIN,
-        TestExecutionStats::getMinNanos);
-    XYChart.Series<String, Number> firstQuartileSeries = buildDataSeries(stats, FIRST_QUARTILE,
-        TestExecutionStats::getFirstQuartileNanos);
     XYChart.Series<String, Number> medianSeries = buildDataSeries(stats, MEDIAN,
         TestExecutionStats::getMedianNanos);
-    XYChart.Series<String, Number> thirdQuartileSeries = buildDataSeries(stats, THIRD_QUARTILE,
-        TestExecutionStats::getThirdQuartileNanos);
-    XYChart.Series<String, Number> quartile99Series = buildDataSeries(stats, PERCENTILE_99,
-        TestExecutionStats::getPercentile99Nanos);
-
-    return List.of(minSeries, firstQuartileSeries, medianSeries, thirdQuartileSeries, quartile99Series);
+    XYChart.Series<String, Number> standardDeviationSeries = buildDataSeries(stats, STANDARD_DEVIATION,
+        TestExecutionStats::getStandardDeviationNanos);
+    return List.of(medianSeries, standardDeviationSeries);
   }
 
   private XYChart.Series<String, Number> buildDataSeries(List<TestExecutionStats> statsList, String name,
-                                                         Function<TestExecutionStats, Long> dataGetter) {
+                                                         Function<TestExecutionStats, Number> dataGetter) {
     XYChart.Series<String, Number> series = new XYChart.Series<>();
     series.setName(name);
 
@@ -125,7 +119,7 @@ public class JavaFxChartSaver extends Application {
     NumberAxis yAxis = new NumberAxis();
     LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
     chart.setTitle(testTypeStats.getTestType() + " " + getTitle(chartData));
-    yAxis.setLabel("Occurrences");
+    yAxis.setLabel(OCCURRENCES);
 
     XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
@@ -137,9 +131,9 @@ public class JavaFxChartSaver extends Application {
         .limit(testTypeStats.getDataSetNanos().size() - (2 * toSkip))
         .collect(toList());
 
-    boolean millis = !sortedData.isEmpty()
+    boolean microseconds = !sortedData.isEmpty()
         && (sortedData.get(sortedData.size() - 1) - sortedData.get(0) > 100_000);
-    if (millis) {
+    if (microseconds) {
       sortedData = sortedData.stream()
           .map(x -> x / 1000)
           .collect(toList());
@@ -161,10 +155,10 @@ public class JavaFxChartSaver extends Application {
     data = new ArrayList<>();
     addDataToList(sortedData, minValue, xStep, xStart, data);
 
-    if (millis) {
-      xAxis.setLabel("Execution time [\u00B5s]");
+    if (microseconds) {
+      xAxis.setLabel(EXECUTION_TIME_MICROS);
     } else {
-      xAxis.setLabel("Execution time [ns]");
+      xAxis.setLabel(EXECUTION_TIME_NS);
     }
     xAxis.setAutoRanging(false);
     xAxis.setLowerBound(minValue);
