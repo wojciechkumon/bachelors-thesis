@@ -14,11 +14,11 @@ public:
     // *method: POST
     //
     std::string testResult(const std::string data, const int responseSize) {
-        std::cout << "Data size received: " << data.length() << ", responseSize: " << responseSize << std::endl;
+//        std::cout << "Data size received: " << data.length() << ", responseSize: " << responseSize << std::endl;
 
         std::string responseLetters(responseSize, 'A');
         for (int i = 0; i < responseSize; i++) {
-            responseLetters[i] = (rand() % 26) + 65;
+            responseLetters[i] = (i % 26) + 65;
         }
         return responseLetters;
     }

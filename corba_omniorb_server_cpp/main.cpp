@@ -17,7 +17,7 @@ public:
 char *CorbaConnectorImpl::get(CORBA::Long responseSize, const char *request) {
     char *response = new char[responseSize + 1];
     for (int i = 0; i < responseSize; i++) {
-        response[i] = (rand() % 26) + 65;
+        response[i] = (i % 26) + 65;
     }
     response[responseSize] = '\0';
     return CORBA::string_dup(response);
