@@ -7,7 +7,7 @@ public class Formatter {
 
   public static String humanReadableByteCount(long bytes) {
     if (bytes < UNIT) {
-      return bytes + " B";
+      return bytes + "B";
     }
     int exp = (int) (Math.log(bytes) / Math.log(UNIT));
     String pre = "KMGTPE".charAt(exp - 1) + "i";

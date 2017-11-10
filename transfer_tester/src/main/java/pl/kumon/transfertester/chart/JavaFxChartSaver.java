@@ -27,16 +27,16 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import static java.util.stream.Collectors.toList;
+import static pl.kumon.transfertester.chart.I18n.EXECUTION_TIME_MICROS;
+import static pl.kumon.transfertester.chart.I18n.EXECUTION_TIME_NANOS;
+import static pl.kumon.transfertester.chart.I18n.MEDIAN;
+import static pl.kumon.transfertester.chart.I18n.OCCURRENCES;
+import static pl.kumon.transfertester.chart.I18n.STANDARD_DEVIATION;
+import static pl.kumon.transfertester.chart.I18n.TEST_TYPE;
+import static pl.kumon.transfertester.chart.I18n.TITLE_FORMAT;
 
 @Slf4j
 public class JavaFxChartSaver extends Application {
-  private static final String TITLE_FORMAT = "Żądanie %s, odpowiedź %s";
-  private static final String TEST_TYPE = "Typ testu";
-  private static final String EXECUTION_TIME_NS = "Czas wykonania [ns]";
-  private static final String MEDIAN = "Mediana";
-  private static final String STANDARD_DEVIATION = "Odchylenie standardowe";
-  private static final String OCCURRENCES = "Occurrences";
-  private static final String EXECUTION_TIME_MICROS = "Czas wykonania [\u00B5s]";
   private static final String PNG = "PNG";
   private static final int WIDTH = 800;
   private static final int HEIGHT = 600;
@@ -66,16 +66,24 @@ public class JavaFxChartSaver extends Application {
     BarChart<String, Number> chart = new BarChart<>(xAxis, yAxis);
     chart.setTitle(getTitle(data));
     xAxis.setLabel(TEST_TYPE);
-    yAxis.setLabel(EXECUTION_TIME_NS);
+    yAxis.setLabel(EXECUTION_TIME_NANOS);
 
     List<XYChart.Series<String, Number>> seriesList = buildAllDataSeries(stats);
     return buildScene(chart, seriesList);
   }
 
+  private String getLowerCasedTitle(ChartData data) {
+    return getTitle(data, TITLE_FORMAT.toLowerCase());
+  }
+
   private String getTitle(ChartData data) {
+    return getTitle(data, TITLE_FORMAT);
+  }
+
+  private String getTitle(ChartData data, String format) {
     String requestSize = Formatter.humanReadableByteCount(data.getRequestBytes());
     String responseSize = Formatter.humanReadableByteCount(data.getResponseBytes());
-    return String.format(TITLE_FORMAT, requestSize, responseSize);
+    return String.format(format, requestSize, responseSize);
   }
 
   private List<XYChart.Series<String, Number>> buildAllDataSeries(List<TestExecutionStats> stats) {
@@ -92,7 +100,8 @@ public class JavaFxChartSaver extends Application {
     series.setName(name);
 
     statsList.forEach(stats ->
-        series.getData().add(new XYChart.Data<>(stats.getTestType().name(), dataGetter.apply(stats))));
+        series.getData().add(
+            new XYChart.Data<>(I18n.t(stats.getTestType()), dataGetter.apply(stats))));
     return series;
   }
 
@@ -118,7 +127,7 @@ public class JavaFxChartSaver extends Application {
     NumberAxis xAxis = new NumberAxis();
     NumberAxis yAxis = new NumberAxis();
     LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
-    chart.setTitle(testTypeStats.getTestType() + " " + getTitle(chartData));
+    chart.setTitle(I18n.t(testTypeStats.getTestType()) + " - " + getLowerCasedTitle(chartData));
     yAxis.setLabel(OCCURRENCES);
 
     XYChart.Series<Number, Number> series = new XYChart.Series<>();
@@ -158,7 +167,7 @@ public class JavaFxChartSaver extends Application {
     if (microseconds) {
       xAxis.setLabel(EXECUTION_TIME_MICROS);
     } else {
-      xAxis.setLabel(EXECUTION_TIME_NS);
+      xAxis.setLabel(EXECUTION_TIME_NANOS);
     }
     xAxis.setAutoRanging(false);
     xAxis.setLowerBound(minValue);
@@ -168,6 +177,7 @@ public class JavaFxChartSaver extends Application {
     series.getData().addAll(data);
     Scene scene = new Scene(chart, WIDTH, HEIGHT);
     chart.setAnimated(false);
+    chart.setLegendVisible(false);
     chart.getData().add(series);
 
     Path path = chartData.getChartPath()
