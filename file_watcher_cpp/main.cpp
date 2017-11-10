@@ -41,7 +41,7 @@ void putBytesToResponseFile(const char *dirPath, string &baseFileName, int respo
 
 
 int main() {
-    const char *dirPath = "/home/wojtas626/IdeaProjects/praca_inz/transfer_tester/integration_files";
+    const char *dirPath = "/home/wojtas626/IdeaProjects/praca_inz/transfer_tester/target/dist/integration_files";
 
     char buffer[BUF_LEN];
     int fd = inotify_init();
@@ -63,7 +63,7 @@ int main() {
 
         while (i < length) {
             struct inotify_event *event = (struct inotify_event *) &buffer[i];
-            cout << "event: " << event->name << endl;
+//            cout << "event: " << event->name << endl;
             if (isFileCreated(event)) {
                 handleFile(event->name, dirPath);
             }
@@ -101,7 +101,7 @@ void handleTmpRequestFile(string &tmpRequestFileName, const char *dirPath) {
     string requestName = baseFileName + REQUEST_ENDING;
     string path(dirPath);
     path += "/" + requestName;
-    cout << "path: " << path << endl;
+//    cout << "path: " << path << endl;
 
     waitForRequestFile(path);
 
@@ -147,7 +147,7 @@ int readRequestAndResponseSize(string &path) {
     ifstream infile(path, ios::in | ios::binary);
     vector<char> allBytes = readAllBytes(path);
     int responseSize = fromBytesToInt(allBytes);
-    cout << "responseSize: " << responseSize << ", requestSize: " << (allBytes.size() - 4) << endl;
+//    cout << "responseSize: " << responseSize << ", requestSize: " << (allBytes.size() - 4) << endl;
     return responseSize;
 }
 
@@ -175,7 +175,7 @@ void putBytesToResponseFile(const char *dirPath, string &baseFileName, int respo
     if (tmpResponseStream.is_open()) {
 
         for (int i = 0; i < responseSize; ++i) {
-            char randomLetter = (rand() % 26) + 65;
+            char randomLetter = (i % 26) + 65;
             tmpResponseStream << randomLetter;
         }
         tmpResponseStream.close();

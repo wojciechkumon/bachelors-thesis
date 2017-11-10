@@ -10,6 +10,16 @@ function runTesterWithDefaultRequestResponseSizes { # testType, numberOfTests, w
     runTester ${1} 8192 8192 ${2} ${3} ${4} ${5} ${6} # 8KB
     runTester ${1} 262144 262144 ${2} ${3} ${4} ${5} ${6} # 256KB
     runTester ${1} 1048576 1048576 ${2} ${3} ${4} ${5} ${6} # 1MB
+
+    runTester ${1} 1024 16 ${2} ${3} ${4} ${5} ${6} # 1KB 16B
+    runTester ${1} 8192 16 ${2} ${3} ${4} ${5} ${6} # 8KB 16B
+    runTester ${1} 262144 16 ${2} ${3} ${4} ${5} ${6} # 256KB 16B
+    runTester ${1} 1048576 16 ${2} ${3} ${4} ${5} ${6} # 1MB 16B
+
+    runTester ${1} 16 1024 ${2} ${3} ${4} ${5} ${6} # 16B 1KB
+    runTester ${1} 16 8192 ${2} ${3} ${4} ${5} ${6} # 16B 8KB
+    runTester ${1} 16 262144 ${2} ${3} ${4} ${5} ${6} # 16B 256KB
+    runTester ${1} 16 1048576 ${2} ${3} ${4} ${5} ${6} # 16B 1MB
 }
 
 runTesterWithDefaultRequestResponseSizes JNI 1000 100 0 csv

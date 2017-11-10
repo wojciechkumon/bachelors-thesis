@@ -35,10 +35,10 @@ void handleClient(int new_conn_fd) {
         recv(new_conn_fd, messageFromClient, requestSize % BUFFER_SIZE, ZERO_OFFSET);
     }
 
-    std::cout << "requestSize: " << requestSize << ", responseSize: " << responseSize
-              << ", numberOfChunks: " << numberOfChunks << std::endl;
+//    std::cout << "requestSize: " << requestSize << ", responseSize: " << responseSize
+//              << ", numberOfChunks: " << numberOfChunks << std::endl;
     sendResponse(new_conn_fd, responseSize);
-    std::cout << "message sent" << std::endl;
+//    std::cout << "message sent" << std::endl;
     close(new_conn_fd);
 }
 
@@ -59,7 +59,7 @@ void sendResponse(int fd, int sizeToSend) {
 
 void fillBuffer(char *buffer, int sizeToFill) {
     for (int i = 0; i < sizeToFill; i++) {
-        buffer[i] = (rand() % 26) + 65;
+        buffer[i] = (i % 26) + 65;
     }
 }
 
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
             continue;
         }
         inet_ntop(client_addr.ss_family, get_in_addr((struct sockaddr *) &client_addr), s, sizeof s);
-        printf("I am now connected to %s \n", s);
+//        printf("I am now connected to %s \n", s);
         handleClient(new_conn_fd);
     }
 }
