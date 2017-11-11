@@ -1,4 +1,43 @@
-\chapter{Wprowadzenie}
+\chapter{Komunikacja międzyprocesowa}
+
+Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. Zbiór ten zawiera m. in. komunikację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
+
+
+\section{Komunikacja przez pliki}
+
+Polega na zapisie pliku w miejscu dostępnym także dla innego procesu. Proces zapisujący dane tworzy plik lub modyfikuje istniejący, zaś proces czytający sprawdza istnienie i zawartość pliku. Metoda ta jest wspierana przez większość systemów operacyjnych.
+
+
+\section{Sygnały}
+
+Sygnały to ograniczona metoda komunikacji. Są to asynchroniczne powiadomienia, które można wysłać do innego procesu. Zazwyczaj nie stosuje się ich do przesłania danych, lecz jedynie do zakomunikowania pewnego zdarzenia. Proces odbierający może zaregować na wybrany sygnał w dowolny sposób, rejestrując funkcję do jego obsługi (ang. \textit{signal handler}).
+
+
+\section{Potoki nienazwane}
+
+Potoki nienazwane to sposób na komunikację jednokierunkową FIFO (ang. \textit{first in, first out} - pierwszy na wejściu, pierwszy na wyjściu). Zazwyczaj program tworzy taki potok, po czym uruchamia nowe procesy, które otrzymują dostęp do jego końca. Inną częstą aplikacją tej metody jest wykorzystanie w uniksowych powłokach systemowych. Przekierwane wtedy zostaje standardowe wyjście do standardowego wejścia kolejnego procesu (korzystając z symbolu \enquote{|})
+
+
+\section{Potoki nazwane}
+
+Potoki nazwane są rozszerzeniem nienazwanych. Różnią się jednak cyklem życia. Nie zostają zniszczone wraz z końcem procesu - istnieją one dopóki system jest uruchomiony. Można je też jawnie usunąć. Umożliwia to integrację procesów zapewniając bardziej luźne powiązanie niż w przypadku potoków nienazwanych.
+
+\section{Pamięć współdzielona}
+\section{Gniazda}
+\section{Gniazda dziedziny Uniksa}
+\section{Systemy kolejkowe}
+\section{Przekazywanie wiadomości}
+
+\section{Tmp}
+
+sygnały (ang. signals) – w niektórych systemach (jak np. DOS) znane jako przerwania programowe
+semafory (ang. semaphores)
+potoki nienazwane (ang. pipes) – znane też jako łącza komunikacyjne
+potoki nazwane (ang. named pipes) – znane też jako nazwane łącza komunikacyjne
+systemy kolejkowe (ang. message queues)
+pamięć dzieloną (ang. shared memory) – znane też jako segmenty pamięci dzielonej (ang. shared memory segments)
+gniazda dziedziny Uniksa (ang. Unix domain sockets)
+
 
 
 https://en.wikipedia.org/wiki/Inter-process\_communication
