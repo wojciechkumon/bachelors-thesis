@@ -22,10 +22,28 @@ Potoki nienazwane to sposób na komunikację jednokierunkową FIFO (ang. \textit
 
 Potoki nazwane są rozszerzeniem nienazwanych. Różnią się jednak cyklem życia. Nie zostają zniszczone wraz z końcem procesu - istnieją one dopóki system jest uruchomiony. Można je też jawnie usunąć. Umożliwia to integrację procesów zapewniając bardziej luźne powiązanie niż w przypadku potoków nienazwanych.
 
+
 \section{Pamięć współdzielona}
+
+Pamięć współdzielona jest najszybszą z możliwych form komunikacji międzyprocesowej \cite{Ste92}. Polega wspólnym wykorzystywaniu przestrzeni adresowej. W przesyłaniu tych danych nie pośredniczy jądro systemu. Negatywna cecha tej metody to wymóg, aby programista sam zadbał o synchronizację procesów.
+
+
 \section{Gniazda}
+
+Gniazda (ang. \textit{socket}) umożliwiają dwustronną komunikację strumieniową poprzez interfejs sieciowy. Połączyć można procesy na tym samym komputerze, ale także dowolne będące w sieci. Metoda ta rzadko zachowuje granice wiadomości (ang. \textit{message boundaries}) tzn. transmitowane mogą być także fragmenty danych, czy w jednym buforze znaleźć można koniec poprzedniej i początek kolejnej wiadomości. O poprawne dzielenie komunikatów dbają protokoły wyższych warstw, np. prokół UDP (ang. \textit{User Datagram Protocol}) pozwala zachować granice wiadomości - są one wysyłanie pojedynczo, nigdy razem, nigdy nie są dzielone.
+
+
+
 \section{Gniazda dziedziny Uniksa}
+
+Gniazda dziedziny Uniksa są podobne do zwykłych gniazd, jednak cała komunikacja zachodzi wewnątrz jądra systemu operacyjnego, zamiast korzystać z sieci. W tej metodzie komunikacji, system plików jest używany jako przestrzeń adresowa. Procesy traktują gniazda dziedziny Uniksa jako i-węzły (ang. \textit{i-nodes}), więc wiele procesów może komunikować się poprzez otwieranie tego samego gniazda.
+
+
 \section{Systemy kolejkowe}
+
+Systemy kolejkowe umożliwiają odłożenie wiadomości na kolejkę, z której weźmie ją odbiorca. Dzięki temu procesy nie muszą wchodzić w bezpośrednią interakcję. Cechy kolejek komunikatów zależne są od implementacji. Na przykład standard \textit{System V} posiada zarówno blokujące, jak i nieblokujące funkcje odbioru wiadomości. POSIX oferuje ponadto możliwość rejestracji funkcji odbierającej powiadomienie, która zostanie wywołana, kiedy pojawi się nowy komunikat. Dzięki temu odbiorca nie musi odpytywać kolejki (ang. \textit{polling}), marnując czas procesora, ani zatrzymywać wykonywania programu.
+
+
 \section{Przekazywanie wiadomości}
 
 \section{Tmp}
