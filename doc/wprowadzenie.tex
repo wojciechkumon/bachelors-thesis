@@ -2,6 +2,8 @@
 
 Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. Zbiór ten zawiera m. in. komunikację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
 
+Każde rozwiązanie ma swoje wady i zalety. Niektóre działają w architekturze klient - serwer, inne współdzielą zasoby lub wykonują potrzebny program. Czynników poróżniających je jest wiele. To przede wszystkim czas komunikacji dla różnych rozmiarów wiadomości, ale także wspierane systemy operacyjne, możliwość komunikacji sieciowej, asynchroniczność, czy wsparcie dla wielu języków programowania.
+
 
 \section{Komunikacja przez pliki}
 
@@ -33,7 +35,6 @@ Pamięć współdzielona jest najszybszą z możliwych form komunikacji międzyp
 Gniazda (ang. \textit{socket}) umożliwiają dwustronną komunikację strumieniową poprzez interfejs sieciowy. Połączyć można procesy na tym samym komputerze, ale także dowolne będące w sieci. Metoda ta rzadko zachowuje granice wiadomości (ang. \textit{message boundaries}) tzn. transmitowane mogą być także fragmenty danych, czy w jednym buforze znaleźć można koniec poprzedniej i początek kolejnej wiadomości. O poprawne dzielenie komunikatów dbają protokoły wyższych warstw, np. prokół UDP (ang. \textit{User Datagram Protocol}) pozwala zachować granice wiadomości - są one wysyłanie pojedynczo, nigdy razem, nigdy nie są dzielone.
 
 
-
 \section{Gniazda dziedziny Uniksa}
 
 Gniazda dziedziny Uniksa są podobne do zwykłych gniazd, jednak cała komunikacja zachodzi wewnątrz jądra systemu operacyjnego, zamiast korzystać z sieci. W tej metodzie komunikacji, system plików jest używany jako przestrzeń adresowa. Procesy traktują gniazda dziedziny Uniksa jako i-węzły (ang. \textit{i-nodes}), więc wiele procesów może komunikować się poprzez otwieranie tego samego gniazda.
@@ -45,6 +46,19 @@ Systemy kolejkowe umożliwiają odłożenie wiadomości na kolejkę, z której w
 
 
 \section{Przekazywanie wiadomości}
+
+Programy moga także komunikować się kanałami niezarządzanym przez system operacyjny. Wysyłana jest wiadomość, a za uruchomienie odpowiedniego kodu odpowiada odbiorca i infrastruktura wspomagająca. Ten sposób jest często używany do budowania rozproszonych aplikacji. Komunikacja może być zarówno synchroniczna, jak i asynchroniczna. Abtrakcją innego procesu może być obiekt, ale też na przykład aktor (np. stosowany w Akkce\cite{akka} model aktorów). Przesyłanie wiadomości może być zaimplementowane w dowolny sposób.
+
+
+\subsection{Zdalne wykonywanie procedur}
+
+Zdalne wykonywanie procedur (RPC - ang. \textit{remote procedure call}) to protokół utworzony przez firmę Sun\cite{rpc} i dość popularny w systemach z rodziny Unix. Służy do uruchomienia procedury w innej przestrzeni adresowej (zazwyczaj na innym komputerze w sieci). Wywołanie niczym nie różni się od lokalnych funkcji, ukrywając przed programistą szczegóły zdalnej komunikacji. Abstrakcja ta ułatwia tworzenie oprogramowania, jednak zawsze należy pamiętać, że uruchamianie kodu na innej maszynie niesie za sobą narzut komunikacyjny i należy je ograniczać.
+
+
+\subsection{Java RMI}
+
+Java RMI (ang. \textit{Java remote method invocation})
+
 
 \section{Tmp}
 
@@ -87,4 +101,4 @@ uruchomienie kodu natywnego (JNI)
 
 
 TODO
-Każde rozwiązanie ma swoje wady i zalety. Niektóre rozwiązania dziłają w architekturze klient - serwer, inne współdzielą zasoby lub wykonują potrzebny program. Czynników decydujących o wyższości nad innymi jest wiele. To przede wszystkim czas komunikacji dla różnych rozmiarów wiadomości, ale także wspierane systemy operacyjne, możliwość komunikacji sieciowej i wsparcie dla wielu języków programowania.
+
