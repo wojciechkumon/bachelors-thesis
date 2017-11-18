@@ -1,11 +1,4 @@
-
 \chapter{Pierwszy dokument}
-\label{cha:pierwszyDokument}
-
-W rozdziale tym przedstawiono podstawowe informacje dotyczące struktury prostych plików \LaTeX a. Omówiono również metody kompilacji plików z zastosowaniem programów \emph{latex} oraz \emph{pdflatex}.
-
-
-%---------------------------------------------------------------------------
 
 \section{Struktura dokumentu}
 \label{sec:strukturaDokumentu}
@@ -17,87 +10,8 @@ Plik \LaTeX owy jest plikiem tekstowym, który oprócz tekstu zawiera polecenia 
 	\item Części głównej -- zawierającej zasadniczą treść dokumentu.
 \end{enumerate}
 
-
-\begin{lstlisting}
-\documentclass[a4paper,12pt]{article}      % preambuła
-\usepackage[polish]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{times}
-
-\begin{document}                           % część główna
-
-\section{Sztuczne życie}
-
-% treść
-% ąśężźćńłóĘŚĄŻŹĆŃÓŁ
-
-\end{document}
-\end{lstlisting}
-
-Nie ma żadnych przeciwskazań do tworzenia dokumentów w~\LaTeX u w~języku polskim. Plik źródłowy jest zwykłym plikiem tekstowym i~do jego przygotowania można użyć dowolnego edytora tekstów, a~polskie znaki wprowadzać używając prawego klawisza \texttt{Alt}. Jeżeli po kompilacji dokumentu polskie znaki nie są wyświetlane poprawnie, to na 95\% źle określono sposób kodowania znaków (należy zmienić opcje wykorzystywanych pakietów).
-
-
-%---------------------------------------------------------------------------
-
-\section{Kompilacja}
-\label{sec:kompilacja}
-
-
-Załóżmy, że przygotowany przez nas dokument zapisany jest w pliku \texttt{test.tex}. Kolejno wykonane poniższe polecenia (pod warunkiem, że w pierwszym przypadku nie wykryto błędów i kompilacja zakończyła się sukcesem) pozwalają uzyskać nasz dokument w formacie pdf:
-\begin{lstlisting}
-latex test.tex
-dvips test.dvi -o test.ps
-ps2pdf test.ps
-\end{lstlisting}
-%
-lub za pomocą PDF\LaTeX:
-\begin{lstlisting}
-pdflatex test.tex
-\end{lstlisting}
-
-Przy pierwszej kompilacji po zmiane tekstu, dodaniu nowych etykiet itp., \LaTeX~tworzy sobie spis rozdziałów, obrazków, tabel itp., a dopiero przy następnej kompilacji korzysta z tych informacji.
-
-W pierwszym przypadku rysunki powinny być przygotowane w~formacie eps, a~w~drugim w~formacie pdf. Ponadto, jeżeli używamy polecenia \texttt{pdflatex test.tex} można wstawiać grafikę bitową (np. w formacie jpg).
-
-
-
-%---------------------------------------------------------------------------
-
-\section{Narzędzia}
-\label{sec:narzedzia}
-
-
-Do przygotowania pliku źródłowego może zostać wykorzystany dowolny edytor tekstowy. Niektóre edytory, np. GEdit, mają wbudowane moduły ułatwiające składanie tekstów w LaTeXu (kolorowanie składni, skrypty kompilacji, itp.).
-
-Jednym z bardziej znanych środowisk do składania dokumentów  \LaTeX a jest {\em TeXstudio}, oferujące kompletne środowisko pracy. Zobacz: \url{http://www.texstudio.org}
-
-
-Bardzo dobrym środowiskiem jest również edytor gEdit z wtyczką obsługującą \LaTeX a. Jest to standardowy edytor środowiska Gnome. Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-
-\textbf{Dla testu łamania stron powtórzenia powyższego tekstu.}
-
-
-Do przygotowania pliku źródłowego może zostać wykorzystany dowolny edytor tekstowy. Niektóre edytory, np. GEdit, mają wbudowane moduły ułatwiające składanie tekstów w LaTeXu (kolorowanie składni, skrypty kompilacji, itp.).
-Jednym z bardziej znanych środowisk do składania dokumentów  \LaTeX a jest {\em TeXstudio}, oferujące kompletne środowisko pracy. Zobacz: \url{http://www.texstudio.org}
-Bardzo dobrym środowiskiem jest również edytor gEdit z wtyczką obsługującą \LaTeX a. Jest to standardowy edytor środowiska Gnome. Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-
-Do przygotowania pliku źródłowego może zostać wykorzystany dowolny edytor tekstowy. Niektóre edytory, np. GEdit, mają wbudowane moduły ułatwiające składanie tekstów w LaTeXu (kolorowanie składni, skrypty kompilacji, itp. itd. itp.).
-Jednym z bardziej znanych środowisk do składania dokumentów  \LaTeX a jest {\em TeXstudio}, oferujące kompletne środowisko pracy. Zobacz: \url{http://www.texstudio.org}
-Bardzo dobrym środowiskiem jest również edytor gEdit z wtyczką obsługującą \LaTeX a. Jest to standardowy edytor środowiska Gnome. Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-
-Do przygotowania pliku źródłowego może zostać wykorzystany dowolny edytor tekstowy. Niektóre edytory, np. GEdit, mają wbudowane moduły ułatwiające składanie tekstów w LaTeXu (kolorowanie składni, skrypty kompilacji, itp.).
-Jednym z bardziej znanych środowisk do składania dokumentów  \LaTeX a jest {\em TeXstudio}, oferujące kompletne środowisko pracy. Zobacz: \url{http://www.texstudio.org}
-Bardzo dobrym środowiskiem jest również edytor gEdit z wtyczką obsługującą \LaTeX a. Jest to standardowy edytor środowiska Gnome. Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-
-%---------------------------------------------------------------------------
-
 \section{Przygotowanie dokumentu}
 \label{sec:przygotowanieDokumentu}
-
-Plik źródłowy \LaTeX a jest zwykłym plikiem tekstowym. Przygotowując plik
-źródłowy warto wiedzieć o kilku szczegółach:
 
 \begin{itemize}
 	\item
@@ -115,16 +29,9 @@ Plik źródłowy \LaTeX a jest zwykłym plikiem tekstowym. Przygotowując plik
 	naprawdę wiemy co robimy.
 \end{itemize} 
 
+\section{Przykłady elementów pracy dyplomowej}
 
-\section{Test URL-a}
-
-Wejdź na stronę \url{https://www.google.pl/} i wpisz szukane zdanie.
-
-
-
-\chapter{Przykłady elementów pracy dyplomowej}
-
-\section{Liczba}
+\subsection{Liczba}
 
 Pakiet \texttt{siunitx} zadba o to, by liczba została poprawnie sformatowana: \\
 \begin{center}
@@ -132,7 +39,7 @@ Pakiet \texttt{siunitx} zadba o to, by liczba została poprawnie sformatowana: \
 \end{center}
 
 
-\section{Rysunek}
+\subsection{Rysunek}
 
 Pakiet \texttt{subcaption} pozwala na umieszczanie w podpisie rysunku odnośników do ,,podilustracji'': \\
 
@@ -152,7 +59,7 @@ Pakiet \texttt{subcaption} pozwala na umieszczanie w podpisie rysunku odnośnik�
 	\caption{\label{fig:subcaption_example}Przykład użycia \texttt{\textbackslash subcaption}: \protect\subref{subfigure_a} litera A, \protect\subref{subfigure_b} litera B.}
 \end{figure}
 
-\section{Tabela}
+\subsection{Tabela}
 
 Pakiet \texttt{threeparttable} umożliwia dodanie do tabeli adnotacji: \\
 
@@ -180,7 +87,7 @@ Pakiet \texttt{threeparttable} umożliwia dodanie do tabeli adnotacji: \\
 	\end{threeparttable}
 \end{table}
 
-\section{Wzory matematyczne}
+\subsection{Wzory matematyczne}
 
 Czasem zachodzi potrzeba wytłumaczenia znaczenia symboli użytych w równaniu. Można to zrobić z użyciem zdefiniowanego na potrzeby niniejszej klasy środowiska \texttt{eqwhere}.
 
