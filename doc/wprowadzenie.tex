@@ -62,15 +62,34 @@ Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiedn
 
 \subsection{CORBA}
 
-CORBA (ang. \textit{Common Object Request Broker Architecture})
+CORBA (ang. \textit{Common Object Request Broker Architecture}) jest standardem zdefiniowanym przez OMG (ang. \textit{Object Management Group}) wydanym w 1991 roku \cite{CORBA}. Celem jest umożliwienie komunikacji między procesami stworzonymi z użyciem innych języków programowania, na niezależnych maszynach bez względu na sprzęt, na różnych systemach operacyjnych. Wykorzystany jest model obiektowy, mimo to języki programowania nie muszą wspierać paradygmatu obiektowego, aby używać technologii CORBA.
 
+CORBA wprowadza warstwę abstrakcji, które ukrywa różnice pomiędzy systemami. Wykorzystany został język opisu interfejsu (IDL - ang. \textit{Interface Description Language}). Każdy język programowania kompiluje pliki IDL na kod zajmujący się przekazaniem metod, a w przypadku języków interpretowanych, IDL jest interpretowany w czasie wykonania. CORBA specyfikuje sposób mapowania IDL dla języków programowania takich jak np. C, C++, Java, Ada, COBOL, Lisp, Object Pascal, Python, Ruby czy Smalltalk. Zazwyczaj implementacja ORB (ang. \textit{Object Request Broker}) dostarcza kompilator IDL.
+
+Przykład IDL:
+\begin{lstlisting}
+module ModuleExample {
+  interface Math  {
+    double sum(in double x, in double y);
+  };
+};
+\end{lstlisting}
+
+Skorzystać możemy z wielu predefiniowanych typów (np. \textit{short}, \textit{long}, \textit{double}, \textit{string}), jak również tworzyć własne struktury czy unie oparte o typy elementarne.
+
+W tej technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada interfejs pożądanego obiektu oraz jego implementację, która zostanie oddelegowana do serwera. Aby się z nim połączyć trzeba mieć jego referencję - IOR (ang. \textit{Interoperable Object Reference}). Alternatywną jest skorzystanie z serwisu nazw (ang. \textit{NameService}) - działa on podobnie do systemu nazw domenowych (DNS). Serwer rejestruje się w nim pod wybraną nazwa, by klient mógł za jej pomocą uzykać zarejestrowany IOR.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{img/CORBA_architecture.png}
-    \caption{Schemat architektury aplikacji korzystającej z Corby.}
+    \caption{Schemat architektury aplikacji korzystającej z technologii CORBA \cite{Saw02}.}
     \label{fig:CORBA_architecture}
 \end{figure}
+
+
+\section{Java Native Interface}
+
+Java Native Interface (JNI) co prawda nie jest metodą komunikacji między procesami, mimo to umożliwia integrację z programami napisanymi w innych językach. Pozwala, aby kod Javy uruchomiony w wirtualnej maszynie Javy wywoływał oraz był wywoływany przez natywne aplikacje (napisane mogą one być w C, C++, asemblerze, ale także na przykład w Go i Rust).
 
 
 \section{Tmp}
