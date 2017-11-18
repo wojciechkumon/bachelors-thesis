@@ -57,7 +57,20 @@ Zdalne wykonywanie procedur (RPC - ang. \textit{remote procedure call}) to proto
 
 \subsection{Java RMI}
 
-Java RMI (ang. \textit{Java remote method invocation})
+Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiednikiem RPC dla Javy. Technologia ta korzysta z serializacji Javy oraz rozproszonego odśmiecania pamięci (ang. \textit{distributed garbage collection}). Pozwala na zdalne wykonywanie metod na obiektach, które mogą znajdować się na innych maszynach wirtualnych Javy. Wymaganiem jest wcześniejsza rejestracja takich obiektów pod wybranymi nazwami w rejestrze \textit{RMI Registry}. Klient może pobrać tzw. \textit{stub}, czyli obiekt umożliwiający komunikację ze zdalną implementacją, mający taki sam interfejs. Wywoływanie metod jest idenetyczne jak w przypadku lokalnych obiektów. Rejestr nie pośredniczy w komunikacji. Wadą tej technologii jest brak wsparcia dla innych języków programowania.
+
+
+\subsection{CORBA}
+
+CORBA (ang. \textit{Common Object Request Broker Architecture})
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{img/CORBA_architecture.png}
+    \caption{Schemat architektury aplikacji korzystającej z Corby.}
+    \label{fig:CORBA_architecture}
+\end{figure}
 
 
 \section{Tmp}
