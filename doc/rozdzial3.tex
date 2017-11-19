@@ -1,34 +1,5 @@
 \chapter{Pierwszy dokument}
 
-\section{Struktura dokumentu}
-\label{sec:strukturaDokumentu}
-
-Plik \LaTeX owy jest plikiem tekstowym, który oprócz tekstu zawiera polecenia formatujące ten tekst (analogicznie do języka HTML). Plik składa się z dwóch części:
-\begin{enumerate}%[1)]
-	\item Preambuły -- określającej klasę dokumentu oraz zawierającej m.in. polecenia dołączającej dodatkowe pakiety;
-	
-	\item Części głównej -- zawierającej zasadniczą treść dokumentu.
-\end{enumerate}
-
-\section{Przygotowanie dokumentu}
-\label{sec:przygotowanieDokumentu}
-
-\begin{itemize}
-	\item
-	Poszczególne słowa oddzielamy spacjami, przy czym ilość spacji nie ma znaczenia.
-	Po kompilacji wielokrotne spacje i tak będą wyglądały jak pojedyncza spacja.
-	Aby uzyskać {\em twardą spację}, zamiast znaku spacji należy użyć znaku {\em
-		tyldy}.
-	
-	\item
-	Znakiem końca akapitu jest pusta linia (ilość pusty linii nie ma znaczenia), a
-	nie znaki przejścia do nowej linii.
-	
-	\item
-	\LaTeX~sam formatuje tekst. \textbf{Nie starajmy się go poprawiać}, chyba, że
-	naprawdę wiemy co robimy.
-\end{itemize} 
-
 \section{Przykłady elementów pracy dyplomowej}
 
 \subsection{Liczba}
@@ -58,34 +29,6 @@ Pakiet \texttt{subcaption} pozwala na umieszczanie w podpisie rysunku odnośnik�
 	
 	\caption{\label{fig:subcaption_example}Przykład użycia \texttt{\textbackslash subcaption}: \protect\subref{subfigure_a} litera A, \protect\subref{subfigure_b} litera B.}
 \end{figure}
-
-\subsection{Tabela}
-
-Pakiet \texttt{threeparttable} umożliwia dodanie do tabeli adnotacji: \\
-
-\begin{table}[h]
-	\centering
-	
-	\begin{threeparttable}
-		\caption{Przykład tabeli}
-		\label{tab:table_example}
-		
-		\begin{tabularx}{0.6\textwidth}{C{1}}
-			\toprule
-			\thead{Nagłówek\tnote{a}} \\
-			\midrule
-			Tekst 1 \\
-			Tekst 2 \\
-			\bottomrule
-		\end{tabularx}
-		
-		\begin{tablenotes}
-			\footnotesize
-			\item[a] Jakiś komentarz\textellipsis
-		\end{tablenotes}
-		
-	\end{threeparttable}
-\end{table}
 
 \subsection{Wzory matematyczne}
 

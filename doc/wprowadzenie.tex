@@ -91,6 +91,31 @@ W tej technologii CORBA istnieje jawny podział na klienty i serwery. Klient pos
 
 Java Native Interface (JNI) co prawda nie jest metodą komunikacji między procesami, mimo to umożliwia integrację z programami napisanymi w innych językach. Pozwala, aby kod Javy uruchomiony w wirtualnej maszynie Javy wywoływał oraz był wywoływany przez natywne aplikacje (napisane mogą one być w C, C++, asemblerze, ale także na przykład w Go i Rust) \cite{JNI17}.
 
+Cel JNI to możliwość wykonania wszystkiego co nie jest wykonalne używając jedynie Javy, np. wykorzystywywanie bibliotek zależnych od platformy oraz zwiększenie wydajności w krytycznych obszarach aplikacji.
+
+Natywne programy mogą korzystać z obiektów Javy (tworzyć je, wykonywać metody, odbierać przekazane w parametrach). Sama biblioteka standardowa Javy wykorzystuje tę technologię.
+
+Mapowania typów wyglądają następująco:
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{||c c c||}
+		\hline
+		Typ w Javie & Typ w JNI & Opis \\ [0.5ex]
+		\hline\hline
+		boolean & jboolean & 8 bitów bez znaku \\
+		byte & jbyte & 8 bitów ze znakiem \\
+		char & jchar & 16 bitów bez znaku \\
+		short & jshort & 16 bitów ze znakiem \\
+		int & jint & 32 bity ze znakiem \\
+		long & jlong & 64 bity ze znakiem \\
+		float & jfloat & 32 bity \\
+		double & jdouble & 64 bity \\
+		void & void & - \\ [1ex]
+		\hline
+	\end{tabular}
+\end{table}
+
 
 \section{Tmp}
 
@@ -102,8 +127,6 @@ systemy kolejkowe (ang. message queues)
 pamięć dzieloną (ang. shared memory) – znane też jako segmenty pamięci dzielonej (ang. shared memory segments)
 gniazda dziedziny Uniksa (ang. Unix domain sockets)
 
-
-
 https://en.wikipedia.org/wiki/Inter-process\_communication
 
 wspoldzielony zasob:
@@ -112,25 +135,14 @@ Memory-mapped file
 
 Signal; also Asynchronous System Trap	A system message sent from one process to another, not usually used to transfer data but instead used to remotely command the partnered process.
 
-
-
-
 jeden system:
 Message queue
 Pipe
 Shared memory
-
 
 sieć:
 Socket <- na nim kolejne protokoly (wlasny protokol na TCP, REST, websocket)
 Message passing: distributed objects (CORBA), actor model (akka)
 sync communication: REST
 
-
 uruchomienie kodu natywnego (JNI)
-
-
-
-
-TODO
-
