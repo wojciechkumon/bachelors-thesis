@@ -43,6 +43,7 @@ Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) u
 
 
 \subsection{TCP}
+\label{TCP}
 
 Protokół sterowania transmisją (TCP - ang. \textit{Transmission Control Protocol}) jest niezawodną, uporządkowaną, odporną na błędy metodę transportu strumienia danych przez sieć IP. Przed rozpoczęciem transmisji informacji, stabilizowane jest połączenie (szczeóły na rys. \ref{fig:TCP_handshake}).
 
@@ -51,12 +52,11 @@ Protokół ten retransmituje pakiety w razie ich zgubienia, zmienia ich kolejno�
 Cechy gwarantujące udaną komunikację spowodowały, że TCP używany jest na bardzo szeroką skalę (np. HTTP, FTP, SSH).
 
 \begin{figure}[h]
-	\centering
-	\includegraphics{img/TCP_handshake.png}
-	\caption{Schemat prezentujący trójstronne uzgodnienie (ang. \textit{three-way handshake}). Najpierw klient wysyła (chce zsynchronizować) swój numer sekwencji (SYN). Serwer odpowiada ACK (potwierdza udaną synchronizację) oraz SYN (synchronizacja własnego numeru sekwencji). Na końcu klient potwierdza synchronizację i może nastąpić transmisja właściwych danych.}
-	\label{fig:TCP_handshake}
+  \centering
+  \includegraphics{img/TCP_handshake.png}
+  \caption{Schemat prezentujący trójstronne uzgodnienie (ang. \textit{three-way handshake}). Najpierw klient wysyła (chce zsynchronizować) swój numer sekwencji (SYN). Serwer odpowiada ACK (potwierdza udaną synchronizację) oraz SYN (synchronizacja własnego numeru sekwencji). Na końcu klient potwierdza synchronizację i może nastąpić transmisja właściwych danych.}
+  \label{fig:TCP_handshake}
 \end{figure}
-%
 
 
 \section{Gniazda dziedziny Uniksa}
@@ -93,9 +93,9 @@ CORBA wprowadza warstwę abstrakcji, które ukrywa różnice pomiędzy systemami
 Przykład IDL:
 \begin{lstlisting}
 module ModuleExample {
-  interface Math  {
-    double sum(in double x, in double y);
-  };
+    interface Math  {
+        double sum(in double x, in double y);
+    };
 };
 \end{lstlisting}
 
@@ -104,10 +104,10 @@ Skorzystać możemy z wielu predefiniowanych typów (np. \textit{short}, \textit
 W tej technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada interfejs pożądanego obiektu oraz jego implementację, która zostanie oddelegowana do serwera. Aby się z nim połączyć trzeba mieć jego referencję - IOR (ang. \textit{Interoperable Object Reference}). Alternatywną jest skorzystanie z serwisu nazw (ang. \textit{NameService}) - działa on podobnie do systemu nazw domenowych (DNS). Serwer rejestruje się w nim pod wybraną nazwa, by klient mógł za jej pomocą uzykać zarejestrowany IOR.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth]{img/CORBA_architecture.png}
-    \caption{Schemat architektury aplikacji korzystającej z technologii CORBA \cite{Saw02}.}
-    \label{fig:CORBA_architecture}
+  \centering
+  \includegraphics[width=\linewidth]{img/CORBA_architecture.png}
+  \caption{Schemat architektury aplikacji korzystającej z technologii CORBA \cite{Saw02}.}
+  \label{fig:CORBA_architecture}
 \end{figure}
 
 
@@ -120,29 +120,94 @@ Cel JNI to możliwość wykonania wszystkiego co nie jest wykonalne używając 
 Natywne programy mogą korzystać z obiektów Javy (tworzyć je, wykonywać metody, odbierać przekazane w parametrach). Sama biblioteka standardowa Javy wykorzystuje tę technologię.
 
 \begin{table}[h!]
-	\centering
-	\begin{tabular}{|c c c|}
-		\hline
-		Typ w Javie & Typ w JNI & Opis \\ [0.5ex]
-		\hline\hline
-		boolean & jboolean & 8 bitów bez znaku \\
-		byte & jbyte & 8 bitów ze znakiem \\
-		char & jchar & 16 bitów bez znaku \\
-		short & jshort & 16 bitów ze znakiem \\
-		int & jint & 32 bity ze znakiem \\
-		long & jlong & 64 bity ze znakiem \\
-		float & jfloat & 32 bity \\
-		double & jdouble & 64 bity \\
-		void & void & - \\ [1ex]
-		\hline
-	\end{tabular}
-    \caption{Mapowania typów w JNI}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Typ w Javie} & \textbf{Typ w JNI} & \textbf{Opis} \\ [0.5ex]
+    \hline
+    boolean & jboolean & 8 bitów bez znaku \\
+    byte & jbyte & 8 bitów ze znakiem \\
+    char & jchar & 16 bitów bez znaku \\
+    short & jshort & 16 bitów ze znakiem \\
+    int & jint & 32 bity ze znakiem \\
+    long & jlong & 64 bity ze znakiem \\
+    float & jfloat & 32 bity \\
+    double & jdouble & 64 bity \\
+    void & void & - \\ [1ex]
+    \hline
+  \end{tabular}
+  \caption{Mapowania typów w JNI}
 \end{table}
 
 
 \section{REST}
 
-REST TODO
+REST (ang. \textit{Representational State Transfer}) jest stylem architektonicznym służącym do reprezentacji zasobów oraz ich manipulacji. Korzysta on z protokołu HTTP (sekcja \ref{HTTP_section}). Nie oferuje serwisów, które można wykorzystać, lecz zasoby, na których pozwala wykonywać akcje.
+
+Wykorzystywane są metody HTTP, które wykonują akcje zgodne ze specyfikacją \cite{RFC7231}. Zasoby reprezentowane są przez URI. REST nie jest protokołem, brakuje więc standardu jasno go opisującego. Formatem danych najczęściej jest JSON. Metody tak jak na przykład GET, PUT, DELETE są idempotentne, to znaczy, że wielokrotne ich wywołanie powoduje identyczny efekt jak jednokrotne.
+
+Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application State}). Odpowiedzi serwera zwierają wtedy linki do innych zasobów, umożliwiając przejście wszystkich powiązań pomiędzy obiektami przez klienta. Analogicznie działają hiperłącza zamieszczone na stronach internetowych, dzięki czemu użytkownik może się nawigować znając tylko jeden adres.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    & \textbf{Pojedynczy zasób np.} & \textbf{Kolekcja np.} \\
+    & \textit{http://example.com/api/items/1} & \textit{http://example.com/api/item} \\ [0.5ex]
+    \hline
+    \textbf{GET} & Zwraca reprezentację zasobu & Zwraca całą kolekcję \\
+    \hline
+    \textbf{POST} & \begin{tabular}{@{}c@{}} Tworzy nowy zasób wykorzystując wysłany \\ przez klienta, zazwyczaj w odpowiedzi \\ znajduje się adres nowego elementu \end{tabular} &  Zazwyczaj nie używany \\
+    \hline
+    \textbf{PUT} & \begin{tabular}{@{}c@{}} Zamienia wybrany zasób \\ na wysłany przez klienta \end{tabular} & \begin{tabular}{@{}c@{}} Zamienia całą kolekcję \\ na wysłaną przez klienta \end{tabular} \\
+    \hline
+    \textbf{DELETE} & Usuwa zasób & Usuwa całą kolekcję \\
+    \hline
+  \end{tabular}
+  \caption{Sposób działania przykładowych metod HTTP na zasobach}
+\end{table}
+
+
+\subsection{HTTP}
+
+\label{HTTP_section}
+HTTP (ang. \textit{Hypertext Transfer Protocol}) to bezstanowy protokół przesyłania dokumentów hipertekstowych w sieci WWW (ang. \textit{World Wide Web}). Do transportu wykorzystuje TCP. Jego działanie określić można jako zapytanie-odpowiedź. Klientem może być przeglądarka internetowa, która dokonuje żądań zasobów. Żądania te składają się z metody (np. GET, POST, HEAD, PUT, DELETE, OPTIONS) oraz Ujednoliconego Identyfikatora Zasobów (URI - ang. \textit{Uniform Resource Identifier}). W zapytaniu wysłane mogą być nagłówki (np. Accept, Content-Type, Host, Authorization). Metody takie jak POST, PUT umożliwiają wysłanie ciała zapytania (np. wiadomość w formacie JSON, XML). Odpowiedź od serwera także zawiera nagłówki i ciało, ale również kod statusu, który dostarcza dodatkowych informacji:
+\begin{enumerate}
+  \item 1xx - kody informacyjne
+  \item 2xx - kody powodzenia
+  \item 3xx - kody przekierowania
+  \item 4xx - kody błędu aplikacji klienta
+  \item 5xx - kody błędu serwera HTTP
+\end{enumerate}
+
+Przykład żądania i odpowiedź:
+
+\begin{lstlisting}
+    GET /index.html HTTP/1.1
+    Host: www.example.com
+\end{lstlisting}
+
+Serwer zwraca odpowiedź lub informuje o wystąpieniu błędu:
+
+\begin{lstlisting}
+    HTTP/1.1 200 OK
+    Date: Mon, 11 May 2017 21:17:46 GMT
+    Content-Type: text/html; charset=UTF-8
+    Content-Encoding: UTF-8
+    Content-Length: 138
+    Last-Modified: Wed, 08 Jan 2003 23:11:55 GMT
+    Server: Apache/1.3.3.7 (Unix) (Red-Hat/Linux)
+    Connection: close
+
+    <html>
+        <head>
+            <title>Przykładowy tytuł</title>
+        </head>
+        <body>
+            Przykładowa odpowiedź
+        </body>
+    </html>
+\end{lstlisting}
 
 
 \section{Tmp}
