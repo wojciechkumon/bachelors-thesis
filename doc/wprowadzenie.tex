@@ -208,34 +208,3 @@ Serwer zwraca odpowiedź lub informuje o wystąpieniu błędu:
         </body>
     </html>
 \end{lstlisting}
-
-
-\section{Tmp}
-
-sygnały (ang. signals) – w niektórych systemach (jak np. DOS) znane jako przerwania programowe
-semafory (ang. semaphores)
-potoki nienazwane (ang. pipes) – znane też jako łącza komunikacyjne
-potoki nazwane (ang. named pipes) – znane też jako nazwane łącza komunikacyjne
-systemy kolejkowe (ang. message queues)
-pamięć dzieloną (ang. shared memory) – znane też jako segmenty pamięci dzielonej (ang. shared memory segments)
-gniazda dziedziny Uniksa (ang. Unix domain sockets)
-
-https://en.wikipedia.org/wiki/Inter-process\_communication
-
-wspoldzielony zasob:
-File
-Memory-mapped file
-
-Signal; also Asynchronous System Trap	A system message sent from one process to another, not usually used to transfer data but instead used to remotely command the partnered process.
-
-jeden system:
-Message queue
-Pipe
-Shared memory
-
-sieć:
-Socket <- na nim kolejne protokoly (wlasny protokol na TCP, REST, websocket)
-Message passing: distributed objects (CORBA), actor model (akka)
-sync communication: REST
-
-uruchomienie kodu natywnego (JNI)
