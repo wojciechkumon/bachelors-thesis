@@ -1,6 +1,6 @@
 \chapter{Komunikacja międzyprocesowa}
 
-Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. Zbiór ten zawiera m. in. komunikację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
+Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. Zawiera on m. in. komunikację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
 
 Każde rozwiązanie ma swoje wady i zalety. Niektóre działają w architekturze klient - serwer, inne współdzielą zasoby lub wykonują potrzebny program. Czynników poróżniających je jest wiele. To przede wszystkim czas komunikacji dla różnych rozmiarów wiadomości, ale także wspierane systemy operacyjne, możliwość komunikacji sieciowej, asynchroniczność, czy wsparcie dla wielu języków programowania.
 
@@ -39,13 +39,13 @@ Ta metoda komunikacji rzadko zachowuje granice wiadomości (ang. \textit{message
 
 \subsection{UDP}
 
-Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwa wysyłanie datagramów. To protokół bezpołączeniowy - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu lub o spójność informacji dbają protokoły warstw wyższych.
+Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwa wysyłanie datagramów. Charakteryzuje go bezpołączeniowość - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu lub o spójność informacji dbają protokoły warstw wyższych.
 
 
 \subsection{TCP}
 \label{TCP}
 
-Protokół sterowania transmisją (TCP - ang. \textit{Transmission Control Protocol}) jest niezawodną, uporządkowaną, odporną na błędy metodę transportu strumienia danych przez sieć IP. Przed rozpoczęciem transmisji informacji, stabilizowane jest połączenie (szczeóły na rys. \ref{fig:TCP_handshake}).
+Protokół sterowania transmisją jest niezawodną, uporządkowaną, odporną na błędy metodę transportu strumienia danych przez sieć IP. Przed rozpoczęciem transmisji informacji, stabilizowane jest połączenie (szczeóły na rys. \ref{fig:TCP_handshake}).
 
 Protokół ten retransmituje pakiety w razie ich zgubienia, zmienia ich kolejność w razie potrzeby, wykrywa i naprawia także problem duplikatów. Nie dba jednak o granice wiadomości, więc odbiorca musi znać format danych, na które czeka (np. umieszcza się w ustalonym miejscu długość całej wiadomości).
 
@@ -76,7 +76,7 @@ Programy moga także komunikować się kanałami niezarządzanym przez system op
 
 \subsection{Zdalne wykonywanie procedur}
 
-Zdalne wykonywanie procedur (RPC - ang. \textit{remote procedure call}) to protokół utworzony przez firmę Sun\cite{rpc} i dość popularny w systemach z rodziny Unix. Służy do uruchomienia procedury w innej przestrzeni adresowej (zazwyczaj na innym komputerze w sieci). Wywołanie niczym nie różni się od lokalnych funkcji, ukrywając przed programistą szczegóły zdalnej komunikacji. Abstrakcja ta ułatwia tworzenie oprogramowania, jednak zawsze należy pamiętać, że uruchamianie kodu na innej maszynie niesie za sobą narzut komunikacyjny i należy je ograniczać.
+Zdalne wykonywanie procedur (RPC - ang. \textit{remote procedure call}) to protokół utworzony przez firmę Sun\cite{rpc} i dość popularny w systemach z rodziny Unix. Służy do uruchomienia procedury w innej przestrzeni adresowej (zazwyczaj na innym komputerze w sieci). Wywołanie niczym nie różni się od lokalnych funkcji, ukrywając przed programistą szczegóły zdalnej komunikacji. Abstrakcja ta ułatwia tworzenie oprogramowania, jednak zawsze należy pamiętać, że uruchamianie kodu na innej maszynie niesie za sobą narzut komunikacyjny i nie należy go nadużywać.
 
 
 \subsection{Java RMI}
@@ -86,9 +86,9 @@ Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiedn
 
 \subsection{CORBA}
 
-CORBA (ang. \textit{Common Object Request Broker Architecture}) jest standardem zdefiniowanym przez OMG (ang. \textit{Object Management Group}) wydanym w 1991 roku \cite{CORBA}. Celem jest umożliwienie komunikacji między procesami stworzonymi z użyciem innych języków programowania, na niezależnych maszynach bez względu na sprzęt, na różnych systemach operacyjnych. Wykorzystany jest model obiektowy, mimo to języki programowania nie muszą wspierać paradygmatu obiektowego, aby używać technologii CORBA.
+CORBA jest standardem zdefiniowanym przez OMG (ang. \textit{Object Management Group}) wydanym w 1991 roku \cite{CORBA}. Celem jest umożliwienie komunikacji między procesami stworzonymi z użyciem innych języków programowania, na niezależnych maszynach bez względu na sprzęt, czy systema operacyjny. Wykorzystany jest model obiektowy, mimo to języki programowania nie muszą wspierać paradygmatu obiektowego, aby używać technologii CORBA.
 
-CORBA wprowadza warstwę abstrakcji, które ukrywa różnice pomiędzy systemami. Wykorzystany został język opisu interfejsu (IDL - ang. \textit{Interface Description Language}). Każdy język programowania kompiluje pliki IDL na kod zajmujący się przekazaniem metod, a w przypadku języków interpretowanych, IDL jest interpretowany w czasie wykonania. CORBA specyfikuje sposób mapowania IDL dla języków programowania takich jak np. C, C++, Java, Ada, COBOL, Lisp, Object Pascal, Python, Ruby czy Smalltalk. Zazwyczaj implementacja ORB (ang. \textit{Object Request Broker}) dostarcza kompilator IDL.
+CORBA wprowadza warstwę abstrakcji, która ukrywa różnice pomiędzy systemami. Wykorzystany został język opisu interfejsu (IDL - ang. \textit{Interface Description Language}). Każdy język programowania kompiluje pliki IDL na kod zajmujący się przekazaniem metod, a w przypadku języków interpretowanych, IDL jest interpretowany w czasie wykonania. CORBA specyfikuje sposób mapowania IDL dla języków programowania takich jak np. C, C++, Java, Ada, COBOL, Lisp, Object Pascal, Python, Ruby czy Smalltalk. Zazwyczaj implementacja ORB (ang. \textit{Object Request Broker}) dostarcza kompilator IDL.
 
 Przykład IDL:
 \begin{lstlisting}
@@ -101,7 +101,7 @@ module ModuleExample {
 
 Skorzystać możemy z wielu predefiniowanych typów (np. \textit{short}, \textit{long}, \textit{double}, \textit{string}), jak również tworzyć własne struktury czy unie oparte o typy elementarne.
 
-W tej technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada interfejs pożądanego obiektu oraz jego implementację, która zostanie oddelegowana do serwera. Aby się z nim połączyć trzeba mieć jego referencję - IOR (ang. \textit{Interoperable Object Reference}). Alternatywną jest skorzystanie z serwisu nazw (ang. \textit{NameService}) - działa on podobnie do systemu nazw domenowych (DNS). Serwer rejestruje się w nim pod wybraną nazwa, by klient mógł za jej pomocą uzykać zarejestrowany IOR.
+W technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada interfejs pożądanego obiektu oraz jego implementację, która zostanie oddelegowana do serwera. Aby się z nim połączyć trzeba posiadać jego referencję - IOR (ang. \textit{Interoperable Object Reference}). Alternatywną jest skorzystanie z serwisu nazw (ang. \textit{NameService}) - działa on podobnie do systemu nazw domenowych (DNS). Serwer rejestruje się w nim pod wybraną nazwą, by klient mógł za jej pomocą uzyskać zarejestrowany IOR.
 
 \begin{figure}[h]
   \centering
@@ -113,7 +113,7 @@ W tej technologii CORBA istnieje jawny podział na klienty i serwery. Klient pos
 
 \section{Java Native Interface}
 
-Java Native Interface (JNI) co prawda nie jest metodą komunikacji między procesami, mimo to umożliwia integrację z programami napisanymi w innych językach. Pozwala, aby kod Javy uruchomiony w wirtualnej maszynie Javy wywoływał oraz był wywoływany przez natywne aplikacje (napisane mogą one być w C, C++, asemblerze, ale także na przykład w Go i Rust) \cite{JNI17}.
+Java Native Interface (JNI) co prawda nie jest metodą komunikacji między procesami, mimo to umożliwia integrację z programami napisanymi w innych językach. Pozwala, aby kod Javy uruchomiony w wirtualnej maszynie wywoływał oraz był wywoływany przez natywne aplikacje (napisane mogą one być w C, C++, asemblerze, ale także na przykład w Go i Rust) \cite{JNI17}.
 
 Cel JNI to możliwość wykonania wszystkiego co nie jest wykonalne używając jedynie Javy, np. wykorzystywywanie bibliotek zależnych od platformy oraz zwiększenie wydajności w krytycznych obszarach aplikacji.
 
@@ -142,9 +142,9 @@ Natywne programy mogą korzystać z obiektów Javy (tworzyć je, wykonywać met
 
 \section{REST}
 
-REST (ang. \textit{Representational State Transfer}) jest stylem architektonicznym służącym do reprezentacji zasobów oraz ich manipulacji. Korzysta on z protokołu HTTP (sekcja \ref{HTTP_section}). Nie oferuje serwisów, które można wykorzystać, lecz zasoby, na których pozwala wykonywać akcje.
+REST jest stylem architektonicznym służącym do reprezentacji zasobów oraz ich manipulacji. Korzysta on z protokołu HTTP (sekcja \ref{HTTP_section}). Nie oferuje serwisów, które można wykorzystać, lecz zasoby, na których pozwala wykonywać akcje.
 
-Wykorzystywane są metody HTTP, które wykonują akcje zgodne ze specyfikacją \cite{RFC7231}. Zasoby reprezentowane są przez URI. REST nie jest protokołem, brakuje więc standardu jasno go opisującego. Formatem danych najczęściej jest JSON. Metody tak jak na przykład GET, PUT, DELETE są idempotentne, to znaczy, że wielokrotne ich wywołanie powoduje identyczny efekt jak jednokrotne.
+Wykorzystywane są metody HTTP, które wykonują akcje zgodne ze specyfikacją \cite{RFC7231}. Zasoby adresowane są za pomocą URI. REST nie jest protokołem, brakuje więc standardu jasno go opisującego. Formatem danych najczęściej jest JSON. Metody takie jak na przykład GET, PUT, DELETE są idempotentne, to znaczy, że wielokrotne ich wywołanie powoduje identyczny efekt jak jednokrotne.
 
 Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application State}). Odpowiedzi serwera zwierają wtedy linki do innych zasobów, umożliwiając przejście wszystkich powiązań pomiędzy obiektami przez klienta. Analogicznie działają hiperłącza zamieszczone na stronach internetowych, dzięki czemu użytkownik może się nawigować znając tylko jeden adres.
 
@@ -153,7 +153,7 @@ Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application
   \begin{tabular}{|c|c|c|}
     \hline
     & \textbf{Pojedynczy zasób np.} & \textbf{Kolekcja np.} \\
-    & \textit{http://example.com/api/items/1} & \textit{http://example.com/api/item} \\ [0.5ex]
+    & \textit{http://example.com/api/items/1} & \textit{http://example.com/api/items} \\ [0.5ex]
     \hline
     \textbf{GET} & Zwraca reprezentację zasobu & Zwraca całą kolekcję \\
     \hline
@@ -172,15 +172,15 @@ Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application
 
 \label{HTTP_section}
 HTTP (ang. \textit{Hypertext Transfer Protocol}) to bezstanowy protokół przesyłania dokumentów hipertekstowych w sieci WWW (ang. \textit{World Wide Web}). Do transportu wykorzystuje TCP. Jego działanie określić można jako zapytanie-odpowiedź. Klientem może być przeglądarka internetowa, która dokonuje żądań zasobów. Żądania te składają się z metody (np. GET, POST, HEAD, PUT, DELETE, OPTIONS) oraz Ujednoliconego Identyfikatora Zasobów (URI - ang. \textit{Uniform Resource Identifier}). W zapytaniu wysłane mogą być nagłówki (np. Accept, Content-Type, Host, Authorization). Metody takie jak POST, PUT umożliwiają wysłanie ciała zapytania (np. wiadomość w formacie JSON, XML). Odpowiedź od serwera także zawiera nagłówki i ciało, ale również kod statusu, który dostarcza dodatkowych informacji:
-\begin{enumerate}
+\begin{itemize}
   \item 1xx - kody informacyjne
   \item 2xx - kody powodzenia
   \item 3xx - kody przekierowania
   \item 4xx - kody błędu aplikacji klienta
   \item 5xx - kody błędu serwera HTTP
-\end{enumerate}
+\end{itemize}
 
-Przykład żądania i odpowiedź:
+Przykład żądania:
 
 \begin{lstlisting}
     GET /index.html HTTP/1.1
