@@ -90,14 +90,15 @@ CORBA jest standardem zdefiniowanym przez OMG (ang. \textit{Object Management Gr
 
 CORBA wprowadza warstwę abstrakcji, która ukrywa różnice pomiędzy systemami. Wykorzystany został język opisu interfejsu (IDL - ang. \textit{Interface Description Language}). Każdy język programowania kompiluje pliki IDL na kod zajmujący się przekazaniem metod, a w przypadku języków interpretowanych, IDL jest interpretowany w czasie wykonania. CORBA specyfikuje sposób mapowania IDL dla języków programowania takich jak np. C, C++, Java, Ada, COBOL, Lisp, Object Pascal, Python, Ruby czy Smalltalk. Zazwyczaj implementacja ORB (ang. \textit{Object Request Broker}) dostarcza kompilator IDL.
 
-Przykład IDL:
-\begin{lstlisting}
-module ModuleExample {
-    interface Math  {
-        double sum(in double x, in double y);
+
+\begin{lstlisting}[caption={Przykład użycia IDL},captionpos=b]
+    module ModuleExample {
+        interface Math  {
+            double sum(in double x, in double y);
+        };
     };
-};
 \end{lstlisting}
+
 
 Skorzystać możemy z wielu predefiniowanych typów (np. \textit{short}, \textit{long}, \textit{double}, \textit{string}), jak również tworzyć własne struktury czy unie oparte o typy elementarne.
 
@@ -180,16 +181,15 @@ HTTP (ang. \textit{Hypertext Transfer Protocol}) to bezstanowy protokół przesy
   \item 5xx - kody błędu serwera HTTP
 \end{itemize}
 
-Przykład żądania:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Przykład żądania HTTP},captionpos=b]
     GET /index.html HTTP/1.1
     Host: www.example.com
 \end{lstlisting}
 
 Serwer zwraca odpowiedź lub informuje o wystąpieniu błędu:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Przykład odpowiedzi serwera ze statusem 200 OK},captionpos=b]
     HTTP/1.1 200 OK
     Date: Mon, 11 May 2017 21:17:46 GMT
     Content-Type: text/html; charset=UTF-8

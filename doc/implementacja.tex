@@ -1,11 +1,77 @@
 \chapter{Implementacja}
 
-Założeniem projektu było stworzenie konfigurowalnej platformy umożliwiającej przeprowadzanie testów wydajnościowych dla różnych metod komunikacji międzyprocesowej. Głowna część (silnik testujący) stworzona została w oparciu o Javę 9 i jej wirtualną maszynę.
+Założeniem projektu było stworzenie konfigurowalnej platformy umożliwiającej przeprowadzanie testów wydajnościowych dla różnych metod komunikacji międzyprocesowej. Głowna część (silnik testujący) zrealizowana została w oparciu o Javę 9 i jej wirtualną maszynę.
+
+Dane wejściowe to m. in. wybrany sposób komunikacji oraz jego konfiguracja, a także rozmiar danych do wysłania i odbioru. Aplikacja wykona pomiary oraz zapisze wyniki w formacie CSV.
+
+Wartość, która jest istotna to czas jaki zajęła dwukierunkowa komunikacja. Cechuje się ona nanosekundową precyzją, lecz jej rozdzielczość jest większa. Wynika to działania metody \textit{System.nanoTime()} w Javie.
+
+\begin{lstlisting}[caption={Metoda klasy abstrakcyjnej AbstractTransferTester, która jest wykorzysywana przez wszystkie sposoby komunikacji do wykonania pomiarów (implementowane/przeciążane są ostatnie 3 metody).},captionpos=b]
+    public Metrics test(TestProps testProps) {
+        beforeTest(testProps);
+        long start = System.nanoTime();
+        try {
+            execute(testProps);
+        } catch (TesterException e) {
+            log.error("TesterException", e);
+            afterTest();
+            return Metrics.error(testProps.getRequestBytes().length,
+                    testProps.getResponseSize(), testType);
+        }
+
+        long time = System.nanoTime() - start;
+        afterTest();
+        return Metrics.of(time, testProps.getRequestBytes().length,
+                testProps.getResponseSize(), testType);
+    }
+
+    protected void beforeTest(TestProps testProps) {}
+
+    protected abstract void execute(TestProps testProps) throws TesterException;
+
+    protected void afterTest() {}
+\end{lstlisting}
 
 
-\section{TODO}
+Aby zachować wiarygodność testów, przeprowadzone zostały wielokrotnie - każda wykorzystana konfiguracja testowa była wykonana co najmniej 1000-krotnie.
 
-TODO
+Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, aby \enquote{rozgrzać maszynę writualną}. To znaczy, aby uzyskać pełną wydajność. Celem jest wcześniejsze załadowanie klas do pamięci oraz poczekanie aż JIT (ang. \textit{just-in-time compilation} - kompilacja tuż przed wykonaniem kodu) dokona kompilacji do kodu natywnego oraz optymalizacji.
+
+Charater testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez rekonfigurowania serwerów oczekujących na klienta.
+
+Odpowiedź generowana po stronie implementowanej w C/C++ została ujednolicona, tak aby nie fałszować różnic między metodami transportu.
+
+\begin{lstlisting}[caption={Fragment kodu wykorzystywanego w każdej metodzie komunikacji do generowania odpowiedzi},captionpos=b]
+    for (int i = 0; i < responseSize; i++) {
+        response[i] = (i % 26) + 65;
+    }
+\end{lstlisting}
+
+W kolejnych sekcjach zostanie przybliżone testowanie poszczególnych metod komunikacji.
+
+\section{TCP}
+
+TCP TODO
+
+
+\section{REST}
+
+REST TODO
+
+
+\section{pliki}
+
+Pliki TODO
+
+
+\section{CORBA}
+
+CORBA TODO
+
+
+\section{JNI}
+
+JNI TODO
 
 
 \section{tmp}
@@ -14,8 +80,7 @@ TODO
 - testy powatarzane wielokrotnie, aby uniknąć skrajnych wyników
 - na początku niemierzone testy, aby rozgrzać JVM
 - obrazek architektury klientów (może per metoda komunikacji?)
-- może snippet kodu metody test z klasy AbstractTransferTester
 - grupowanie danych po nanosekundach, req size, res size, test type
 - wykorzystane biblioteki?
-- sekcja per metoda komunikacji
+- sekcja per metoda komunikacji (TCP, REST, komunikacja przez pliki, CORBA, JNI)
 - snippet generowania responsa używany w C/C++
