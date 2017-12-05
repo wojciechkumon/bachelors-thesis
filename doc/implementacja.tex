@@ -105,7 +105,7 @@ Klient Javy oparty jest \textit{OkHttp} (\url{http://square.github.io/okhttp}) j
 
 System plików nie został stworzony w celu komunikacji typu żądanie-odpowiedź. Należało zatem zaimitować takie zachowanie. Został zaimplementowany własny protokół, który spełnia taką funkcję.
 
-Format pliku zawierającym żądanie:
+Format pliku żądania zawiera:
 \newline
 \texttt{rozmiar\_oczekiwanej\_odpowiedzi, bajty\_zapytania}
 
@@ -119,6 +119,7 @@ Poniżej znajduje się diagram przedstawiający komunikację.
     \caption{}
 \end{figure}
 
+\texttt{UUID} w poniższym opisie oznacza losowy ciąg znaków generowany po stronie klienta.
 \begin{enumerate}
     \item Stworzenie pliku o nazwie \texttt{UUID\_request\_tmp} i zapisanie w nim żądania w formacie: 4 bajty dla rozmiaru oczekiwanej odpowiedzi, bajty żądania
     \item Zmiana nazwy stworzonego pliku na \texttt{UUID\_request}
@@ -129,9 +130,9 @@ Poniżej znajduje się diagram przedstawiający komunikację.
     \item Usunięcie plików \texttt{UUID\_request} i \texttt{UUID\_response}
 \end{enumerate}
 
-\texttt{UUID} w powyżym opisie oznacza losowy ciąg znaków generowany po stronie klienta.
+W kliencie Javy zastosowany został komponent \textit{File Monitor} z biblioteki \textit{Apache Commons IO} (\url{https://commons.apache.org/proper/commons-io}). Niestety nie wspiera on natywnych interfejsów informujących o zdarzeniach w systemie plików (np. \textit{inotify} dla Linuksa, FSEvents dla macOS, czy \textit{FileSystemWatcher} dla Windowsa). Zamiast tego skonfigurowne zostało skanowanie katalogu co 2ms.
 
-uzyte technologie (c++: inotify, java apache commons io)
+Serwer C++ wykorzystuje \textit{inotify} (podsystem jądra Linuksa, który służy do powiadamia o zdarzeniach w systemie plików \cite{inotify_man}), dzięki czemu implementacja jest wydajna i nie skanuje katalogu, gdy to niekonieczne.
 
 
 \section{CORBA}
