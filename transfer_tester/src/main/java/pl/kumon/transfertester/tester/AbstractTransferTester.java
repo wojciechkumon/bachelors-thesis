@@ -9,13 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractTransferTester implements TransferTester {
   private final TestType testType;
 
-  public AbstractTransferTester(TestType testType) {
+  protected AbstractTransferTester(TestType testType) {
     this.testType = testType;
-  }
-
-  @Override
-  public Metrics test() {
-    return test(TestProps.simpleTestProps());
   }
 
   @Override

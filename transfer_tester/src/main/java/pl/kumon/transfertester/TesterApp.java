@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public class TesterApp implements Runnable {
+class TesterApp implements Runnable {
   private final AppProps appProps;
 
   @Override

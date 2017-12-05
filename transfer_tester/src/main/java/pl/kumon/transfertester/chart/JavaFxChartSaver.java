@@ -45,7 +45,7 @@ public class JavaFxChartSaver extends Application {
   static List<ChartData> chartDataList;
 
   @Override
-  public void start(Stage stage) throws Exception {
+  public void start(Stage stage) {
     chartDataList.forEach(chartData -> {
       List<TestExecutionStats> stats = chartData.getStats()
           .sorted(Comparator.comparing(TestExecutionStats::getTestType))

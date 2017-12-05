@@ -65,7 +65,7 @@ public class RestTester extends AbstractTransferTester {
     return result.getBytes(UTF_8);
   }
 
-  private Request buildRequest(TestProps testProps) throws IOException {
+  private Request buildRequest(TestProps testProps) {
     String requestBody = buildRequestBody(testProps);
     return new Request.Builder()
         .url(props.getUrl())

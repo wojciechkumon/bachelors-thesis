@@ -21,7 +21,7 @@ import io.reactivex.observables.GroupedObservable;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ChartApp implements Runnable {
+class ChartApp implements Runnable {
   private final AppProps appProps;
 
   @Override
