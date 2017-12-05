@@ -57,11 +57,11 @@ Strona serwerowa wykorzystuje bibliotekę \texttt{unistd.h}. Klient opiera się 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics{img/tcp_diagram.png}
+	\includegraphics{img/tcp_impl_diagram.png}
 	\caption{Diagram prezentujący działanie własnego protokołu opartego na TCP}
 \end{figure}
 
-Sam protokół jest typu żądanie/odpowiedź - to znaczy za każdym razem otwierane jest gniazdo, a po otrzymaniu odpowiedzi zamykane. Jego działanie wygląda następująco:
+Sam protokół należy do typu żądanie/odpowiedź - to znaczy za każdym razem otwierane jest gniazdo, a po otrzymaniu odpowiedzi zamykane. Jego działanie wygląda następująco:
 \newline
 Klient wysyła wiadomość składającą się kolejno z:
 \begin{enumerate}
@@ -74,7 +74,31 @@ Serwer odpowiada bajtami odpowiedzi w rozmiarze określonym przez klienta (sam j
 
 \section{REST}
 
-REST TODO
+Aby mogła zaistnieć komunikacja wykorzystująca REST, należało wcześniej wybrać format danych i~URI.
+
+Serwer wystawia zasób pod adresem \texttt{/testResult}. Dane transferowane są w formacie JSON:
+\begin{lstlisting}[caption={Format danych wysyłany przez klienta},captionpos=b]
+    {
+        "responseSize": 1024,
+        "data": "ABCDEFGH..."
+    }
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Format danych zwracany przez serwer},captionpos=b]
+    {
+        "result": "ABCDEF..."
+    }
+\end{lstlisting}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics{img/rest_impl_diagram.png}
+	\caption{Diagram prezentujący komunikację klienta z serwerem HTTP}
+\end{figure}
+
+Implemetancja strony serwerowej wykorzystuje bibliotekę ngrest (\url{https://github.com/loentar/ngrest}), służącą do tworzenie serwisów RESTowych.
+
+Klient Javy oparty jest \textit{OkHttp} (\url{http://square.github.io/okhttp}) jako klienta HTTP oraz \textit{Jackson} \newline (\url{https://github.com/FasterXML/jackson}) do parsowania i budowania formatu JSON.
 
 
 \section{pliki}
