@@ -37,12 +37,12 @@ Gniazda (ang. \textit{socket}) umożliwiają dwustronną komunikację strumieni
 Ta metoda komunikacji rzadko zachowuje granice wiadomości (ang. \textit{message boundaries}) tzn. transmitowane mogą być także fragmenty danych, czyli w jednym buforze znaleźć można koniec poprzedniej i początek kolejnej wiadomości. O poprawne dzielenie komunikatów dbają protokoły wyższych warstw, np. prokół UDP pozwala zachować granice wiadomości - są one wysyłanie pojedynczo, nigdy razem, nigdy nie są dzielone.
 
 
-\subsection{UDP}
+\subsection{Protokół UDP}
 
 Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwa wysyłanie datagramów. Charakteryzuje go bezpołączeniowość - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu lub o spójność informacji dbają protokoły warstw wyższych.
 
 
-\subsection{TCP}
+\subsection{Protokół TCP}
 \label{TCP}
 
 Protokół sterowania transmisją jest niezawodną, uporządkowaną, odporną na błędy metodę transportu strumienia danych przez sieć IP. Przed rozpoczęciem transmisji informacji, stabilizowane jest połączenie (szczeóły na rys. \ref{fig:TCP_handshake}).
@@ -52,10 +52,10 @@ Protokół ten retransmituje pakiety w razie ich zgubienia, zmienia ich kolejno�
 Cechy gwarantujące udaną komunikację spowodowały, że TCP używany jest na bardzo szeroką skalę (np. HTTP, FTP, SSH).
 
 \begin{figure}[h]
-  \centering
-  \includegraphics{img/TCP_handshake.png}
-  \caption{Schemat prezentujący trójstronne uzgodnienie (ang. \textit{three-way handshake}). Najpierw klient wysyła (chce zsynchronizować) swój numer sekwencji (SYN). Serwer odpowiada ACK (potwierdza udaną synchronizację) oraz SYN (synchronizacja własnego numeru sekwencji). Na końcu klient potwierdza synchronizację i może nastąpić transmisja właściwych danych.}
-  \label{fig:TCP_handshake}
+    \centering
+    \includegraphics[height=8cm,keepaspectratio]{img/TCP_handshake.png}
+    \caption{Schemat prezentujący trójstronne uzgodnienie (ang. \textit{three-way handshake}). Najpierw klient wysyła (chce zsynchronizować) swój numer sekwencji (SYN). Serwer odpowiada ACK (potwierdza udaną synchronizację) oraz SYN (synchronizacja własnego numeru sekwencji). Na końcu klient potwierdza synchronizację i może nastąpić transmisja właściwych danych.}
+    \label{fig:TCP_handshake}
 \end{figure}
 
 
@@ -105,10 +105,10 @@ Skorzystać możemy z wielu predefiniowanych typów (np. \textit{short}, \textit
 W technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada interfejs pożądanego obiektu oraz jego implementację, która zostanie oddelegowana do serwera. Aby się z nim połączyć trzeba posiadać jego referencję - IOR (ang. \textit{Interoperable Object Reference}). Alternatywną jest skorzystanie z serwisu nazw (ang. \textit{NameService}) - działa on podobnie do systemu nazw domenowych (DNS). Serwer rejestruje się w nim pod wybraną nazwą, by klient mógł za jej pomocą uzyskać zarejestrowany IOR.
 
 \begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{img/CORBA_architecture.png}
-  \caption{Schemat architektury aplikacji korzystającej z technologii CORBA \cite{Saw02}.}
-  \label{fig:CORBA_architecture}
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/CORBA_architecture.png}
+    \caption{Schemat architektury aplikacji korzystającej z technologii CORBA \cite{Saw02}.}
+    \label{fig:CORBA_architecture}
 \end{figure}
 
 
@@ -154,7 +154,7 @@ Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application
   \begin{tabular}{|c|c|c|}
     \hline
     & \textbf{Pojedynczy zasób np.} & \textbf{Kolekcja np.} \\
-    & \textit{http://example.com/api/items/1} & \textit{http://example.com/api/items} \\ [0.5ex]
+    & \url{http://example.com/api/items/1} & \url{http://example.com/api/items} \\ [0.5ex]
     \hline
     \textbf{GET} & Zwraca reprezentację zasobu & Zwraca całą kolekcję \\
     \hline
@@ -169,7 +169,7 @@ Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application
 \end{table}
 
 
-\subsection{HTTP}
+\subsection{Protokół HTTP}
 
 \label{HTTP_section}
 HTTP (ang. \textit{Hypertext Transfer Protocol}) to bezstanowy protokół przesyłania dokumentów hipertekstowych w sieci WWW (ang. \textit{World Wide Web}). Do transportu wykorzystuje TCP. Jego działanie określić można jako zapytanie-odpowiedź. Klientem może być przeglądarka internetowa, która dokonuje żądań zasobów. Żądania te składają się z metody (np. GET, POST, HEAD, PUT, DELETE, OPTIONS) oraz Ujednoliconego Identyfikatora Zasobów (URI - ang. \textit{Uniform Resource Identifier}). W zapytaniu wysłane mogą być nagłówki (np. Accept, Content-Type, Host, Authorization). Metody takie jak POST, PUT umożliwiają wysłanie ciała zapytania (np. wiadomość w formacie JSON, XML). Odpowiedź od serwera także zawiera nagłówki i ciało, ale również kod statusu, który dostarcza dodatkowych informacji:
