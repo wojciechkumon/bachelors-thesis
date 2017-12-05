@@ -47,11 +47,29 @@ Odpowiedź generowana po stronie implementowanej w C/C++ została ujednolicona, 
     }
 \end{lstlisting}
 
-W kolejnych sekcjach zostanie przybliżone testowanie poszczególnych metod komunikacji.
+W kolejnych sekcjach przybliżony zostanie sposób testowania poszczególnych metod komunikacji. Platformą docelową dla wszystkich implementacji jest Linux - na nim przeprowadzone zostały wszystkie uruchomienia (mimo że większość wspiera także macOS oraz Windows).
 
 \section{TCP}
 
-TCP TODO
+Zaimplementowany został własny protokół służący badaniu szybkości transferu danych oparty o gniazda TCP. Aby klient mógł zlokalizować serwer potrzebny jest mu jego adres IP i port oraz oczywiście musi istnieć możliwość stworzenia trasy.
+
+Strona serwerowa wykorzystuje bibliotekę \texttt{unistd.h}. Klient opiera się o~standardową bibliotekę Javy, czyli klasę \texttt{java.net.Socket}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics{img/tcp_diagram.png}
+	\caption{Diagram prezentujący działanie własnego protokołu opartego na TCP}
+\end{figure}
+
+Sam protokół jest typu żądanie/odpowiedź - to znaczy za każdym razem otwierane jest gniazdo, a po otrzymaniu odpowiedzi zamykane. Jego działanie wygląda następująco:
+\newline
+Klient wysyła wiadomość składającą się kolejno z:
+\begin{enumerate}
+    \item 4 bajtów rozmiaru żądania
+    \item 4 bajtów rozmiaru oczekiwanej odpowiedzi
+    \item bajtów żądania w rozmiarze określonym na początku
+\end{enumerate}
+Serwer odpowiada bajtami odpowiedzi w rozmiarze określonym przez klienta (sam je generuje).
 
 
 \section{REST}
@@ -77,10 +95,16 @@ JNI TODO
 \section{tmp}
 
 - testy na sucho (mock) w celu sprawdzenia narzutu samej platformy
-- testy powatarzane wielokrotnie, aby uniknąć skrajnych wyników
-- na początku niemierzone testy, aby rozgrzać JVM
 - obrazek architektury klientów (może per metoda komunikacji?)
 - grupowanie danych po nanosekundach, req size, res size, test type
 - wykorzystane biblioteki?
-- sekcja per metoda komunikacji (TCP, REST, komunikacja przez pliki, CORBA, JNI)
-- snippet generowania responsa używany w C/C++
+- rozmiar każdej z technologi (np. linie kodu, rozmiar)
+
++ testy powatarzane wielokrotnie, aby uniknąć skrajnych wyników
++ na początku niemierzone testy, aby rozgrzać JVM
++ snippet generowania responsa używany w C/C++
++ sekcja per metoda komunikacji (TCP, REST, komunikacja przez pliki, CORBA, JNI)
+
+wnioski z testow:
+- dokladny opis platformy (system, sprzęt)
+- wykresy
