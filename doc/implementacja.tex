@@ -132,27 +132,104 @@ Poniżej znajduje się diagram przedstawiający komunikację.
 
 W kliencie Javy zastosowany został komponent \textit{File Monitor} z biblioteki \textit{Apache Commons IO} (\url{https://commons.apache.org/proper/commons-io}). Niestety nie wspiera on natywnych interfejsów informujących o zdarzeniach w systemie plików (np. \textit{inotify} dla Linuksa, FSEvents dla macOS, czy \textit{FileSystemWatcher} dla Windowsa). Zamiast tego skonfigurowne zostało skanowanie katalogu co 2ms.
 
-Serwer C++ wykorzystuje \textit{inotify} (podsystem jądra Linuksa, który służy do powiadamia o zdarzeniach w systemie plików \cite{inotify_man}), dzięki czemu implementacja jest wydajna i nie skanuje katalogu, gdy to niekonieczne.
+Serwer C++ wykorzystuje \textit{inotify} (podsystem jądra Linuksa, który służy do powiadamia o zdarzeniach w systemie plików \cite{inotify_man}), dzięki czemu implementacja jest wydajna i nie wykonuje zbędynch skanów katalogu.
 
 
 \section{CORBA}
 
-CORBA TODO
+Aplikacje, które należy zintegrować opierając się na specyfikacji Corby, muszą skorzystać z wybranej implementacji. OmniORB jest jedną z bardziej popularnych i wydajnych. Została użyta w wersji 4 przez serwer C++. Klient wykorzystuje zaś tę dołączoną do Javy 9.
+
+Komunikacja pomija serwis nazw - klient zna IOR, do którego wysyła zapytania.
+
+\begin{lstlisting}[caption={Zastosowany interfejs (IDL)},captionpos=b]
+    module pl {
+        module kumon {
+            module transfertester {
+                module tester {
+                    module corba {
+
+                        interface CorbaConnector {
+                            string get(in long responseSize, in string request);
+                        };
+                    };
+                };
+            };
+        };
+    };
+\end{lstlisting}
+
+Protokół wymiany danych informuje serwer, jakej długości jest oczekiwana odpowiedź oraz przekazuje samo żądanie. Informacja zwrotna zostaje wygenerowana tak, aby dotrzymać wymaganego rozmiaru.
 
 
 \section{JNI}
 
-JNI TODO
+Java Native Interface wymaga stworzenia pomostu między maszyną wirtualną Javy a kodem natywnym. Stworzony został interfejs komunikacji.
+
+\begin{lstlisting}[caption={Metoda javy, która wymaga natywnej implementacji.},captionpos=b]
+    public class JniExecutor {
+        public native byte[] requestJni(byte[] requestBytes, int responseSize);
+    }
+\end{lstlisting}
+
+Implementacja w C żądanie i oczekiwaną długość odpowiedzi, jednak są to struktury typów \texttt{jbyteArray} i \texttt{jint}, więc przed użyciem wymagają odpowiedniego mapowania. Podobnie wygląda generowanie danych zwrotnych - oczekiwany typ to \texttt{jbyteArray}.
+
+\begin{lstlisting}[caption={Natywna implementacja w C.},captionpos=b]
+    JNIEXPORT jbyteArray JNICALL Java_pl_kumon_transfertester_tester_jni_JniExecutor_requestJni(
+    JNIEnv *env, jobject thisObj, jbyteArray requestBytes, jint responseSize) {
+
+        readRequest(env, &requestBytes);
+        jbyteArray response = (*env)->NewByteArray(env, responseSize);
+        jbyte *bytes = prepareResponseRandomBytes(env, &response, responseSize);
+        (*env)->SetByteArrayRegion(env, response, 0, responseSize, bytes);
+        return response;
+    }
+
+    void readRequest(JNIEnv *env, jbyteArray* requestBytes) {
+        unsigned char* buffer = (*env)->GetByteArrayElements(env, *requestBytes, NULL);
+        jsize size = (*env)->GetArrayLength(env, *requestBytes);
+        (*env)->ReleaseByteArrayElements(env, *requestBytes, buffer, JNI_ABORT);
+    }
+
+    jbyte* prepareResponseRandomBytes(JNIEnv *env, jbyteArray *response, jint responseSize) {
+        int i;
+        jbyte *bytes = (*env)->GetByteArrayElements(env, *response, 0);
+        for (i = 0; i < responseSize; i++) {
+            bytes[i] = (i % 26) + 65;
+        }
+        return bytes;
+    }
+\end{lstlisting}
+
+
+\section{Implementacja bez komunikacji}
+
+Ciekawy do sprawdzenia jest sam narzut platofrmy testowej, który nie wynika z generowania odpowiedzi. Aby tego dokonać, stworzony został test działający jedynie w pamięci wirtualnej maszyny Javy, który nie komunikuje się z niczym na zewnątrz.
+
+Uniknięcie optymalizacji (aby cała pętla nie została pominięta) zostało osiągnięte przez kontrolę rozmiaru wygenerowanych danych.
+
+\begin{lstlisting}[caption={Test sprawdzający narzut samej platformy.},captionpos=b]
+    protected void execute(TestProps testProps) throws TesterException {
+        byte[] mockResponse = getMockResponse(testProps.getResponseSize());
+        ResponseValidator.validateLength(mockResponse, testProps);
+    }
+
+    private byte[] getMockResponse(int responseSize) {
+        byte[] response = new byte[responseSize];
+        for (int i = 0; i < responseSize; i++) {
+            response[i] = (byte) ((i % 26) + 65);
+        }
+        return response;
+    }
+\end{lstlisting}
 
 
 \section{tmp}
 
-- testy na sucho (mock) w celu sprawdzenia narzutu samej platformy
-- obrazek architektury klientów (może per metoda komunikacji?)
-- grupowanie danych po nanosekundach, req size, res size, test type
 - wykorzystane biblioteki?
 - rozmiar każdej z technologi (np. linie kodu, rozmiar)
 
++ testy na sucho (mock) w celu sprawdzenia narzutu samej platformy
++ obrazek architektury klientów (może per metoda komunikacji?)
 + testy powatarzane wielokrotnie, aby uniknąć skrajnych wyników
 + na początku niemierzone testy, aby rozgrzać JVM
 + snippet generowania responsa używany w C/C++
