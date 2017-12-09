@@ -214,6 +214,32 @@ Serwer zwraca odpowiedź lub informuje o wystąpieniu błędu:
 \end{lstlisting}
 
 
+\section{SOAP}
+
+SOAP (ang. \textit{Simple Object Access Protocol}) to protokół mający na celu tworzenie usług sieciowych, cechujących się uniezależnieniem od implementacji oraz platformy. Najczęściej korzysta z protokołu HTTP (sekcja \ref{HTTP_section}). Wiadomości transportowane są w formacie XML.
+
+Obowiązuje je ścisła struktura, wiadomość składa się z \cite{SOAP}:
+\begin{itemize}
+    \item Envelope - identyfikuje dokument jako wiadomość SOAP
+    \item Header - zawiera nagłówki, metadane
+    \item Body - zawiera żądanie lub odpowiedź
+    \item Fault - dostarcze informacje o błędach, jeśli zaszły w trakcie przetwarzania
+\end{itemize}
+
+\begin{lstlisting}[caption={Przykład zapytania, które jest zgodne z protokołem SOAP},captionpos=b]
+    <?xml version="1.0" encoding="UTF-8"?>
+    <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.example.org/stocks">
+        <soap:Header>
+        </soap:Header>
+        <soap:Body>
+            <a:GetStockPrice>
+                <a:StockName>COMPANY_NAME</a:StockName>
+            </a:GetStockPrice>
+        </soap:Body>
+    </soap:Envelope>
+\end{lstlisting}
+
+
 \section{Porównanie wydajności potoków, pamięci współdzielonej oraz gniazda dziedziny Uniksa}
 
 Porównując niskopoziomowe rozwiązania, ściśle powiązane z systemem operacyjnym dostrzec można pewną zależność \cite{ZX2011}:
