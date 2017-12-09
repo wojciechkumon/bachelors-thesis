@@ -213,10 +213,10 @@ Supervisor: & {\itshape \@supervisor}\\
 %---------------------------------------------------------------------------
 
 \sisetup{
-	output-decimal-marker = {,},
-	%	round-mode=places,
-	%	round-precision=4,
-	group-separator={~},
+    output-decimal-marker = {,},
+    %    round-mode=places,
+    %    round-precision=4,
+    group-separator={~},
 }
 
 %---------------------------------------------------------------------------
@@ -232,13 +232,13 @@ Supervisor: & {\itshape \@supervisor}\\
 %---------------------------------------------------------------------------
 
 \captionsetup[subfigure]{labelfont=md}
-\captionsetup{%
-	% Użyj okrągłych nawiasów wokół odwołań do "podilustracji".
-	subrefformat=parens,
-	% Margines z obu stron podpisu.
-	margin=2cm,
-	% W przypadku podpisów mieszczących się w jednej linii nie stosuj justowania, tylko wyśrodkuj cały podpis.
-	singlelinecheck=on,
+\captionsetup{
+    % Użyj okrągłych nawiasów wokół odwołań do "podilustracji".
+    subrefformat=parens,
+    % Margines z obu stron podpisu.
+    margin=2cm,
+    % W przypadku podpisów mieszczących się w jednej linii nie stosuj justowania, tylko wyśrodkuj cały podpis.
+    singlelinecheck=on,
 }
 
 

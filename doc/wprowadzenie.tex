@@ -7,7 +7,11 @@ Każde rozwiązanie ma swoje wady i zalety. Niektóre działają w architekturze
 
 \section{Komunikacja przez pliki}
 
-Polega na zapisie pliku w miejscu dostępnym także dla innego procesu. Proces zapisujący dane tworzy plik lub modyfikuje istniejący, zaś proces czytający sprawdza istnienie i zawartość pliku. Metoda ta jest wspierana przez większość systemów operacyjnych.
+Polega na zapisie pliku w miejscu dostępnym także dla innego procesu. Proces zapisujący dane tworzy plik lub modyfikuje istniejący, zaś proces czytający sprawdza istnienie i zawartość pliku. Metoda ta jest wspierana przez większość systemów operacyjnych. Pliki znajdują się w wybranym systemie plików, a ten dowolnym urządzeniu (najczęściej dysku twardym lub SSD, ale także np. w pamięci RAM).
+
+Możliwym jest zdalne skomunikowanie maszyn. Wykorzystać do tego można protokół transferu plików (FTP - ang. \textit{File Transfer Protocol}). Wymaganie to serwer FTP, z którym łączyć się będą klienty, aby zapisywać i czytać pliki.
+
+Celem systemów plików nie jest działanie w trybie żądanie-odpowiedź, aby zintegrować aplikacje. Można jednak próbować zasymulować takie zachowanie. Przykładem jest wybranie wspólnego katalogu dla programów, które będą go sprawdzać cyklicznie lub też oczekiwać na powiadomienie od systemu operacyjnego. Należy wtedy jeszcze zapewnić synchronizację, aby nie doprowadzić do czytania pliku, kiedy jeszcze nie został ukończony jego zapis albo współbieżnej modyfikacji. Trzeba także rozróżnić pliki, które są żądaniami od odpowiedzi, aby procesy obsłużyły tylke te, które są im przeznaczone.
 
 
 \section{Sygnały}
@@ -208,3 +212,14 @@ Serwer zwraca odpowiedź lub informuje o wystąpieniu błędu:
         </body>
     </html>
 \end{lstlisting}
+
+
+\section{Porównanie wydajności potoków, pamięci współdzielonej oraz gniazda dziedziny Uniksa}
+
+Porównując niskopoziomowe rozwiązania, ściśle powiązane z systemem operacyjnym dostrzec można pewną zależność \cite{ZX2011}:
+
+\begin{itemize}
+    \item dla danych mniejszych niż 4600 bajtów - pamięć współdzielona jest najszybsza
+    \item dla danych między 5100 a 12000 bajtów - gniazdy dziedziny Uniksa okazały się najlepsze
+    \item w pozostałych przypadkach zwyciężyły potoki nienazwane
+\end{itemize}
