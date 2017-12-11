@@ -39,7 +39,7 @@ import static pl.kumon.transfertester.chart.I18n.TITLE_FORMAT;
 public class JavaFxChartSaver extends Application {
   private static final String PNG = "PNG";
   private static final int WIDTH = 800;
-  private static final int HEIGHT = 600;
+  private static final int HEIGHT = 480;
   private static final int NUMBER_OF_GROUPS = 40;
 
   static List<ChartData> chartDataList;
