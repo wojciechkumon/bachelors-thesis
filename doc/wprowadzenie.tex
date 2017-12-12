@@ -1,15 +1,15 @@
 \chapter{Komunikacja międzyprocesowa}
 
-Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. Zawiera on m. in. komunikację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
+Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. Zawiera on m. in. integrację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
 
 Każde rozwiązanie ma swoje wady i zalety. Niektóre działają w architekturze klient - serwer, inne współdzielą zasoby lub wykonują potrzebny program. Czynników poróżniających je jest wiele. To przede wszystkim czas komunikacji dla różnych rozmiarów wiadomości, ale także wspierane systemy operacyjne, możliwość komunikacji sieciowej, asynchroniczność, czy wsparcie dla wielu języków programowania.
 
 
 \section{Komunikacja przez pliki}
 
-Polega na zapisie pliku w miejscu dostępnym także dla innego procesu. Proces zapisujący dane tworzy plik lub modyfikuje istniejący, zaś proces czytający sprawdza istnienie i zawartość pliku. Metoda ta jest wspierana przez większość systemów operacyjnych. Pliki znajdują się w wybranym systemie plików, a ten dowolnym urządzeniu (najczęściej dysku twardym lub SSD, ale także np. w pamięci RAM).
+Polega na zapisie pliku w miejscu dostępnym także dla innego procesu. Proces zapisujący dane tworzy plik lub modyfikuje istniejący, zaś proces czytający sprawdza jego obecność oraz zawartość. Metoda ta jest wspierana przez większość systemów operacyjnych. Pliki znajdują się w wybranym systemie plików, a ten dowolnym urządzeniu (najczęściej dysku twardym lub SSD, ale także np. w pamięci RAM).
 
-Możliwym jest zdalne skomunikowanie maszyn. Wykorzystać do tego można protokół transferu plików (FTP - ang. \textit{File Transfer Protocol}). Wymaganie to serwer FTP, z którym łączyć się będą klienty, aby zapisywać i czytać pliki.
+Możliwe jest zdalne skomunikowanie maszyn. Wykorzystać do tego można protokół transferu plików (FTP - ang. \textit{File Transfer Protocol}). Wymaganie to serwer FTP, z którym łączyć się będą klienty, aby zapisywać i czytać pliki.
 
 Celem systemów plików nie jest działanie w trybie żądanie-odpowiedź, aby zintegrować aplikacje. Można jednak próbować zasymulować takie zachowanie. Przykładem jest wybranie wspólnego katalogu dla programów, które będą go sprawdzać cyklicznie lub też oczekiwać na powiadomienie od systemu operacyjnego. Należy wtedy jeszcze zapewnić synchronizację, aby nie doprowadzić do czytania pliku, kiedy jeszcze nie został ukończony jego zapis albo współbieżnej modyfikacji. Trzeba także rozróżnić pliki, które są żądaniami od odpowiedzi, aby procesy obsłużyły tylke te, które są im przeznaczone.
 
@@ -43,13 +43,13 @@ Ta metoda komunikacji rzadko zachowuje granice wiadomości (ang. \textit{message
 
 \subsection{Protokół UDP}
 
-Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwa wysyłanie datagramów. Charakteryzuje go bezpołączeniowość - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu lub o spójność informacji dbają protokoły warstw wyższych.
+Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwa wysyłanie datagramów. Charakteryzuje go bezpołączeniowość - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu spowodowany retransmisją.
 
 
 \subsection{Protokół TCP}
 \label{TCP}
 
-Protokół sterowania transmisją jest niezawodną, uporządkowaną, odporną na błędy metodę transportu strumienia danych przez sieć IP. Przed rozpoczęciem transmisji informacji, stabilizowane jest połączenie (szczeóły na rys. \ref{fig:TCP_handshake}).
+Protokół sterowania transmisją jest niezawodną, uporządkowaną, odporną na błędy metodą transportu strumienia danych przez sieć IP. Przed rozpoczęciem transmisji informacji, stabilizowane jest połączenie (szczegóły na rys. \ref{fig:TCP_handshake}).
 
 Protokół ten retransmituje pakiety w razie ich zgubienia, zmienia ich kolejność w razie potrzeby, wykrywa i naprawia także problem duplikatów. Nie dba jednak o granice wiadomości, więc odbiorca musi znać format danych, na które czeka (np. umieszcza się w ustalonym miejscu długość całej wiadomości).
 
@@ -90,9 +90,9 @@ Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiedn
 
 \subsection{CORBA}
 
-CORBA jest standardem zdefiniowanym przez OMG (ang. \textit{Object Management Group}) wydanym w 1991 roku \cite{CORBA}. Celem jest umożliwienie komunikacji między procesami stworzonymi z użyciem innych języków programowania, na niezależnych maszynach bez względu na sprzęt, czy systema operacyjny. Wykorzystany jest model obiektowy, mimo to języki programowania nie muszą wspierać paradygmatu obiektowego, aby używać technologii CORBA.
+CORBA jest standardem zdefiniowanym przez OMG (ang. \textit{Object Management Group}) wydanym w 1991 roku \cite{CORBA}. Jego cel to umożliwienie komunikacji między procesami stworzonymi z użyciem innych języków programowania, na niezależnych maszynach - bez względu na sprzęt, czy system operacyjny. Wykorzystany został model obiektowy, mimo to języki programowania nie muszą wspierać paradygmatu obiektowego, aby używać technologii CORBA.
 
-CORBA wprowadza warstwę abstrakcji, która ukrywa różnice pomiędzy systemami. Wykorzystany został język opisu interfejsu (IDL - ang. \textit{Interface Description Language}). Każdy język programowania kompiluje pliki IDL na kod zajmujący się przekazaniem metod, a w przypadku języków interpretowanych, IDL jest interpretowany w czasie wykonania. CORBA specyfikuje sposób mapowania IDL dla języków programowania takich jak np. C, C++, Java, Ada, COBOL, Lisp, Object Pascal, Python, Ruby czy Smalltalk. Zazwyczaj implementacja ORB (ang. \textit{Object Request Broker}) dostarcza kompilator IDL.
+CORBA wprowadza warstwę abstrakcji, która ukrywa różnice pomiędzy systemami. Wykorzystuje język opisu interfejsu (IDL - ang. \textit{Interface Description Language}). Każdy język programowania kompiluje pliki IDL na kod zajmujący się przekazaniem metod, a w przypadku języków interpretowanych, IDL jest interpretowany w czasie wykonania. CORBA specyfikuje sposób mapowania IDL dla języków programowania takich jak np. C, C++, Java, Ada, COBOL, Lisp, Object Pascal, Python, Ruby czy Smalltalk. Zazwyczaj implementacja ORB (ang. \textit{Object Request Broker}) dostarcza kompilator IDL.
 
 
 \begin{lstlisting}[caption={Przykład użycia IDL},captionpos=b]
@@ -120,7 +120,7 @@ W technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada
 
 Java Native Interface (JNI) co prawda nie jest metodą komunikacji między procesami, mimo to umożliwia integrację z programami napisanymi w innych językach. Pozwala, aby kod Javy uruchomiony w wirtualnej maszynie wywoływał oraz był wywoływany przez natywne aplikacje (napisane mogą one być w C, C++, asemblerze, ale także na przykład w Go i Rust) \cite{JNI17}.
 
-Cel JNI to możliwość wykonania wszystkiego co nie jest wykonalne używając jedynie Javy, np. wykorzystywywanie bibliotek zależnych od platformy oraz zwiększenie wydajności w krytycznych obszarach aplikacji.
+Cel JNI to możliwość wykonania wszystkiego, co nie jest wykonalne używając jedynie Javy, np. wykorzystywywanie bibliotek zależnych od platformy oraz zwiększenie wydajności w krytycznych obszarach aplikacji.
 
 Natywne programy mogą korzystać z obiektów Javy (tworzyć je, wykonywać metody, odbierać przekazane w parametrach). Sama biblioteka standardowa Javy wykorzystuje tę technologię.
 
@@ -162,7 +162,7 @@ Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application
     \hline
     \textbf{GET} & Zwraca reprezentację zasobu & Zwraca całą kolekcję \\
     \hline
-    \textbf{POST} & \begin{tabular}{@{}c@{}} Tworzy nowy zasób wykorzystując wysłany \\ przez klienta, zazwyczaj w odpowiedzi \\ znajduje się adres nowego elementu \end{tabular} &  Zazwyczaj nie używany \\
+    \textbf{POST} & Zazwyczaj nie używany & \begin{tabular}{@{}c@{}} Tworzy nowy zasób wykorzystując wysłany \\ przez klienta, zazwyczaj w odpowiedzi \\ znajduje się adres nowego elementu \end{tabular} \\
     \hline
     \textbf{PUT} & \begin{tabular}{@{}c@{}} Zamienia wybrany zasób \\ na wysłany przez klienta \end{tabular} & \begin{tabular}{@{}c@{}} Zamienia całą kolekcję \\ na wysłaną przez klienta \end{tabular} \\
     \hline
@@ -228,7 +228,8 @@ Obowiązuje je ścisła struktura, wiadomość składa się z \cite{SOAP}:
 
 \begin{lstlisting}[caption={Przykład zapytania, które jest zgodne z protokołem SOAP},captionpos=b]
     <?xml version="1.0" encoding="UTF-8"?>
-    <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.example.org/stocks">
+    <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+            xmlns:a="http://www.example.org/stocks">
         <soap:Header>
         </soap:Header>
         <soap:Body>

@@ -37,7 +37,7 @@ Aby zachować wiarygodność testów, przeprowadzone zostały wielokrotnie - ka�
 
 Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, aby \enquote{rozgrzać maszynę writualną}. To znaczy, aby uzyskać pełną wydajność. Celem jest wcześniejsze załadowanie klas do pamięci oraz poczekanie aż JIT (ang. \textit{just-in-time compilation} - kompilacja tuż przed wykonaniem kodu) dokona kompilacji do kodu natywnego oraz optymalizacji.
 
-Charater testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez rekonfigurowania serwerów oczekujących na klienta.
+Charakter testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez rekonfigurowania serwerów oczekujących na klienta.
 
 Odpowiedź generowana po stronie implementowanej w C/C++ została ujednolicona, tak aby nie fałszować różnic między metodami transportu.
 
@@ -107,6 +107,32 @@ Implemetancja strony serwerowej wykorzystuje bibliotekę ngrest (\url{https://gi
 Klient Javy oparty jest \textit{OkHttp} (\url{http://square.github.io/okhttp}) jako klienta HTTP oraz \textit{Jackson} \newline (\url{https://github.com/FasterXML/jackson}) do parsowania i budowania formatu JSON.
 
 
+\section{CORBA}
+
+Aplikacje, które należy zintegrować opierając się na specyfikacji Corby, muszą skorzystać z wybranej implementacji. OmniORB jest jedną z bardziej popularnych i wydajnych. Została użyta w wersji 4 przez serwer C++. Klient wykorzystuje zaś tę dołączoną do Javy 9.
+
+Komunikacja pomija serwis nazw - klient zna IOR, do którego wysyła zapytania.
+
+\begin{lstlisting}[caption={Zastosowany interfejs (IDL)},captionpos=b]
+    module pl {
+        module kumon {
+            module transfertester {
+                module tester {
+                    module corba {
+
+                        interface CorbaConnector {
+                            string get(in long responseSize, in string request);
+                        };
+                    };
+                };
+            };
+        };
+    };
+\end{lstlisting}
+
+Protokół wymiany danych informuje serwer, jakej długości jest oczekiwana odpowiedź oraz przekazuje samo żądanie. Informacja zwrotna zostaje wygenerowana tak, aby dotrzymać wymaganego rozmiaru.
+
+
 \section{Pliki}
 
 System plików nie został stworzony w celu komunikacji typu żądanie-odpowiedź. Należało zatem zaimitować takie zachowanie. Został zaimplementowany własny protokół, który spełnia taką funkcję.
@@ -138,38 +164,12 @@ Poniżej znajduje się diagram przedstawiający komunikację.
 
 W kliencie Javy zastosowany został komponent \textit{File Monitor} z biblioteki \textit{Apache Commons IO} (\url{https://commons.apache.org/proper/commons-io}). Niestety nie wspiera on natywnych interfejsów informujących o zdarzeniach w systemie plików (np. \textit{inotify} dla Linuksa, FSEvents dla macOS, czy \textit{FileSystemWatcher} dla Windowsa). Zamiast tego skonfigurowne zostało skanowanie katalogu co 2ms.
 
-Serwer C++ wykorzystuje \textit{inotify} (podsystem jądra Linuksa, który służy do powiadamia o zdarzeniach w systemie plików \cite{inotify_man}), dzięki czemu implementacja jest wydajna i nie wykonuje zbędynch skanów katalogu.
-
-
-\section{CORBA}
-
-Aplikacje, które należy zintegrować opierając się na specyfikacji Corby, muszą skorzystać z wybranej implementacji. OmniORB jest jedną z bardziej popularnych i wydajnych. Została użyta w wersji 4 przez serwer C++. Klient wykorzystuje zaś tę dołączoną do Javy 9.
-
-Komunikacja pomija serwis nazw - klient zna IOR, do którego wysyła zapytania.
-
-\begin{lstlisting}[caption={Zastosowany interfejs (IDL)},captionpos=b]
-    module pl {
-        module kumon {
-            module transfertester {
-                module tester {
-                    module corba {
-
-                        interface CorbaConnector {
-                            string get(in long responseSize, in string request);
-                        };
-                    };
-                };
-            };
-        };
-    };
-\end{lstlisting}
-
-Protokół wymiany danych informuje serwer, jakej długości jest oczekiwana odpowiedź oraz przekazuje samo żądanie. Informacja zwrotna zostaje wygenerowana tak, aby dotrzymać wymaganego rozmiaru.
+Serwer C++ wykorzystuje \textit{inotify} (podsystem jądra Linuksa, który służy do powiadamiania o~zdarzeniach w systemie plików \cite{inotify_man}), dzięki czemu implementacja jest wydajna i nie wykonuje zbędynch skanów katalogu.
 
 
 \section{JNI}
 
-Java Native Interface wymaga stworzenia pomostu między maszyną wirtualną Javy a kodem natywnym. Stworzony został interfejs komunikacji.
+Java Native Interface wymaga stworzenia pomostu między maszyną wirtualną Javy a kodem natywnym. Do komunikacji użyty został poniższy interfejs.
 
 \begin{lstlisting}[caption={Metoda javy, która wymaga natywnej implementacji.},captionpos=b]
     public class JniExecutor {
@@ -177,7 +177,7 @@ Java Native Interface wymaga stworzenia pomostu między maszyną wirtualną Jav
     }
 \end{lstlisting}
 
-Implementacja w C żądanie i oczekiwaną długość odpowiedzi, jednak są to struktury typów \texttt{jbyteArray} i \texttt{jint}, więc przed użyciem wymagają odpowiedniego mapowania. Podobnie wygląda generowanie danych zwrotnych - oczekiwany typ to \texttt{jbyteArray}.
+Implementacja w C otrzymuje żądanie i oczekiwaną długość odpowiedzi, jednak są to struktury typów \texttt{jbyteArray} i \texttt{jint}, więc przed użyciem wymagają odpowiedniego mapowania. Podobnie wygląda generowanie danych zwrotnych - oczekiwany typ to \texttt{jbyteArray}.
 
 \begin{lstlisting}[caption={Natywna implementacja w C.},captionpos=b]
     JNIEXPORT jbyteArray JNICALL Java_pl_kumon_transfertester_tester_jni_JniExecutor_requestJni(
@@ -209,7 +209,7 @@ Implementacja w C żądanie i oczekiwaną długość odpowiedzi, jednak są to 
 
 \section{Implementacja bez komunikacji}
 
-Ciekawy do sprawdzenia jest sam narzut platofrmy testowej, który nie wynika z generowania odpowiedzi. Aby tego dokonać, stworzony został test działający jedynie w pamięci wirtualnej maszyny Javy, który nie komunikuje się z niczym na zewnątrz.
+Ciekawy do sprawdzenia jest sam narzut platformy testowej, który nie wynika z generowania odpowiedzi. Aby tego dokonać, stworzony został test działający jedynie w pamięci wirtualnej maszyny Javy, który nie komunikuje się z niczym na zewnątrz.
 
 Uniknięcie optymalizacji (aby cała pętla nie została pominięta) zostało osiągnięte przez kontrolę rozmiaru wygenerowanych danych.
 
