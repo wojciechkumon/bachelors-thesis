@@ -2,11 +2,11 @@
 
 Założeniem projektu było stworzenie konfigurowalnej platformy umożliwiającej przeprowadzanie testów wydajnościowych dla różnych metod komunikacji międzyprocesowej. Głowna część (silnik testujący) zrealizowana została w oparciu o Javę 9 i jej wirtualną maszynę.
 
-Dane wejściowe to m. in. wybrany sposób komunikacji oraz jego konfiguracja, a także rozmiar danych do wysłania i odbioru. Aplikacja wykona pomiary oraz zapisze wyniki w formacie CSV.
+Dane wejściowe to m.in. wybrany sposób komunikacji oraz jego konfiguracja, a także rozmiar danych do wysłania i odbioru. Aplikacja wykona pomiary oraz zapisze wyniki w formacie CSV.
 
-Wartość, która jest istotna to czas jaki zajęła dwukierunkowa komunikacja. Cechuje się ona nanosekundową precyzją, lecz jej rozdzielczość jest większa. Wynika to działania metody \textit{System.nanoTime()} w Javie.
+Wartość, która jest istotna to czas, jaki zajęła dwukierunkowa komunikacja. Cechuje się ona nanosekundową precyzją, lecz jej rozdzielczość jest większa. Wynika to działania metody \textit{System.nanoTime()} w Javie.
 
-\begin{lstlisting}[caption={Metoda klasy abstrakcyjnej AbstractTransferTester, która jest wykorzysywana przez wszystkie sposoby komunikacji do wykonania pomiarów (implementowane/przeciążane są ostatnie 3 metody).},captionpos=b]
+\begin{lstlisting}[caption={Metoda klasy abstrakcyjnej AbstractTransferTester, która jest wykorzystywana przez wszystkie sposoby komunikacji do wykonania pomiarów (implementowane/przeciążane są ostatnie 3 metody).},captionpos=b]
     public Metrics test(TestProps testProps) {
         beforeTest(testProps);
         long start = System.nanoTime();
@@ -35,9 +35,9 @@ Wartość, która jest istotna to czas jaki zajęła dwukierunkowa komunikacja. 
 
 Aby zachować wiarygodność testów, przeprowadzone zostały wielokrotnie - każda wykorzystana konfiguracja testowa była wykonana co najmniej 1000-krotnie.
 
-Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, aby \enquote{rozgrzać maszynę writualną}. To znaczy, aby uzyskać pełną wydajność. Celem jest wcześniejsze załadowanie klas do pamięci oraz poczekanie aż JIT (ang. \textit{just-in-time compilation} - kompilacja tuż przed wykonaniem kodu) dokona kompilacji do kodu natywnego oraz optymalizacji.
+Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, aby \enquote{rozgrzać maszynę wirtualną}. To znaczy, aby uzyskać pełną wydajność. Celem jest wcześniejsze załadowanie klas do pamięci oraz poczekanie aż JIT (ang. \textit{just-in-time compilation} - kompilacja tuż przed wykonaniem kodu) dokona kompilacji do kodu natywnego oraz optymalizacji.
 
-Charakter testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez rekonfigurowania serwerów oczekujących na klienta.
+Charakter testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez zmiany konfiguracji serwerów oczekujących na klienta.
 
 Odpowiedź generowana po stronie implementowanej w C/C++ została ujednolicona, tak aby nie fałszować różnic między metodami transportu.
 
@@ -57,7 +57,7 @@ W kolejnych sekcjach przybliżony zostanie sposób testowania poszczególnych me
 
 \section{Własny protokół oparty o TCP}
 
-Zaimplementowany został własny protokół służący badaniu szybkości transferu danych oparty o gniazda TCP. Aby klient mógł zlokalizować serwer potrzebny jest mu jego adres IP i port oraz oczywiście musi istnieć możliwość stworzenia trasy.
+Zaimplementowany został własny protokół służący badaniu szybkości transferu danych oparty o gniazda TCP. Aby klient mógł zlokalizować serwer, potrzebny jest mu jego adres IP i port oraz oczywiście musi istnieć możliwość stworzenia trasy.
 
 Strona serwerowa wykorzystuje bibliotekę \texttt{unistd.h}. Klient opiera się o~standardową bibliotekę Javy, czyli klasę \texttt{java.net.Socket}.
 
@@ -102,7 +102,7 @@ Serwer wystawia zasób pod adresem \texttt{/testResult}. Dane transferowane są 
     \caption{Diagram prezentujący komunikację klienta z serwerem HTTP}
 \end{figure}
 
-Implemetancja strony serwerowej wykorzystuje bibliotekę ngrest (\url{https://github.com/loentar/ngrest}), służącą do tworzenie serwisów RESTowych.
+Implementacja strony serwerowej wykorzystuje bibliotekę ngrest (\url{https://github.com/loentar/ngrest}), służącą do tworzenia serwisów RESTowych.
 
 Klient Javy oparty jest \textit{OkHttp} (\url{http://square.github.io/okhttp}) jako klienta HTTP oraz \textit{Jackson} \newline (\url{https://github.com/FasterXML/jackson}) do parsowania i budowania formatu JSON.
 
@@ -130,12 +130,12 @@ Komunikacja pomija serwis nazw - klient zna IOR, do którego wysyła zapytania.
     };
 \end{lstlisting}
 
-Protokół wymiany danych informuje serwer, jakej długości jest oczekiwana odpowiedź oraz przekazuje samo żądanie. Informacja zwrotna zostaje wygenerowana tak, aby dotrzymać wymaganego rozmiaru.
+Protokół wymiany danych informuje serwer, jakiej długości jest oczekiwana odpowiedź oraz przekazuje samo żądanie. Informacja zwrotna zostaje wygenerowana tak, aby dotrzymać wymaganego rozmiaru.
 
 
 \section{Pliki}
 
-System plików nie został stworzony w celu komunikacji typu żądanie-odpowiedź. Należało zatem zaimitować takie zachowanie. Został zaimplementowany własny protokół, który spełnia taką funkcję.
+System plików nie został stworzony w celu komunikacji typu żądanie-odpowiedź. Należało zatem zasymulować takie zachowanie. Został zaimplementowany własny protokół, który spełnia taką funkcję.
 
 Format pliku żądania zawiera:
 \newline
@@ -162,9 +162,9 @@ Poniżej znajduje się diagram przedstawiający komunikację.
     \item Usunięcie plików \texttt{UUID\_request} i \texttt{UUID\_response}
 \end{enumerate}
 
-W kliencie Javy zastosowany został komponent \textit{File Monitor} z biblioteki \textit{Apache Commons IO} (\url{https://commons.apache.org/proper/commons-io}). Niestety nie wspiera on natywnych interfejsów informujących o zdarzeniach w systemie plików (np. \textit{inotify} dla Linuksa, FSEvents dla macOS, czy \textit{FileSystemWatcher} dla Windowsa). Zamiast tego skonfigurowne zostało skanowanie katalogu co 2ms.
+W kliencie Javy zastosowany został komponent \textit{File Monitor} z biblioteki \textit{Apache Commons IO} (\url{https://commons.apache.org/proper/commons-io}). Niestety nie wspiera on natywnych interfejsów informujących o zdarzeniach w systemie plików (np. \textit{inotify} dla Linuksa, FSEvents dla macOS, czy \textit{FileSystemWatcher} dla Windowsa). Zamiast tego skonfigurowane zostało skanowanie katalogu co 2ms.
 
-Serwer C++ wykorzystuje \textit{inotify} (podsystem jądra Linuksa, który służy do powiadamiania o~zdarzeniach w systemie plików \cite{inotify_man}), dzięki czemu implementacja jest wydajna i nie wykonuje zbędynch skanów katalogu.
+Serwer C++ wykorzystuje \textit{inotify} (podsystem jądra Linuksa, który służy do powiadamiania o~zdarzeniach w systemie plików \cite{inotify_man}), dzięki czemu implementacja jest wydajna i nie wykonuje zbędnych skanów katalogu.
 
 
 \section{JNI}
