@@ -1,34 +1,34 @@
 \chapter{Komunikacja międzyprocesowa}
 
-Procesy mogą być niezależne - jeśli nie oddziaływują na inne (nie dzielą żadnych danych) lub współpracujące (ang. \textit{cooperating}) - jeśli mogą wpływać na pozostałe procesy lub inne procesy mogą oddziaływać na nie \cite{Silber06}.
+Procesy mogą być niezależne - jeśli nie oddziałują na inne (nie dzielą żadnych danych) lub współpracujące (ang. \textit{cooperating}) - jeśli mogą wpływać na pozostałe procesy lub inne procesy mogą oddziaływać na nie \cite{Silber06}.
 
-Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. O Zawiera on m. in. integrację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
+Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. O Zawiera on m.in. integrację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
 
 Każde rozwiązanie ma swoje wady i zalety. Niektóre działają w architekturze klient - serwer, inne współdzielą zasoby lub wykonują potrzebny program. Czynników poróżniających je jest wiele. To przede wszystkim czas komunikacji dla różnych rozmiarów wiadomości, ale także wspierane systemy operacyjne, możliwość komunikacji sieciowej, asynchroniczność, czy wsparcie dla wielu języków programowania.
 
 
 \section{Komunikacja przez pliki}
 
-Polega na zapisie pliku w miejscu dostępnym także dla innego procesu. Proces zapisujący dane tworzy plik lub modyfikuje istniejący, zaś proces czytający sprawdza jego obecność oraz zawartość. Metoda ta jest wspierana przez większość systemów operacyjnych. Pliki znajdują się w wybranym systemie plików, a ten dowolnym urządzeniu (najczęściej dysku twardym lub SSD, ale także np. w pamięci RAM).
+Polega na zapisie pliku w miejscu dostępnym także dla innego procesu. Proces zapisujący dane tworzy plik lub modyfikuje istniejący, proces czytający sprawdza zaś jego obecność oraz zawartość. Metoda ta jest wspierana przez większość systemów operacyjnych. Pliki znajdują się w wybranym systemie plików, a ten dowolnym urządzeniu (najczęściej dysku twardym lub SSD, ale także np. w pamięci RAM).
 
 Możliwe jest zdalne skomunikowanie maszyn. Wykorzystać do tego można protokół transferu plików (FTP - ang. \textit{File Transfer Protocol}). Wymaganie to serwer FTP, z którym łączyć się będą klienty, aby zapisywać i czytać pliki.
 
-Celem systemów plików nie jest działanie w trybie żądanie-odpowiedź, aby zintegrować aplikacje. Można jednak próbować zasymulować takie zachowanie. Przykładem jest wybranie wspólnego katalogu dla programów, które będą go sprawdzać cyklicznie lub też oczekiwać na powiadomienie od systemu operacyjnego. Należy wtedy jeszcze zapewnić synchronizację, aby nie doprowadzić do czytania pliku, kiedy jeszcze nie został ukończony jego zapis albo współbieżnej modyfikacji. Trzeba także rozróżnić pliki, które są żądaniami od odpowiedzi, aby procesy obsłużyły tylke te, które są im przeznaczone.
+Celem systemów plików nie jest działanie w trybie żądanie-odpowiedź, aby zintegrować aplikacje. Można jednak próbować zasymulować takie zachowanie. Przykładem jest wybranie wspólnego katalogu dla programów, które będą go sprawdzać cyklicznie lub też oczekiwać na powiadomienie od systemu operacyjnego. Należy wtedy jeszcze zapewnić synchronizację, aby nie doprowadzić do czytania pliku, kiedy jeszcze nie został ukończony jego zapis albo współbieżnej modyfikacji. Trzeba także rozróżnić pliki, które są żądaniami od odpowiedzi, aby procesy obsłużyły tylko te, które są im przeznaczone.
 
 
 \section{Sygnały}
 
-Sygnały to ograniczona metoda komunikacji. Są to asynchroniczne powiadomienia, które można wysłać do innego procesu. Zazwyczaj nie stosuje się ich do przesłania danych, lecz jedynie do zakomunikowania pewnego zdarzenia. Proces odbierający może zaregować na wybrany sygnał w dowolny sposób, rejestrując funkcję do jego obsługi (ang. \textit{signal handler}).
+Sygnały to ograniczona metoda komunikacji. Są to asynchroniczne powiadomienia, które można wysłać do innego procesu. Zazwyczaj nie stosuje się ich do przesłania danych, lecz jedynie do zakomunikowania pewnego zdarzenia. Proces odbierający może zareagować na wybrany sygnał w dowolny sposób, rejestrując funkcję do jego obsługi (ang. \textit{signal handler}).
 
 
 \section{Potoki nienazwane}
 
-Potoki nienazwane to sposób na komunikację jednokierunkową FIFO (ang. \textit{first in, first out} - pierwszy na wejściu, pierwszy na wyjściu). Zazwyczaj program tworzy taki potok, po czym uruchamia nowe procesy, które otrzymują dostęp do jego końca. Inną częstą aplikacją tej metody jest wykorzystanie w uniksowych powłokach systemowych. Przekierwane wtedy zostaje standardowe wyjście do standardowego wejścia kolejnego procesu (korzystając z symbolu \enquote{|})
+Potoki nienazwane to sposób na komunikację jednokierunkową FIFO (ang. \textit{first in, first out} - pierwszy na wejściu, pierwszy na wyjściu). Zazwyczaj program tworzy taki potok, po czym uruchamia nowe procesy, które otrzymują dostęp do jego końca. Inną częstą aplikacją tej metody jest wykorzystanie w uniksowych powłokach systemowych. Przekierowane wtedy zostaje standardowe wyjście do standardowego wejścia kolejnego procesu (korzystając z symbolu \enquote{|})
 
 
 \section{Potoki nazwane}
 
-Potoki nazwane są rozszerzeniem nienazwanych. Różnią się jednak cyklem życia. Nie zostają zniszczone wraz z końcem procesu - istnieją one dopóki system jest uruchomiony. Można je też jawnie usunąć. Umożliwia to integrację procesów zapewniając bardziej luźne powiązanie niż w przypadku potoków nienazwanych.
+Potoki nazwane są rozszerzeniem nienazwanych. Różnią się jednak cyklem życia. Nie zostają zniszczone wraz z końcem procesu - istnieją one, dopóki system jest uruchomiony. Można je też jawnie usunąć. Umożliwia to integrację procesów, zapewniając luźniejsze powiązanie niż w przypadku potoków nienazwanych.
 
 
 \section{Pamięć współdzielona}
@@ -40,12 +40,12 @@ Pamięć współdzielona jest najszybszą z możliwych form komunikacji międzyp
 
 Gniazda (ang. \textit{socket}) umożliwiają dwustronną komunikację strumieniową poprzez interfejs sieciowy. Zazwyczaj odnoszą sie do protokołu internetowego. Mamy wtedy do czynienia z adresem, z którym powiązane jest gniazdo. Składa się on z adresu IP oraz portu. Połączyć można procesy na tym samym komputerze, ale także dowolne będące w sieci. 
 
-Ta metoda komunikacji rzadko zachowuje granice wiadomości (ang. \textit{message boundaries}) tzn. transmitowane mogą być także fragmenty danych, czyli w jednym buforze znaleźć można koniec poprzedniej i początek kolejnej wiadomości. O poprawne dzielenie komunikatów dbają protokoły wyższych warstw, np. prokół UDP pozwala zachować granice wiadomości - są one wysyłanie pojedynczo, nigdy razem, nigdy nie są dzielone.
+Ta metoda komunikacji rzadko zachowuje granice wiadomości (ang. \textit{message boundaries}) tzn. transmitowane mogą być także fragmenty danych, czyli w jednym buforze znaleźć można koniec poprzedniej i początek kolejnej wiadomości. O poprawne dzielenie komunikatów dbają protokoły wyższych warstw, np. protokół UDP pozwala zachować granice wiadomości - są one wysyłanie pojedynczo, nigdy razem, nigdy nie są dzielone.
 
 
 \subsection{Protokół UDP}
 
-Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwa wysyłanie datagramów. Charakteryzuje go bezpołączeniowość - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu spowodowany retransmisją.
+Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwia wysyłanie datagramów. Charakteryzuje go bezpołączeniowość - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu spowodowany retransmisją.
 
 
 \subsection{Protokół TCP}
@@ -77,7 +77,7 @@ Systemy kolejkowe umożliwiają odłożenie wiadomości na kolejkę, z której w
 
 \section{Przekazywanie wiadomości}
 
-Programy moga także komunikować się kanałami niezarządzanym przez system operacyjny. Wysyłana jest wiadomość, a za uruchomienie odpowiedniego kodu odpowiada odbiorca i infrastruktura wspomagająca. Ten sposób jest często używany do budowania rozproszonych aplikacji. Komunikacja może być zarówno synchroniczna, jak i asynchroniczna. Abtrakcją innego procesu może być obiekt, ale też na przykład aktor (np. stosowany w Akkce\cite{akka} model aktorów). Przesyłanie wiadomości może być zaimplementowane w dowolny sposób.
+Programy mogą także komunikować się kanałami niezarządzanym przez system operacyjny. Wysyłana jest wiadomość, a za uruchomienie odpowiedniego kodu odpowiada odbiorca i infrastruktura wspomagająca. Ten sposób jest często używany do budowania rozproszonych aplikacji. Komunikacja może być zarówno synchroniczna, jak i asynchroniczna. Abstrakcją innego procesu może być obiekt, ale też na przykład aktor (np. stosowany w Akkce\cite{akka} model aktorów). Przesyłanie wiadomości może być zaimplementowane w dowolny sposób.
 
 
 \subsection{Zdalne wykonywanie procedur}
@@ -87,7 +87,7 @@ Zdalne wykonywanie procedur (RPC - ang. \textit{remote procedure call}) to proto
 
 \subsection{Java RMI}
 
-Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiednikiem RPC dla Javy. Technologia ta korzysta z serializacji Javy oraz rozproszonego odśmiecania pamięci (ang. \textit{distributed garbage collection}). Pozwala na zdalne wykonywanie metod na obiektach, które mogą znajdować się na innych maszynach wirtualnych Javy. Wymaganiem jest wcześniejsza rejestracja takich obiektów pod wybranymi nazwami w rejestrze \textit{RMI Registry}. Klient może pobrać tzw. \textit{stub}, czyli obiekt umożliwiający komunikację ze zdalną implementacją, mający taki sam interfejs. Wywoływanie metod jest idenetyczne jak w przypadku lokalnych obiektów. Rejestr nie pośredniczy w komunikacji. Wadą tej technologii jest brak wsparcia dla innych języków programowania.
+Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiednikiem RPC dla Javy. Technologia ta korzysta z serializacji Javy oraz rozproszonego odśmiecania pamięci (ang. \textit{distributed garbage collection}). Pozwala na zdalne wykonywanie metod na obiektach, które mogą znajdować się na innych maszynach wirtualnych Javy. Wymaganiem jest wcześniejsza rejestracja takich obiektów pod wybranymi nazwami w rejestrze \textit{RMI Registry}. Klient może pobrać tzw. \textit{stub}, czyli obiekt umożliwiający komunikację ze zdalną implementacją, mający taki sam interfejs. Wywoływanie metod jest identyczne jak w przypadku lokalnych obiektów. Rejestr nie pośredniczy w komunikacji. Wadą tej technologii jest brak wsparcia dla innych języków programowania.
 
 
 \subsection{CORBA}
@@ -108,7 +108,7 @@ CORBA wprowadza warstwę abstrakcji, która ukrywa różnice pomiędzy systemami
 
 Skorzystać możemy z wielu predefiniowanych typów (np. \textit{short}, \textit{long}, \textit{double}, \textit{string}), jak również tworzyć własne struktury czy unie oparte o typy elementarne.
 
-W technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada interfejs pożądanego obiektu oraz jego implementację, która zostanie oddelegowana do serwera. Aby się z nim połączyć trzeba posiadać jego referencję - IOR (ang. \textit{Interoperable Object Reference}). Alternatywną jest skorzystanie z serwisu nazw (ang. \textit{NameService}) - działa on podobnie do systemu nazw domenowych (DNS). Serwer rejestruje się w nim pod wybraną nazwą, by klient mógł za jej pomocą uzyskać zarejestrowany IOR.
+W technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada interfejs pożądanego obiektu oraz jego implementację, która zostanie oddelegowana do serwera. Aby się z nim połączyć, trzeba posiadać jego referencję - IOR (ang. \textit{Interoperable Object Reference}). Alternatywną jest skorzystanie z serwisu nazw (ang. \textit{NameService}) - działa on podobnie do systemu nazw domenowych (DNS). Serwer rejestruje się w nim pod wybraną nazwą, by klient mógł za jej pomocą uzyskać zarejestrowany IOR.
 
 \begin{figure}[h]
     \centering
@@ -122,7 +122,7 @@ W technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada
 
 Java Native Interface (JNI) co prawda nie jest metodą komunikacji między procesami, mimo to umożliwia integrację z programami napisanymi w innych językach. Pozwala, aby kod Javy uruchomiony w wirtualnej maszynie wywoływał oraz był wywoływany przez natywne aplikacje (napisane mogą one być w C, C++, asemblerze, ale także na przykład w Go i Rust) \cite{JNI17}.
 
-Cel JNI to możliwość wykonania wszystkiego, co nie jest wykonalne używając jedynie Javy, np. wykorzystywywanie bibliotek zależnych od platformy oraz zwiększenie wydajności w krytycznych obszarach aplikacji.
+Cel JNI to możliwość wykonania wszystkiego, co nie jest wykonalne, używając jedynie Javy, np. wykorzystywanie bibliotek zależnych od platformy oraz zwiększenie wydajności w krytycznych obszarach aplikacji.
 
 Natywne programy mogą korzystać z obiektów Javy (tworzyć je, wykonywać metody, odbierać przekazane w parametrach). Sama biblioteka standardowa Javy wykorzystuje tę technologię.
 
@@ -153,7 +153,7 @@ REST jest stylem architektonicznym służącym do reprezentacji zasobów oraz ic
 
 Wykorzystywane są metody HTTP, które wykonują akcje zgodne ze specyfikacją \cite{RFC7231}. Zasoby adresowane są za pomocą URI. REST nie jest protokołem, brakuje więc standardu jasno go opisującego. Formatem danych najczęściej jest JSON. Metody takie jak na przykład GET, PUT, DELETE są idempotentne, to znaczy, że wielokrotne ich wywołanie powoduje identyczny efekt jak jednokrotne.
 
-Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application State}). Odpowiedzi serwera zwierają wtedy linki do innych zasobów, umożliwiając przejście wszystkich powiązań pomiędzy obiektami przez klienta. Analogicznie działają hiperłącza zamieszczone na stronach internetowych, dzięki czemu użytkownik może się nawigować znając tylko jeden adres.
+Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application State}). Odpowiedzi serwera zwierają wtedy linki do innych zasobów, umożliwiając przejście wszystkich powiązań pomiędzy obiektami przez klienta. Analogicznie działają hiperłącza zamieszczone na stronach internetowych, dzięki czemu użytkownik może się nawigować, znając tylko jeden adres.
 
 \begin{table}[h!]
   \centering
@@ -164,7 +164,7 @@ Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application
     \hline
     \textbf{GET} & Zwraca reprezentację zasobu & Zwraca całą kolekcję \\
     \hline
-    \textbf{POST} & Zazwyczaj nie używany & \begin{tabular}{@{}c@{}} Tworzy nowy zasób wykorzystując wysłany \\ przez klienta, zazwyczaj w odpowiedzi \\ znajduje się adres nowego elementu \end{tabular} \\
+    \textbf{POST} & Zazwyczaj nie używany & \begin{tabular}{@{}c@{}} Tworzy nowy zasób, wykorzystując wysłany \\ przez klienta, zazwyczaj w odpowiedzi \\ znajduje się adres nowego elementu \end{tabular} \\
     \hline
     \textbf{PUT} & \begin{tabular}{@{}c@{}} Zamienia wybrany zasób \\ na wysłany przez klienta \end{tabular} & \begin{tabular}{@{}c@{}} Zamienia całą kolekcję \\ na wysłaną przez klienta \end{tabular} \\
     \hline
