@@ -19,10 +19,6 @@ public class MockTester extends AbstractTransferTester {
   }
 
   private byte[] getMockResponse(int responseSize) {
-    byte[] response = new byte[responseSize];
-    for (int i = 0; i < responseSize; i++) {
-      response[i] = (byte) ((i % 26) + 65);
-    }
-    return response;
+    return new byte[responseSize];
   }
 }

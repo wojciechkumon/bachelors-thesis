@@ -173,11 +173,10 @@ void putBytesToResponseFile(const char *dirPath, string &baseFileName, int respo
 
     ofstream tmpResponseStream(tmpResponsePath);
     if (tmpResponseStream.is_open()) {
-
-        for (int i = 0; i < responseSize; ++i) {
-            char randomLetter = (i % 26) + 65;
-            tmpResponseStream << randomLetter;
-        }
+        char* buffer = new char[responseSize];
+        tmpResponseStream.write(buffer, responseSize);
+        tmpResponseStream.flush();
+        delete[] buffer;
         tmpResponseStream.close();
     }
 

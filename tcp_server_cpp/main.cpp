@@ -13,8 +13,6 @@
 
 void sendResponse(int fd, int size);
 
-void fillBuffer(char buffer[1024], int fill);
-
 int fromBytesToInt(const char *bytes);
 
 void handleClient(int new_conn_fd) {
@@ -51,15 +49,8 @@ void sendResponse(int fd, int sizeToSend) {
     int sizeLeft = sizeToSend;
     while (sizeLeft > 0) {
         int bufferSizeToFill = sizeLeft < BUFFER_SIZE ? sizeLeft : BUFFER_SIZE;
-        fillBuffer(buffer, bufferSizeToFill);
         send(fd, buffer, (size_t) bufferSizeToFill, 0);
         sizeLeft -= BUFFER_SIZE;
-    }
-}
-
-void fillBuffer(char *buffer, int sizeToFill) {
-    for (int i = 0; i < sizeToFill; i++) {
-        buffer[i] = (i % 26) + 65;
     }
 }
 

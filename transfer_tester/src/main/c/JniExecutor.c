@@ -25,10 +25,5 @@ void readRequest(JNIEnv *env, jbyteArray* requestBytes) {
 }
 
 jbyte* prepareResponseRandomBytes(JNIEnv *env, jbyteArray *response, jint responseSize) {
-    int i;
-    jbyte *bytes = (*env)->GetByteArrayElements(env, *response, 0);
-    for (i = 0; i < responseSize; i++) {
-        bytes[i] = (i % 26) + 65;
-    }
-    return bytes;
+    return (*env)->GetByteArrayElements(env, *response, 0);
 }

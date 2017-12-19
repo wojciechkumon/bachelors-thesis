@@ -17,9 +17,6 @@ public:
 //        std::cout << "Data size received: " << data.length() << ", responseSize: " << responseSize << std::endl;
 
         std::string responseLetters(responseSize, 'A');
-        for (int i = 0; i < responseSize; i++) {
-            responseLetters[i] = (i % 26) + 65;
-        }
         return responseLetters;
     }
 };

@@ -16,9 +16,7 @@ public:
 
 char *CorbaConnectorImpl::get(CORBA::Long responseSize, const char *request) {
     char *response = new char[responseSize + 1];
-    for (int i = 0; i < responseSize; i++) {
-        response[i] = (i % 26) + 65;
-    }
+    memset(response, 'A', responseSize * sizeof(*response));
     response[responseSize] = '\0';
     return CORBA::string_dup(response);
 }
