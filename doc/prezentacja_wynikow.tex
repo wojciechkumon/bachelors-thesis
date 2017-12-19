@@ -49,13 +49,73 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \section{Porównanie wyników}
 
-Najważniejszym zestawieniem jest porównanie czasów komunikacji dla różnych kanałów transmisji danych, przy takim samym rozmiarze przesyłanych danych. Poniżej zaprezentowane zostaną przykładowe wykresy. Z niektórych usunięte zostały najwolniejsze metody, aby dostrzec różnicę między najszybszymi.
+Najważniejszym zestawieniem jest porównanie czasów komunikacji dla różnych kanałów transmisji danych, przy takim samym rozmiarze przesyłanych danych. Poniżej zaprezentowane zostaną przykładowe wykresy. Z niektórych usunięte zostały najwolniejsze metody, aby dostrzec różnicę między najszybszymi. Zaprezentowane zostaną mediany oraz odchylenia standardowe. Wartości dla \textit{Mock} oznaczają implementację, która nie transmituje danych, tylko od razu je generuje.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.38]{img/charts/chart_1024_1024.png}
+    \caption{Wykres prezentujący czasy wykonania dla żądań (1KiB) i odpowiedzi (1KiB)}
+    \label{fig:chart_1024_1024}
+\end{figure}
+
+Większość porównań dla innych rozmiarów danych jest proporcjonalna do wykresu \ref{fig:chart_1024_1024}. Pierwsze wnioski ukazują, że komunikacja przez pliki jest najwolniejsza, REST niewiele szybszy, a zdecydowanie najlepiej sprawuje się JNI.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.38]{img/charts/chart_16_1048576.png}
+    \caption{Wykres prezentujący czasy wykonania dla żądań (16B) i odpowiedzi (1MiB)}
+    \label{fig:chart_16_1048576}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.38]{img/charts/chart_1048576_16.png}
+    \caption{Wykres prezentujący czasy wykonania dla żądań (1MiB) i odpowiedzi (16B)}
+    \label{fig:chart_1048576_16}
+\end{figure}
+
+Wykresy \ref{fig:chart_16_1048576} i \ref{fig:chart_1048576_16} prezentują różnicę w przypadku dużych zapytań i odpowiedzi. Należy pamiętać, że czas generowania wiadomości zwrotnej wlicza się do czasu komunikacji, więc czasy nie mogą być równe.
+Dostrzec można również wielką dysproporcję w przypadku RESTa - prawdopodobnie wynika z niewydajnej implementacji biblioteki użytej po stronie serwera. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.36]{img/charts/chart_16_16.png}
+    \caption{Wykres prezentujący czasy wykonania dla żądań (16B) i odpowiedzi (16B)}
+    \label{fig:chart_16_16}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.36]{img/charts/chart_16_16_removed.png}
+	\caption{Wykres prezentujący czasy wykonania dla żądań (16B) i odpowiedzi (16B) z wybranymi metodami komunikacji}
+	\label{fig:chart_16_16_removed}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.36]{img/charts/chart_8192_8192_removed.png}
+	\caption{Wykres prezentujący czasy wykonania dla żądań (8192B) i odpowiedzi (8192B) z wybranymi metodami komunikacji}
+	\label{fig:chart_8192_8192_removed}
+\end{figure}
+
+Narzut wynikający z samej technologii przy minimalnych rozmiarach danych (16B) jest największy dla plików (wynika z obserwatora katalogu, który wykonuje skanowanie co 2ms). Wysoki okazuje się także dla RESTa (protokół HTTP oraz serializacja do formatu JSON). Sam mechanizm, którego używa CORBA, pochłania 1ms.
+
+
+JNI okazuje się najszybszą metodą przekazywania danych do aplikacji natywnych. Cechuje się też stabilnością (niskie odchylenie standardowe). Nie pozwala jednak na wywołanie zdalne, a jedynie na lokalne, synchroniczne wykonanie metody.
+
+
+
+
+Implementacja testowa (bez transportu danych) zgodnie z przewidywaniami okazała się najszybsza. Udowadnia, że dla prostych metod (w tym przypadku zwykłej pętli) nie warto wykorzystywać natywnych języków i lepiej zdać się na optymalizacje wirtualnej maszyny Javy, gdyż unikniemy wtedy narzutów związanych z komunikacją.
 
 
 \section{tmp}
 
-wnioski z testow:
+wnioski z testów:
 - wykresy
 
 implementacja - co może jeszcze:
-- rozmiar każdej z technologi (np. linie kodu, rozmiar w bajtach)
+- rozmiar każdej z technologii (np. linie kodu, rozmiar w bajtach): CORBA omniORB około 10MB, JNI 0, TCP 0, REST, pliki
