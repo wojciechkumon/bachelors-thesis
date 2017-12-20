@@ -52,6 +52,7 @@ public class JavaFxChartSaver extends Application {
           .toList()
           .toMaybe()
           .blockingGet();
+      logChartData(stats);
       Scene comparisionChart = prepareChartScene(chartData, stats);
       saveAsPng(comparisionChart, chartData.getChartPath());
       stats.forEach(testTypeStats -> saveTestTypeChart(testTypeStats, chartData));
@@ -212,5 +213,19 @@ public class JavaFxChartSaver extends Application {
     }
     lastIndex = lastIndex + 3 < data.size() ? lastIndex + 1 : data.size() - 1;
     return lastIndex;
+  }
+
+  private void logChartData(List<TestExecutionStats> testExecutionStats) {
+      testExecutionStats.stream()
+              .map(this::statsToString)
+              .forEach(log::info);
+  }
+
+  private String statsToString(TestExecutionStats stats) {
+      return stats.getTestType() + " "
+              + "requestSize=" + stats.getRequestBytes() + " "
+              + "responseSize=" + stats.getResponseBytes() + " "
+              + "medianNanos=" + stats.getMedianNanos() + " "
+              + "standardDeviationNanos=" + stats.getStandardDeviationNanos();
   }
 }
