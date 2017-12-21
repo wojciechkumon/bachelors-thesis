@@ -5,6 +5,7 @@ Przeprowadzone zostały testy dla zaimplementowanych metod komunikacji. Wszystki
 Wszystkie uruchomienia korzystały z tej samej platformy:
 \begin{itemize}
     \item System operacyjny: Ubuntu 17.10
+    \item Java 9.0.1+11
     \item Procesor: intel i5 4690k
     \item Pamięć RAM: 16GB 2400MHz CL10
     \item dysk SSD (odczyt 250 MB/s, zapis 500MB/s, 72000 IOPS)
@@ -24,26 +25,14 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.38]{img/charts/REST_chart_1024_1024.png}
-    \caption{Przykładowy wykres rozkładu czasów wykonania dla REST}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.38]{img/charts/CORBA_chart_262144_262144.png}
+    \includegraphics[scale=0.38]{img/charts/CORBA_chart_8192_8192.png}
     \caption{Przykładowy wykres rozkładu czasów wykonania dla technologii CORBA}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.38]{img/charts/FILE_chart_8192_8192.png}
+    \includegraphics[scale=0.38]{img/charts/FILE_chart_1048576_16.png}
     \caption{Przykładowy wykres rozkładu czasów wykonania dla plików}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.38]{img/charts/JNI_chart_1048576_1048576.png}
-    \caption{Przykładowy wykres rozkładu czasów wykonania dla JNI}
 \end{figure}
 
 
@@ -53,52 +42,232 @@ Najważniejszym zestawieniem jest porównanie czasów komunikacji dla różnych 
 
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.38]{img/charts/chart_1024_1024.png}
-    \caption{Wykres prezentujący czasy wykonania dla żądań (1KiB) i odpowiedzi (1KiB)}
-    \label{fig:chart_1024_1024}
+\begin{tikzpicture}
+\begin{axis}[
+    title = {Żądanie 1KiB, odpowiedź 1KiB},
+    width=15cm,
+    height=8cm,
+    xtick={1,...,6},
+    xticklabels={
+        CORBA,
+        Pliki,
+        JNI,
+        Mock,
+        REST,
+        TCP
+    },
+    ymin=0,
+    ylabel={średnia [$\mu$s]},
+    nodes near coords,
+    grid=major,
+    ybar
+]
+\addplot[
+    fill=blue!25,
+    draw=black,
+    point meta=y,
+    every node near coord/.style={inner ysep=5pt},
+    error bars/.cd,
+    y dir=both,
+    y explicit
+]
+table [y error=error] {
+    x       y        error     label
+    1   1177     1435      1
+    2   2571     1151      2
+    3   12         283        3
+    4   6           168        4
+    5   1500     176        5
+    6   343       88          6
+};
+\end{axis}
+\end{tikzpicture}
+\caption{}
+\label{fig:chart_1024_1024}
 \end{figure}
+
 
 Większość porównań dla innych rozmiarów danych jest proporcjonalna do wykresu \ref{fig:chart_1024_1024}. Pierwsze wnioski ukazują, że komunikacja przez pliki jest najwolniejsza, REST niewiele szybszy, a zdecydowanie najlepiej sprawuje się JNI.
 
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.38]{img/charts/chart_16_1048576.png}
-    \caption{Wykres prezentujący czasy wykonania dla żądań (16B) i odpowiedzi (1MiB)}
-    \label{fig:chart_16_1048576}
+\begin{tikzpicture}
+\begin{axis}[
+    title = {Żądanie 16B, odpowiedź 1MiB},
+    width=15cm,
+    height=8cm,
+    xtick={1,...,6},
+    xticklabels={
+        CORBA,
+        Pliki,
+        JNI,
+        Mock,
+        REST,
+        TCP
+    },
+    ymin=0,
+    ylabel={średnia [$\mu$s]},
+    nodes near coords,
+    grid=major,
+    ybar
+]
+\addplot[
+    fill=blue!25,
+    draw=black,
+    point meta=y,
+    every node near coord/.style={inner ysep=5pt},
+    error bars/.cd,
+    y dir=both,
+    y explicit
+]
+table [y error=error] {
+    x       y        error     label
+    1   5586     1553      1
+    2   3854     1380      2
+    3   381       317        3
+    4   101       263        4
+    5   13979   2194      5
+    6   1976     660        6
+};
+\end{axis}
+\end{tikzpicture}
+\caption{}
+\label{fig:chart_16_1048576}
 \end{figure}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.38]{img/charts/chart_1048576_16.png}
-    \caption{Wykres prezentujący czasy wykonania dla żądań (1MiB) i odpowiedzi (16B)}
-    \label{fig:chart_1048576_16}
+\begin{tikzpicture}
+\begin{axis}[
+    title = {Żądanie 1MiB, odpowiedź 16B},
+    width=15cm,
+    height=8cm,
+    xtick={1,...,6},
+    xticklabels={
+        CORBA,
+        Pliki,
+        JNI,
+        Mock,
+        REST,
+        TCP
+    },
+    ymin=0,
+    ylabel={średnia [$\mu$s]},
+    nodes near coords,
+    grid=major,
+    ybar
+]
+\addplot[
+    fill=blue!25,
+    draw=black,
+    point meta=y,
+    every node near coord/.style={inner ysep=5pt},
+    error bars/.cd,
+    y dir=both,
+    y explicit
+]
+table [y error=error] {
+    x       y        error     label
+    1   5459     1240      1
+    2   2834     1233      2
+    3   71         104        3
+    4   3           94          4
+    5   64170   9701      5
+    6   1146     200        6
+};
+\end{axis}
+\end{tikzpicture}
+\caption{}
+\label{fig:chart_1048576_16}
 \end{figure}
+
 
 Wykresy \ref{fig:chart_16_1048576} i \ref{fig:chart_1048576_16} prezentują różnicę w przypadku dużych zapytań i odpowiedzi. Należy pamiętać, że czas generowania wiadomości zwrotnej wlicza się do czasu komunikacji, więc czasy nie mogą być równe.
 Dostrzec można również wielką dysproporcję w przypadku RESTa - prawdopodobnie wynika z niewydajnej implementacji biblioteki użytej po stronie serwera. 
 
-
 \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.36]{img/charts/chart_16_16.png}
-    \caption{Wykres prezentujący czasy wykonania dla żądań (16B) i odpowiedzi (16B)}
-    \label{fig:chart_16_16}
+\begin{tikzpicture}
+\begin{axis}[
+    title = {Żądanie 16B, odpowiedź 16B},
+    width=15cm,
+    height=8cm,
+    xtick={1,...,6},
+    xticklabels={
+        CORBA,
+        Pliki,
+        JNI,
+        Mock,
+        REST,
+        TCP
+    },
+    ymin=0,
+    ylabel={średnia [$\mu$s]},
+    nodes near coords,
+    grid=major,
+    ybar
+]
+\addplot[
+    fill=blue!25,
+    draw=black,
+    point meta=y,
+    every node near coord/.style={inner ysep=5pt},
+    error bars/.cd,
+    y dir=both,
+    y explicit
+]
+table [y error=error] {
+    x       y        error     label
+    1   1224     1486      1
+    2   2579     1273      2
+    3   6.5        144        3
+    4   3.7        100        4
+    5   1495     269        5
+    6   338       73          6
+};
+\end{axis}
+\end{tikzpicture}
+\caption{}
+\label{fig:chart_16_16}
 \end{figure}
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.36]{img/charts/chart_16_16_removed.png}
-	\caption{Wykres prezentujący czasy wykonania dla żądań (16B) i odpowiedzi (16B) z wybranymi metodami komunikacji}
-	\label{fig:chart_16_16_removed}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.36]{img/charts/chart_8192_8192_removed.png}
-	\caption{Wykres prezentujący czasy wykonania dla żądań (8192B) i odpowiedzi (8192B) z wybranymi metodami komunikacji}
-	\label{fig:chart_8192_8192_removed}
+\begin{tikzpicture}
+\begin{axis}[
+    title = {Żądanie 128MiB, odpowiedź 128MiB},
+    width=15cm,
+    height=8cm,
+    xtick={1,...,6},
+    xticklabels={
+        Pliki,
+        JNI,
+        Mock,
+        TCP
+    },
+    ymin=0,
+    ylabel={średnia [$ms$]},
+    nodes near coords,
+    grid=major,
+    ybar
+]
+\addplot[
+    fill=blue!25,
+    draw=black,
+    point meta=y,
+    every node near coord/.style={inner ysep=5pt},
+    error bars/.cd,
+    y dir=both,
+    y explicit
+]
+table [y error=error] {
+    x       y        error     label
+    1   259.1     1.98      1
+    2   97.57     1.6        2
+    3   6.18       1.2        3
+    4   89.86     1.6        4
+};
+\end{axis}
+\end{tikzpicture}
+\caption{}
+\label{fig:chart_134217728_134217728}
 \end{figure}
 
 Narzut wynikający z samej technologii przy minimalnych rozmiarach danych (16B) jest największy dla plików (wynika z obserwatora katalogu, który wykonuje skanowanie co 2ms). Wysoki okazuje się także dla RESTa (protokół HTTP oraz serializacja do formatu JSON). Sam mechanizm, którego używa CORBA, pochłania 1ms.
