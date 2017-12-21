@@ -39,13 +39,16 @@ Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, ab
 
 Charakter testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez zmiany konfiguracji serwerów oczekujących na klienta.
 
-Odpowiedź generowana po stronie implementowanej w C/C++ została ujednolicona, tak aby nie fałszować różnic między metodami transportu.
+Odpowiedź generowana po stronie implementowanej w C/C++ została uproszczona, aby uniknąć narzutu związanego z jej tworzeniem. W pierwszej wersji aplikacji została użyta prosta pętla:
 
 \begin{lstlisting}[caption={Fragment kodu wykorzystywanego w każdej metodzie komunikacji do generowania odpowiedzi},captionpos=b]
     for (int i = 0; i < responseSize; i++) {
         response[i] = (i % 26) + 65;
     }
 \end{lstlisting}
+
+Czas jej wykonania stanowił nawet 80\% całej komunikacji. Aby nie fałszować różnic między metodami transportu, wykorzystane są losowe dane znajdujące się aktualnie w pamięci (w zaalokowanym miejscu).
+
 
 \begin{figure}[h!]
     \centering
@@ -180,7 +183,8 @@ Java Native Interface wymaga stworzenia pomostu między maszyną wirtualną Jav
 Implementacja w C otrzymuje żądanie i oczekiwaną długość odpowiedzi, jednak są to struktury typów \texttt{jbyteArray} i \texttt{jint}, więc przed użyciem wymagają odpowiedniego mapowania. Podobnie wygląda generowanie danych zwrotnych - oczekiwany typ to \texttt{jbyteArray}.
 
 \begin{lstlisting}[caption={Natywna implementacja w C.},captionpos=b]
-    JNIEXPORT jbyteArray JNICALL Java_pl_kumon_transfertester_tester_jni_JniExecutor_requestJni(
+    JNIEXPORT jbyteArray JNICALL 
+    Java_pl_kumon_transfertester_tester_jni_JniExecutor_requestJni(
     JNIEnv *env, jobject thisObj, jbyteArray requestBytes, jint responseSize) {
 
         readRequest(env, &requestBytes);
@@ -196,22 +200,18 @@ Implementacja w C otrzymuje żądanie i oczekiwaną długość odpowiedzi, jedn
         (*env)->ReleaseByteArrayElements(env, *requestBytes, buffer, JNI_ABORT);
     }
 
-    jbyte* prepareResponseRandomBytes(JNIEnv *env, jbyteArray *response, jint responseSize) {
-        int i;
-        jbyte *bytes = (*env)->GetByteArrayElements(env, *response, 0);
-        for (i = 0; i < responseSize; i++) {
-            bytes[i] = (i % 26) + 65;
-        }
-        return bytes;
+    jbyte* prepareResponseRandomBytes(JNIEnv *env, jbyteArray *response,
+                                      jint responseSize) {
+        return (*env)->GetByteArrayElements(env, *response, 0);
     }
 \end{lstlisting}
 
 
 \section{Implementacja bez komunikacji}
 
-Ciekawy do sprawdzenia jest sam narzut platformy testowej, który nie wynika z generowania odpowiedzi. Aby tego dokonać, stworzony został test działający jedynie w pamięci wirtualnej maszyny Javy, który nie komunikuje się z niczym na zewnątrz.
+Ciekawy do sprawdzenia jest sam narzut platformy testowej, który nie wynika z warstwy transportowej. Aby tego dokonać, stworzony został test działający jedynie w pamięci wirtualnej maszyny Javy, która nie komunikuje się z niczym na zewnątrz.
 
-Uniknięcie optymalizacji (aby cała pętla nie została pominięta) zostało osiągnięte przez kontrolę rozmiaru wygenerowanych danych.
+Uniknięcie optymalizacji (aby cała alokacja tablicy nie została pominięta) zostało osiągnięte przez kontrolę rozmiaru danych.
 
 \begin{lstlisting}[caption={Test sprawdzający narzut samej platformy.},captionpos=b]
     protected void execute(TestProps testProps) throws TesterException {
@@ -220,10 +220,6 @@ Uniknięcie optymalizacji (aby cała pętla nie została pominięta) zostało os
     }
 
     private byte[] getMockResponse(int responseSize) {
-        byte[] response = new byte[responseSize];
-        for (int i = 0; i < responseSize; i++) {
-            response[i] = (byte) ((i % 26) + 65);
-        }
-        return response;
+        return new byte[responseSize];
     }
 \end{lstlisting}
