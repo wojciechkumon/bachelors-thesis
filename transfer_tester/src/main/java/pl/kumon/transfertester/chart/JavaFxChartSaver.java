@@ -227,6 +227,6 @@ public class JavaFxChartSaver extends Application {
               + "responseSize=" + stats.getResponseBytes() + " "
               + "medianNanos=" + stats.getMedianNanos() + " "
               + "meanNanos=" + (long) stats.getArithmeticMean() + " "
-              + "standardDeviationNanos=" + stats.getStandardDeviationNanos();
+              + "standardDeviationNanos=" + (long) stats.getStandardDeviationNanos();
   }
 }
