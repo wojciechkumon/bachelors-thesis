@@ -37,11 +37,12 @@ Aby zachować wiarygodność testów, przeprowadzone zostały wielokrotnie - ka�
 
 Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, aby \enquote{rozgrzać maszynę wirtualną}. To znaczy, aby uzyskać pełną wydajność. Celem jest wcześniejsze załadowanie klas do pamięci oraz poczekanie aż JIT (ang. \textit{just-in-time compilation} - kompilacja tuż przed wykonaniem kodu) dokona kompilacji do kodu natywnego oraz optymalizacji.
 
-Charakter testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez zmiany konfiguracji serwerów oczekujących na klienta.
+\label{data_generation}
+Charakter testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty (oparte o klasę \texttt{java.util.Random}) oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez zmiany konfiguracji serwerów oczekujących na klienta.
 
 Odpowiedź generowana po stronie implementowanej w C/C++ została uproszczona, aby uniknąć narzutu związanego z jej tworzeniem. W pierwszej wersji aplikacji została użyta prosta pętla:
 
-\begin{lstlisting}[caption={Fragment kodu wykorzystywanego w każdej metodzie komunikacji do generowania odpowiedzi},captionpos=b]
+\begin{lstlisting}
     for (int i = 0; i < responseSize; i++) {
         response[i] = (i % 26) + 65;
     }
@@ -50,7 +51,7 @@ Odpowiedź generowana po stronie implementowanej w C/C++ została uproszczona, a
 Czas jej wykonania stanowił nawet 80\% całej komunikacji. Aby nie fałszować różnic między metodami transportu, wykorzystane są losowe dane znajdujące się aktualnie w pamięci (w zaalokowanym miejscu).
 
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/class_diagram.png}
     \caption{Uproszczony diagram klas wykorzystany w silniku testującym.}

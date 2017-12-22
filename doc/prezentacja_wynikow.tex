@@ -1,6 +1,6 @@
 \chapter{Prezentacja wyników}
 
-Przeprowadzone zostały testy dla zaimplementowanych metod komunikacji. Wszystkie miały charakter lokalny (transmisja sieciowa wykorzystywała \textit{localhost}). Sprawdzone zostały różne rozmiary żądań i odpowiedzi w wielu kombinacjach (16B - 1MB).
+Przeprowadzone zostały testy dla zaimplementowanych metod komunikacji. Wszystkie miały charakter lokalny (transmisja sieciowa wykorzystywała \textit{localhost}). Sprawdzone zostały różne rozmiary żądań i odpowiedzi w wielu kombinacjach (16B - 1MB). Generowanie danych opisane zostało w rozdziale \ref{data_generation}.
 
 Wszystkie uruchomienia korzystały z tej samej platformy:
 \begin{itemize}
@@ -14,7 +14,7 @@ Wszystkie uruchomienia korzystały z tej samej platformy:
 
 \section{Rozkład danych}
 
-Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzymanych wyników obliczona została mediana oraz odchylenie standardowe, ponieważ ich wykresy zbliżone są rozkładu normalnego. Poniżej znajdą się wykresy, które to ukazują (dla wszystkich testowanych metod).
+Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzymanych wyników obliczona została średnia arytmetyczna oraz odchylenie standardowe, ponieważ ich wykresy zbliżone są rozkładu normalnego. Poniżej znajdą się wykresy, które to ukazują (dla wszystkich testowanych metod).
 
 
 \begin{figure}[H]
@@ -77,7 +77,7 @@ table [y error=error] {
     2   2571     1151      2
     3   12         283        3
     4   6           168        4
-    5   1500     176        5
+    5   1501     176        5
     6   343       88          6
 };
 \end{axis}
@@ -220,8 +220,8 @@ table [y error=error] {
     2   2579     1273      2
     3   6.5        144        3
     4   3.7        100        4
-    5   1495     269        5
-    6   338       73          6
+    5   1496     269        5
+    6   339       73          6
 };
 \end{axis}
 \end{tikzpicture}
