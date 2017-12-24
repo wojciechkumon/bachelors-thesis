@@ -1,18 +1,17 @@
 \chapter{Podsumowanie}
 
-JNI okazuje się najszybszą metodą przekazywania danych do aplikacji natywnych. Cechuje się też stabilnością (niskie odchylenie standardowe). Nie pozwala jednak na wywołanie zdalne, a jedynie na lokalne, synchroniczne wykonanie metody.
+Celem pracy było porównanie mechanizmów do współdzielenia danych między programami w języku Java i C/C++. Przeprowadzone testy pozwalają wyciągnąć kilka wniosków.
+Java Native Interface okazuje się najszybszą metodą przekazywania danych do aplikacji natywnych. Cechuje się też stabilnością (niskie bezwzględne odchylenie standardowe - choć wysokie względem samego czasu). Nie pozwala jednak na wywołanie zdalne, a jedynie na lokalne, synchroniczne wykonanie metody. Nie ma więc do czynienia z delegowaniem wykonania do innego procesu, a jedynie uruchomieniem skompilowanej funkcji.
+
+Bardziej uniwersalnym wyborem jest własny protokół oparty o TCP. Oferuje najwyższą wydajność przy prawdziwym odpytywaniu innych procesów. Dodatkowo komunikacja może być zarówno lokalna, jak i sieciowa. Niestety stosowanie własnego protokołu bywa uciążliwe. Należy go dobrze zdefiniować i wszędzie poprawnie zaimplementować. Znacznie łatwiej wykorzystać istniejące standardy.
+
+Alternatywą jest CORBA. Otrzymujemy IDL oraz gotowe implementacje w zamian za lekką stratę wydajności. Podobnie w przypadku RESTa - można wykorzystać na przykład \textit{JSON Schema} (\url{http://json-schema.org}) do opisania interfejsów i biblioteki, które obsłużą całą warstwę transportową.
+
+Wykorzystywanie systemu plików do komunikacji to dobry pomysł tylko w specjalnych przypadkach. Nie został on do tego stworzony, mimo że to możliwe. Wyniki potwierdzają, że integracja przez pliki jest niewydajna, choć dla bardzo dużych danych (powyżej 100MB) warto ją rozważyć.
 
 
-\section{Dalszy rozwój pracy}
+\section{Propozycje rozwoju}
 
+W pracy przedstawione zostało porównanie 5 metod komunikacji. Dobrym pomysłem byłoby dodanie kolejnych sposobów przesyłania danych, np. protokół SOAP lub systemy pośredniczące w przesyłaniu wiadomości takie jak ActiveMQ (\url{http://activemq.apache.org}). Pozwoliłoby to uzyskać szerszy przegląd istniejących technologii.
 
-\section{tmp}
-
-dalszy rozwój:
-- kolejne metody
-
-wnioski z testów:
-- wykresy
-
-implementacja - co może jeszcze:
-- rozmiar każdej z technologii (np. linie kodu, rozmiar w bajtach): CORBA omniORB około 10MB, JNI 0, TCP 0, REST, pliki
+Warto byłoby też przetestować inną implementację serwera REST dla C++. Użyta w pracy nie sprawdza się dla większych komunikatów.

@@ -45,13 +45,13 @@ Ta metoda komunikacji rzadko zachowuje granice wiadomości (ang. \textit{message
 
 \subsection{Protokół UDP}
 
-Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwia wysyłanie datagramów. Charakteryzuje go bezpołączeniowość - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu spowodowany retransmisją.
+Protokół pakietów użytkownika (UDP - ang. \textit{User Datagram Protocol}) umożliwia wysyłanie datagramów. Charakteryzuje go bezpołączeniowość - nie ma narzutu nawiązywania połączenia, ale brak tu też retransmisji, co powoduje brak gwarancji dostarczenia danych. Może on być zastosowany, gdy preferowane jest porzucenie pakietu ponad dłuższy czas transferu spowodowany retransmisją \cite{UDP_RFC}.
 
 
 \subsection{Protokół TCP}
 \label{TCP}
 
-Protokół sterowania transmisją jest niezawodną, uporządkowaną, odporną na błędy metodą transportu strumienia danych przez sieć IP. Przed rozpoczęciem transmisji informacji, stabilizowane jest połączenie (szczegóły na rys. \ref{fig:TCP_handshake}).
+Protokół sterowania transmisją jest niezawodną, uporządkowaną, odporną na błędy metodą transportu strumienia danych przez sieć IP. Przed rozpoczęciem transmisji informacji, stabilizowane jest połączenie \cite{TCP_RFC} (szczegóły na rys. \ref{fig:TCP_handshake}).
 
 Protokół ten retransmituje pakiety w razie ich zgubienia, zmienia ich kolejność w razie potrzeby, wykrywa i naprawia także problem duplikatów. Nie dba jednak o granice wiadomości, więc odbiorca musi znać format danych, na które czeka (np. umieszcza się w ustalonym miejscu długość całej wiadomości).
 
@@ -87,7 +87,7 @@ Zdalne wykonywanie procedur (RPC - ang. \textit{remote procedure call}) to proto
 
 \subsection{Java RMI}
 
-Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiednikiem RPC dla Javy. Technologia ta korzysta z serializacji Javy oraz rozproszonego odśmiecania pamięci (ang. \textit{distributed garbage collection}). Pozwala na zdalne wykonywanie metod na obiektach, które mogą znajdować się na innych maszynach wirtualnych Javy. Wymaganiem jest wcześniejsza rejestracja takich obiektów pod wybranymi nazwami w rejestrze \textit{RMI Registry}. Klient może pobrać tzw. \textit{stub}, czyli obiekt umożliwiający komunikację ze zdalną implementacją, mający taki sam interfejs. Wywoływanie metod jest identyczne jak w przypadku lokalnych obiektów. Rejestr nie pośredniczy w komunikacji. Wadą tej technologii jest brak wsparcia dla innych języków programowania.
+Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiednikiem RPC dla Javy. Technologia ta korzysta z serializacji Javy oraz rozproszonego odśmiecania pamięci (ang. \textit{distributed garbage collection}). Pozwala na zdalne wykonywanie metod na obiektach, które mogą znajdować się na innych maszynach wirtualnych Javy \cite{JAVA_RMI}. Wymaganiem jest wcześniejsza rejestracja takich obiektów pod wybranymi nazwami w rejestrze \textit{RMI Registry}. Klient może pobrać tzw. \textit{stub}, czyli obiekt umożliwiający komunikację ze zdalną implementacją, mający taki sam interfejs. Wywoływanie metod jest identyczne jak w przypadku lokalnych obiektów. Rejestr nie pośredniczy w komunikacji. Wadą tej technologii jest brak wsparcia dla innych języków programowania.
 
 
 \subsection{CORBA}
