@@ -1,7 +1,9 @@
 package pl.kumon.transfertester.chart;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import pl.kumon.transfertester.utils.Formatter;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
@@ -185,6 +188,7 @@ public class JavaFxChartSaver extends Application {
         .getParent()
         .resolve(testTypeStats.getTestType() + "_" + chartData.getChartPath().getFileName());
     saveAsPng(scene, path);
+    saveAsData(data, path);
   }
 
   private void addDataToList(List<Long> sortedData, long minValue, long xStep,
@@ -228,5 +232,37 @@ public class JavaFxChartSaver extends Application {
               + "medianNanos=" + stats.getMedianNanos() + " "
               + "meanNanos=" + (long) stats.getArithmeticMean() + " "
               + "standardDeviationNanos=" + (long) stats.getStandardDeviationNanos();
+  }
+
+  private void saveAsData(List<XYChart.Data<Number, Number>> data, Path path) {
+    Path filePath = path.resolveSibling(path.getFileName().toString() + ".dat");
+    try(BufferedWriter writer = Files.newBufferedWriter(filePath)) {
+      data.forEach(chartData -> writeXAndY(writer, chartData));
+      DescriptiveStatistics stats = new DescriptiveStatistics();
+      data.forEach(values -> {
+        IntStream.range(0, values.getYValue().intValue())
+                .mapToLong(i -> values.getXValue().longValue())
+                .forEach(stats::addValue);
+      });
+      writer.write("mean=" + (long) stats.getMean());
+      writer.newLine();
+      writer.write("standardDeviation=" + (long) stats.getStandardDeviation());
+      writer.flush();
+    } catch (IOException e) {
+      log.error("IO exception", e);
+    }
+  }
+
+  private void writeXAndY(BufferedWriter writer, XYChart.Data<Number, Number> chartData) {
+    try {
+      writer.write("    (");
+      writer.write(Long.toString(chartData.getXValue().longValue()));
+      writer.write(",");
+      writer.write(Long.toString(chartData.getYValue().intValue()));
+      writer.write(")");
+      writer.newLine();
+    } catch (IOException e) {
+      log.error("IO exception", e);
+    }
   }
 }
