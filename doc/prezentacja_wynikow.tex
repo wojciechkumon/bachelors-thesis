@@ -16,24 +16,193 @@ Wszystkie uruchomienia korzystały z tej samej platformy:
 
 Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzymanych wyników obliczona została średnia arytmetyczna oraz odchylenie standardowe, ponieważ ich wykresy zbliżone są rozkładu normalnego. Poniżej znajdą się diagramy, które to ukazują (dla wybranych metod).
 
+\vspace{5mm} 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.38]{img/charts/TCP_chart_8192_8192.png}
-    \caption{Przykładowy wykres rozkładu czasów wykonania dla TCP}
-\end{figure}
+\pgfmathdeclarefunction{gauss}{2}{%
+    \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.38]{img/charts/CORBA_chart_8192_8192.png}
-    \caption{Przykładowy wykres rozkładu czasów wykonania dla technologii CORBA}
-\end{figure}
+\begin{tikzpicture}
+\begin{axis}[
+    height=7.5cm,
+    width=15cm,
+    grid=major,
+    ylabel={Wystąpienia w przedziale},
+    xlabel={Czas wykonania [$\mu$s]},
+    legend style={cells={align=right}}
+]
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.38]{img/charts/FILE_chart_1048576_16.png}
-    \caption{Przykładowy wykres rozkładu czasów wykonania dla plików}
-\end{figure}
+\addplot[draw=blue] coordinates {
+    (255,0)
+    (260,0)
+    (265,0)
+    (270,10)
+    (275,13)
+    (280,22)
+    (285,23)
+    (290,21)
+    (295,20)
+    (300,31)
+    (305,22)
+    (310,31)
+    (315,33)
+    (320,35)
+    (325,37)
+    (330,29)
+    (335,37)
+    (340,35)
+    (345,35)
+    (350,49)
+    (355,33)
+    (360,22)
+    (365,29)
+    (370,24)
+    (375,30)
+    (380,17)
+    (385,31)
+    (390,20)
+    (395,20)
+    (400,19)
+    (405,18)
+    (410,17)
+    (415,18)
+    (420,26)
+    (425,12)
+    (430,10)
+    (435,9)
+    (440,12)
+    (445,10)
+    (450,11)
+    (455,8)
+};
+\addlegendentry{TCP - żądanie 8KiB,\\odpowiedź 8KiB}
+
+\addplot[domain={255:455},yscale=4500,samples=150] {gauss(352,46)};
+
+\end{axis}
+\end{tikzpicture}
+
+
+\begin{tikzpicture}
+\begin{axis}[
+    height=8cm,
+    width=15cm,
+    grid=major,
+    ylabel={Wystąpienia w przedziale},
+    xlabel={Czas wykonania [$\mu$s]},
+    legend style={cells={align=right}}
+]
+
+\addplot[draw=blue] coordinates {
+    (2303,0)
+    (2319,0)
+    (2335,0)
+    (2351,0)
+    (2367,0)
+    (2383,0)
+    (2399,7)
+    (2415,19)
+    (2431,15)
+    (2447,14)
+    (2463,6)
+    (2479,7)
+    (2495,22)
+    (2511,15)
+    (2527,31)
+    (2543,20)
+    (2559,31)
+    (2575,39)
+    (2591,41)
+    (2607,40)
+    (2623,47)
+    (2639,48)
+    (2655,50)
+    (2671,43)
+    (2687,49)
+    (2703,45)
+    (2719,51)
+    (2735,41)
+    (2751,42)
+    (2767,36)
+    (2783,23)
+    (2799,27)
+    (2815,22)
+    (2831,14)
+    (2847,7)
+    (2863,9)
+    (2879,5)
+    (2895,4)
+    (2911,3)
+    (2927,1)
+    (2943,2)
+};
+\addlegendentry{Pliki - żądanie 1MiB,\\odpowiedź 16B}
+
+\addplot[domain={2303:2943},yscale=13800,samples=150] {gauss(2653,111)};
+
+\end{axis}
+\end{tikzpicture}
+
+
+\begin{tikzpicture}
+\begin{axis}[
+    height=8cm,
+    width=15cm,
+    grid=major,
+    ylabel={Wystąpienia w przedziale},
+    xlabel={Czas wykonania [$\mu$s]},
+    legend style={cells={align=right}}
+]
+
+\addplot[draw=blue] coordinates {
+    (1636,0)
+    (1651,0)
+    (1666,3)
+    (1681,6)
+    (1696,14)
+    (1711,15)
+    (1726,15)
+    (1741,17)
+    (1756,27)
+    (1771,30)
+    (1786,29)
+    (1801,29)
+    (1816,35)
+    (1831,36)
+    (1846,30)
+    (1861,44)
+    (1876,33)
+    (1891,30)
+    (1906,43)
+    (1921,46)
+    (1936,35)
+    (1951,36)
+    (1966,25)
+    (1981,32)
+    (1996,29)
+    (2011,36)
+    (2026,15)
+    (2041,20)
+    (2056,20)
+    (2071,30)
+    (2086,21)
+    (2101,14)
+    (2116,13)
+    (2131,21)
+    (2146,17)
+    (2161,12)
+    (2176,8)
+    (2191,12)
+    (2206,9)
+    (2221,10)
+    (2236,3)
+};
+\addlegendentry{REST - żądanie 16B,\\odpowiedź 1KiB}
+
+\addplot[domain={1636:2236},yscale=15000,samples=150] {gauss(1928,133)};
+
+\end{axis}
+\end{tikzpicture}
 
 
 \section{Porównanie wyników}
@@ -46,7 +215,7 @@ Najważniejszym zestawieniem jest porównanie czasów komunikacji dla różnych 
 \begin{axis}[
     title = {Żądanie 1KiB, odpowiedź 1KiB},
     width=15cm,
-    height=14cm,
+    height=10cm,
     xtick={1,...,6},
     xticklabels={
         CORBA,
