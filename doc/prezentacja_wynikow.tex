@@ -442,9 +442,9 @@ table [y error=error] {
 \label{fig:chart_134217728_134217728}
 \end{figure}
 
-Testy zostały wykonane także dla większych zestawów danych (128MiB - wykres \ref{fig:chart_134217728_134217728}). Im większe komunikaty tym stabilniejszy jest sam czas (znacznie niższe odchylenie standardowe). Ciekawe jest to, że komunikacja przez gniazda trwała krócej niż przez Java Native Interface.
+Testy zostały wykonane także dla dużych zestawów danych (128MiB - wykres \ref{fig:chart_134217728_134217728}). Im większe komunikaty tym stabilniejszy jest sam czas (znacznie niższe odchylenie standardowe). Ciekawe jest to, że komunikacja przez gniazda trwała krócej niż przez Java Native Interface.
 
-Najstabliniejszą metodą transportu jest TCP - tam odchylenie standardowe okazuje się zwykle najniższe bezwzględnie lub w stosunku do samego czasu. W przypadku JNI wyniki mogą być bardzo rozrzucone, większość bardzo niska, ale zdarzają się kilkadziesiąt razy wolniejsze wykonania.
+Najstabilniejszą metodą transportu jest TCP - tam odchylenie standardowe okazuje się zwykle najniższe bezwzględnie lub w stosunku do samego czasu. W przypadku JNI wyniki mogą być bardzo rozrzucone, większość bardzo niska, ale zdarzają się kilkadziesiąt razy wolniejsze wykonania.
 CORBA uzyskuje jedno z największych odchyleń standardowych, a pliki niewiele niższe. Jednak wraz ze wzrostem ilości przesyłanych danych, spada stosunek odchylenia standardowego do średniej, czyli transmisja stabilizuje się.
 
 Implementacja testowa (bez transportu danych) zgodnie z przewidywaniami okazała się najszybsza. Udowadnia, że nie ma darmowej komunikacji. Każda generuje pewien narzut, więc nie zawsze warto delegować wykonanie do innych procesów.
