@@ -22,9 +22,10 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
     \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
 }
 
+\begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=7.5cm,
+    height=6.5cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -81,11 +82,14 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
+\caption{Diagram przedstawiający przykładowy rozkład czasów wykonania dla TCP.}
+\end{figure}
 
 
+\begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=8cm,
+    height=6.5cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -142,11 +146,14 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
+\caption{Diagram przedstawiający przykładowy rozkład czasów wykonania dla plików.}
+\end{figure}
 
 
+\begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=8cm,
+    height=6.5cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -203,6 +210,8 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
+\caption{Diagram przedstawiający przykładowy rozkład czasów wykonania dla REST.}
+\end{figure}
 
 
 \section{Porównanie wyników}
@@ -253,7 +262,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{}
+\caption{Zestawienie średnich wyników dla żądań 1KiB i odpowiedzi 1KiB.}
 \label{fig:chart_1024_1024}
 \end{figure}
 
@@ -303,7 +312,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{}
+\caption{Zestawienie średnich wyników dla żądań 16B i odpowiedzi 1MiB.}
 \label{fig:chart_16_1048576}
 \end{figure}
 
@@ -350,7 +359,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{}
+\caption{Zestawienie średnich wyników dla żądań 1MiB i odpowiedzi 16B.}
 \label{fig:chart_1048576_16}
 \end{figure}
 
@@ -401,7 +410,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{}
+\caption{Zestawienie średnich wyników dla żądań 16B i odpowiedzi 16B.}
 \label{fig:chart_16_16}
 \end{figure}
 
@@ -448,7 +457,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{}
+\caption{Zestawienie średnich wyników dla żądań 128MiB i odpowiedzi 128MiB.}
 \label{fig:chart_134217728_134217728}
 \end{figure}
 

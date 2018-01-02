@@ -38,18 +38,16 @@ Aby zachować wiarygodność testów, przeprowadzone zostały wielokrotnie - ka�
 Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, aby \enquote{rozgrzać maszynę wirtualną}. To znaczy, aby uzyskać pełną wydajność. Celem jest wcześniejsze załadowanie klas do pamięci oraz poczekanie aż JIT (ang. \textit{just-in-time compilation} - kompilacja tuż przed wykonaniem kodu) dokona kompilacji do kodu natywnego oraz optymalizacji.
 
 \label{data_generation}
-Charakter testów był czysto naukowy. Dane przesyłane w zapytaniach to losowe bajty (oparte o klasę \texttt{java.util.Random}) oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez zmiany konfiguracji serwerów oczekujących na klienta.
+Dane przesyłane w zapytaniach to losowe bajty (oparte o klasę \texttt{java.util.Random}) oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez zmiany konfiguracji serwerów oczekujących na klienta.
 
-Odpowiedź generowana po stronie implementowanej w C/C++ została uproszczona, aby uniknąć narzutu związanego z jej tworzeniem. W pierwszej wersji aplikacji została użyta prosta pętla:
+Odpowiedź generowana po stronie implementowanej w C/C++ została uproszczona, aby uniknąć narzutu związanego z jej tworzeniem. W pierwszej wersji aplikacji została użyta prosta pętla (listing \ref{lst:slow_response_generation}).
+Czas jej wykonania stanowił nawet 80\% całej komunikacji. Aby nie fałszować różnic między metodami transportu, wykorzystane są losowe dane znajdujące się aktualnie w pamięci (w zaalokowanym miejscu).
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Sposób generowania odpowiedzi, który okazał się zbyt niewydajny, aby móc go zastosować.},captionpos=b,label={lst:slow_response_generation}]
     for (int i = 0; i < responseSize; i++) {
         response[i] = (i % 26) + 65;
     }
 \end{lstlisting}
-
-Czas jej wykonania stanowił nawet 80\% całej komunikacji. Aby nie fałszować różnic między metodami transportu, wykorzystane są losowe dane znajdujące się aktualnie w pamięci (w zaalokowanym miejscu).
-
 
 \begin{figure}[H]
     \centering
@@ -148,12 +146,13 @@ Format pliku żądania zawiera:
 
 Rozmiar oczekiwanej odpowiedzi to 4 bajty (liczba całkowita). Plik zwrotny zawiera jedynie bajty z odpowiedzią.
 
-Poniżej znajduje się diagram przedstawiający komunikację.
+Poniżej znajduje się diagram przedstawiający komunikację (rys. \ref{fig:filesystem_sync}).
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/files_impl_diagram.png}
-    \caption{}
+    \caption{Diagram przedstawiający realizację synchronicznych zapytań przy pomocy systemu plików.}
+    \label{fig:filesystem_sync}
 \end{figure}
 
 \texttt{UUID} w poniższym opisie oznacza losowy ciąg znaków generowany po stronie klienta.
