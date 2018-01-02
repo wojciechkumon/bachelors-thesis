@@ -61,7 +61,7 @@ W kolejnych sekcjach przybliżony zostanie sposób testowania poszczególnych me
 
 Zaimplementowany został własny protokół służący badaniu szybkości transferu danych oparty o gniazda TCP. Aby klient mógł zlokalizować serwer, potrzebny jest mu jego adres IP i port oraz oczywiście musi istnieć możliwość stworzenia trasy.
 
-Strona serwerowa wykorzystuje bibliotekę \texttt{unistd.h}. Klient opiera się o~standardową bibliotekę Javy, czyli klasę \texttt{java.net.Socket}.
+Strona serwerowa wykorzystuje interfejs programistyczny POSIX. Klient opiera się zaś o~standardową bibliotekę Javy, czyli klasę \texttt{java.net.Socket}.
 
 \begin{figure}[h!]
     \centering
