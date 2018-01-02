@@ -216,10 +216,11 @@ Najważniejszym zestawieniem jest porównanie czasów komunikacji dla różnych 
     title = {Żądanie 1KiB, odpowiedź 1KiB},
     width=15cm,
     height=10cm,
-    xtick={1,...,6},
+    xtick={1,...,7},
     xticklabels={
         CORBA,
         Pliki,
+        Pliki (ramdysk),
         JNI,
         Mock,
         REST,
@@ -244,10 +245,11 @@ table [y error=error] {
     x       y        error     label
     1   1177     1435      1
     2   2571     1151      2
-    3   12         283        3
-    4   6           168        4
-    5   1501     176        5
-    6   343       88          6
+    3   2495     1342      3
+    4   12         283        4
+    5   6           168        5
+    6   1501     176        6
+    7   343       88          7
 };
 \end{axis}
 \end{tikzpicture}
@@ -264,10 +266,11 @@ Większość porównań dla innych rozmiarów danych jest proporcjonalna do wykr
     title = {Żądanie 16B, odpowiedź 1MiB},
     width=15cm,
     height=8cm,
-    xtick={1,...,6},
+    xtick={1,...,7},
     xticklabels={
         CORBA,
         Pliki,
+        Pliki (ramdysk),
         JNI,
         Mock,
         REST,
@@ -292,10 +295,11 @@ table [y error=error] {
     x       y        error     label
     1   5586     1553      1
     2   3854     1380      2
-    3   381       317        3
-    4   101       263        4
-    5   13979   2194      5
-    6   1976     660        6
+    3   3176     1661      3
+    4   381       317        4
+    5   101       263        5
+    6   13979   2194      6
+    7   1976     660        7
 };
 \end{axis}
 \end{tikzpicture}
@@ -309,10 +313,11 @@ table [y error=error] {
     title = {Żądanie 1MiB, odpowiedź 16B},
     width=15cm,
     height=8cm,
-    xtick={1,...,6},
+    xtick={1,...,7},
     xticklabels={
         CORBA,
         Pliki,
+        Pliki (ramdysk),
         JNI,
         Mock,
         REST,
@@ -337,10 +342,11 @@ table [y error=error] {
     x       y        error     label
     1   5459     1240      1
     2   2834     1233      2
-    3   71         104        3
-    4   3           94          4
-    5   64170   9701      5
-    6   1146     200        6
+    3   2637     1549      3
+    4   71         104        4
+    5   3           94          5
+    6   64170   9701      6
+    7   1146     200        7
 };
 \end{axis}
 \end{tikzpicture}
@@ -358,10 +364,11 @@ Dostrzec można również wielką dysproporcję w przypadku RESTa - prawdopodob
     title = {Żądanie 16B, odpowiedź 16B},
     width=15cm,
     height=8cm,
-    xtick={1,...,6},
+    xtick={1,...,7},
     xticklabels={
         CORBA,
         Pliki,
+        Pliki (ramdysk),
         JNI,
         Mock,
         REST,
@@ -386,10 +393,11 @@ table [y error=error] {
     x       y        error     label
     1   1224     1486      1
     2   2579     1273      2
-    3   6.5        144        3
-    4   3.7        100        4
-    5   1496     269        5
-    6   339       73          6
+    3   2498     1763      3
+    4   6.5        144        4
+    5   3.7        100        5
+    6   1496     269        6
+    7   339       73          7
 };
 \end{axis}
 \end{tikzpicture}
@@ -407,9 +415,10 @@ Narzut wynikający z samej technologii przy minimalnych rozmiarach danych (16B -
     title = {Żądanie 128MiB, odpowiedź 128MiB},
     width=15cm,
     height=8cm,
-    xtick={1,...,6},
+    xtick={1,...,7},
     xticklabels={
         Pliki,
+        Pliki (ramdysk),
         JNI,
         Mock,
         TCP
@@ -432,9 +441,10 @@ Narzut wynikający z samej technologii przy minimalnych rozmiarach danych (16B -
 table [y error=error] {
     x       y        error     label
     1   259.1     1.98      1
-    2   97.57     1.6        2
-    3   6.18       1.2        3
-    4   89.86     1.6        4
+    2   215        2.9        2
+    3   97.57     1.6        3
+    4   6.18       1.2        4
+    5   89.86     1.6        5
 };
 \end{axis}
 \end{tikzpicture}
