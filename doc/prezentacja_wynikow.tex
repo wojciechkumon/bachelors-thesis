@@ -1,6 +1,7 @@
 \chapter{Prezentacja wyników}
 
 Przeprowadzone zostały testy dla zaimplementowanych metod komunikacji. Wszystkie miały charakter lokalny (transmisja sieciowa wykorzystywała \textit{localhost}). Sprawdzone zostały różne rozmiary żądań i odpowiedzi w wielu kombinacjach (16B - 128MiB). Generowanie danych opisane zostało w rozdziale \ref{data_generation}.
+Integracja przez pliki została przetestowana na dwóch rodzajach pamięci - SSD oraz RAM (ramdysk).
 
 Wszystkie uruchomienia korzystały z tej samej platformy:
 \begin{itemize}
@@ -415,7 +416,9 @@ table [y error=error] {
 \end{figure}
 
 
-Narzut wynikający z samej technologii przy minimalnych rozmiarach danych (16B - wykres \ref{fig:chart_16_16}) jest największy dla plików (wynika z obserwatora katalogu, który wykonuje skanowanie co 2ms). Wysoki okazuje się także dla RESTa (protokół HTTP oraz serializacja do formatu JSON). Sam mechanizm, którego używa CORBA, pochłania trochę ponad 1ms. Własny, bardzo prosty protokół oparty na TCP wykazuje wysoką wydajność gniazd. Jednak najszybsze jest wykonanie kodu natywnego przez wirtualną maszynę javy - cechuje się marginalnie niskim narzutem.
+Narzut wynikający z samej technologii przy minimalnych rozmiarach danych (16B - wykres \ref{fig:chart_16_16}) jest największy dla plików (wynika z obserwatora katalogu, który wykonuje skanowanie co 2ms). Wysoki okazuje się także dla RESTa (protokół HTTP oraz serializacja do formatu JSON). Sam mechanizm, którego używa CORBA, pochłania trochę ponad 1ms. Własny, bardzo prosty protokół oparty na TCP wykazuje wysoką wydajność gniazd.
+Jednak najszybsze jest wykonanie kodu natywnego przez wirtualną maszynę javy - cechuje się marginalnie niskim narzutem.
+Ramdysk zgodnie z oczekiwaniami umożliwił szbyszą komunikację niż dysk SSD. Jednak różnica wyniosła zaledwie około 3\%.
  
 
 \begin{figure}[H]
@@ -461,7 +464,9 @@ table [y error=error] {
 \label{fig:chart_134217728_134217728}
 \end{figure}
 
-Testy zostały wykonane także dla dużych zestawów danych (128MiB - wykres \ref{fig:chart_134217728_134217728}). Im większe komunikaty tym stabilniejszy jest sam czas (znacznie niższe odchylenie standardowe). Ciekawe jest to, że komunikacja przez gniazda trwała krócej niż przez Java Native Interface.
+Testy zostały wykonane także dla dużych zestawów danych (128MiB - wykres \ref{fig:chart_134217728_134217728}). Im większe komunikaty tym stabilniejszy jest sam czas (znacznie niższe odchylenie standardowe).
+Powiększyła się także różnica między typami pamięci w komunikacji przez system plików. Wynik ramdysku stanowi około 83\% wartości dla dysku SSD.
+Ciekawe jest także to, że komunikacja przez gniazda trwała krócej niż przez Java Native Interface.
 
 Najstabilniejszą metodą transportu jest TCP - tam odchylenie standardowe okazuje się zwykle najniższe bezwzględnie lub w stosunku do samego czasu. W przypadku JNI wyniki mogą być bardzo rozrzucone, większość bardzo niska, ale zdarzają się kilkadziesiąt razy wolniejsze wykonania.
 CORBA uzyskuje jedno z największych odchyleń standardowych, a pliki niewiele niższe. Jednak wraz ze wzrostem ilości przesyłanych danych, spada stosunek odchylenia standardowego do średniej, czyli transmisja stabilizuje się.
