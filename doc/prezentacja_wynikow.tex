@@ -471,7 +471,7 @@ Implementacja testowa (bez transportu danych) zgodnie z przewidywaniami okazała
 
 \section{Tabela pomiarów}
 
-Poniżej zaprezentowana została tabela (\ref{tab:all_results}) z zebranymi pomiarami. Zawiera średnie czasy wykonania dla różnych metod oraz współczynnik porównujący ilokrotnie różnią się dane względem JNI.
+Poniżej zaprezentowana została tabela (\ref{tab:all_results}). Zawiera średnie czasy wykonania dla różnych metod oraz współczynnik prezentujący krotność względem JNI.
 
 \begin{longtable}{|c|c|c|c|c|c|c|}
     \hline
@@ -492,9 +492,9 @@ Poniżej zaprezentowana została tabela (\ref{tab:all_results}) z zebranymi pomi
     1MiB & 1MiB & 7728 (16.3x) & 4326 (9.2x) & 472.8 (1x) & 70718 (149.6x) & 2597 (5.5x) \\
     128MiB & 128MiB & - & 259100 (2.7x) & 97565 (1x) & - & 89859 (0.9x) \\
     \hline
-    \caption{Tabela uzyskanych średnich czasów komunikacji wraz z porównaniem do JNI wykorzystując współczynnik.}
+    \caption{Tabela uzyskanych średnich czasów komunikacji. W nawiasach znajduje się współczynnik prezentujący krotność względem JNI.}
     \label{tab:all_results}
 \end{longtable}
 
 
-Dostrzec można, że wyniki nie skalują się liniowo wraz ze wzrostem transmitowanych danych. Porównując 2 ostatnie wiersze tabeli (1MiB i 128MiB) widać, że JNI nie został stworzony w celu przekazywania większych obiektów - rezultaty zmieniają się gorzej niż liniowo. Inaczej jest dla plików i TCP - tam bardziej opłaca się przesyłać większe dane naraz, ponieważ czasy nie zwolniły 128-krotnie a odpowiednio 60 i 35-krotnie.
+Dostrzec można, że wyniki nie skalują się liniowo wraz ze wzrostem transmitowanych danych. Porównując 2 ostatnie wiersze tabeli (1MiB i 128MiB) widać, że JNI nie został stworzony w celu przekazywania większych obiektów - rezultaty zwiększają się bardziej niż 128-krotnie. Inaczej jest dla plików i TCP - tam bardziej opłaca się przesyłać większe dane naraz, ponieważ czasy wydłużyły się odpowiednio 60 i 35-krotnie.

@@ -3,11 +3,11 @@
 Celem pracy było porównanie mechanizmów do współdzielenia danych między programami w języku Java i C/C++. Przeprowadzone testy pozwalają wyciągnąć kilka wniosków.
 Java Native Interface okazuje się najszybszą metodą przekazywania danych do aplikacji natywnych. Cechuje się też stabilnością (niskie bezwzględne odchylenie standardowe - choć wysokie względem samego czasu). Nie pozwala jednak na wywołanie zdalne, a jedynie na lokalne, synchroniczne wykonanie metody. Nie ma więc do czynienia z delegowaniem wykonania do innego procesu, a jedynie uruchomieniem skompilowanej funkcji.
 
-Bardziej uniwersalnym wyborem jest własny protokół oparty o TCP. Oferuje najwyższą wydajność przy prawdziwym odpytywaniu innych procesów. Dodatkowo komunikacja może być zarówno lokalna, jak i sieciowa. Niestety stosowanie własnego protokołu bywa uciążliwe. Należy go dobrze zdefiniować i wszędzie poprawnie zaimplementować. Znacznie łatwiej wykorzystać istniejące standardy.
+Bardziej uniwersalnym wyborem jest własny protokół oparty o TCP. Oferuje najwyższą wydajność przy transporcie informacji między już istniejącymi procesami. Dodatkowo komunikacja może być zarówno lokalna, jak i sieciowa. Niestety stosowanie własnego protokołu bywa uciążliwe. Należy go dobrze zdefiniować i wszędzie poprawnie zaimplementować. Znacznie łatwiej wykorzystać istniejące standardy.
 
-Alternatywą jest CORBA. Otrzymujemy IDL oraz gotowe implementacje w zamian za lekką stratę wydajności. Podobnie w przypadku RESTa - można wykorzystać na przykład \textit{JSON Schema} (\url{http://json-schema.org}) do opisania interfejsów i biblioteki, które obsłużą całą warstwę transportową.
+Alternatywą jest CORBA. Otrzymujemy IDL oraz gotowe implementacje w zamian za niewielki narzut wydajnościowy. Podobnie w przypadku RESTa - można wykorzystać na przykład \textit{JSON Schema} (\url{http://json-schema.org}) do opisania interfejsów i biblioteki, które obsłużą całą warstwę transportową.
 
-Wykorzystywanie systemu plików do komunikacji to dobry pomysł tylko w specjalnych przypadkach. Nie został on do tego stworzony, mimo że to możliwe. Wyniki potwierdzają, że integracja przez pliki jest niewydajna, choć dla bardzo dużych danych (powyżej 100MB) warto ją rozważyć.
+Wykorzystywanie systemu plików do komunikacji to dobry pomysł tylko w specjalnych przypadkach. Nie został on stworzony do wykonywania zapytań zachowując, mimo że to takie efekt jest osiągalny. Wyniki potwierdzają, że integracja przez pliki jest niewydajna, choć dla bardzo dużych danych (powyżej 100MB) warto ją rozważyć.
 
 
 \section{Propozycje rozwoju}
