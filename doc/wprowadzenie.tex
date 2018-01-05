@@ -26,7 +26,7 @@ Sygnały są typowe dla systemów uniksowych, jednak Windows wspiera także czę
 \section{Potoki nienazwane}
 
 Potoki nienazwane to sposób na komunikację jednokierunkową FIFO (ang. \textit{first in, first out} - pierwszy na wejściu, pierwszy na wyjściu). Zazwyczaj program tworzy taki potok, po czym uruchamia nowe procesy, które otrzymują dostęp do jego końca. 
-Wadą tego rozwiązania jest brak nazwy, który to brak implikuje wymóg pokrewieństwa procesów chcących wymieniać dane \cite{Ste92}.
+Wadą tego rozwiązania jest brak nazwy, który implikuje wymóg pokrewieństwa procesów chcących wymieniać dane \cite{Ste92}.
 
 Inną częstą aplikacją tej metody jest wykorzystanie w uniksowych powłokach systemowych. Przekierowane wtedy zostaje standardowe wyjście do standardowego wejścia kolejnego procesu (korzystając z symbolu \enquote{|}).
 
@@ -88,7 +88,7 @@ Systemy kolejkowe umożliwiają odłożenie wiadomości na kolejkę, z której w
 
 \section{Przekazywanie wiadomości}
 
-Programy mogą także komunikować się kanałami niezarządzanym przez system operacyjny. Wysyłana jest wiadomość, a za uruchomienie odpowiedniego kodu odpowiada odbiorca i infrastruktura wspomagająca. Ten sposób jest często używany do budowania rozproszonych aplikacji. Komunikacja może być zarówno synchroniczna, jak i asynchroniczna. Abstrakcją innego procesu może być obiekt, ale też na przykład aktor (np. stosowany w Akkce\cite{akka} model aktorów). Przesyłanie wiadomości może być zaimplementowane w dowolny sposób.
+Programy mogą także komunikować się kanałami niezarządzanym przez system operacyjny. Wysyłana jest wiadomość, a za uruchomienie odpowiedniego kodu odpowiada odbiorca i infrastruktura wspomagająca. Ten sposób jest często używany do budowania rozproszonych aplikacji. Komunikacja może być zarówno synchroniczna, jak i asynchroniczna. Abstrakcją innego procesu może być obiekt, ale też na przykład aktor (np. stosowany w Akkce model aktorów \cite{akka}). Przesyłanie wiadomości może być zaimplementowane w dowolny sposób.
 
 
 \subsection{Zdalne wykonywanie procedur}
@@ -254,7 +254,7 @@ Obowiązuje je ścisła struktura, wiadomość składa się z \cite{SOAP}:
 \end{lstlisting}
 
 
-\section{Przedstawienie znalezionych wyników}
+\section{Przedstawienie istniejących wyników}
 
 \subsection{Porównanie wydajności potoków, pamięci współdzielonej oraz gniazda dziedziny Uniksa}
 

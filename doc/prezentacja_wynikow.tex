@@ -12,12 +12,12 @@ Wszystkie uruchomienia korzystały z tej samej platformy:
     \item dysk SSD (odczyt 250 MB/s, zapis 500MB/s, 72000 IOPS)
 \end{itemize}
 
+\vspace{30mm} 
 
 \section{Rozkład danych}
 
 Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzymanych wyników obliczona została średnia arytmetyczna oraz odchylenie standardowe, ponieważ ich wykresy zbliżone są rozkładu normalnego. Poniżej znajdą się diagramy, które to ukazują (dla wybranych metod).
 
-\vspace{5mm} 
 
 \pgfmathdeclarefunction{gauss}{2}{%
     \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
