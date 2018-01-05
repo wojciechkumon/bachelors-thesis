@@ -18,27 +18,38 @@ Celem systemów plików nie jest działanie w trybie żądanie-odpowiedź, aby z
 
 \section{Sygnały}
 
-Sygnały to ograniczona metoda komunikacji. Są to asynchroniczne powiadomienia, które można wysłać do innego procesu. Zazwyczaj nie stosuje się ich do przesłania danych, lecz jedynie do zakomunikowania pewnego zdarzenia. Proces odbierający może zareagować na wybrany sygnał w dowolny sposób, rejestrując funkcję do jego obsługi (ang. \textit{signal handler}).
+Sygnały to ograniczona metoda komunikacji. Są to asynchroniczne powiadomienia, które można wysłać do innego procesu. Działają podobnie do przerwań, różnicą jest pośrednieczenie jądra systemu w ich obsłudze. Zazwyczaj nie stosuje się ich do przesłania danych, lecz jedynie do zakomunikowania pewnego zdarzenia. Proces odbierający może zareagować na wybrany sygnał w dowolny sposób, rejestrując funkcję do jego obsługi (ang. \textit{signal handler}) \cite{SIGNALS}.
+
+Sygnały są typowe dla systemów uniksowych, jednak Windows wspiera także część z nich \cite{WIN_COMP}.
 
 
 \section{Potoki nienazwane}
 
-Potoki nienazwane to sposób na komunikację jednokierunkową FIFO (ang. \textit{first in, first out} - pierwszy na wejściu, pierwszy na wyjściu). Zazwyczaj program tworzy taki potok, po czym uruchamia nowe procesy, które otrzymują dostęp do jego końca. Inną częstą aplikacją tej metody jest wykorzystanie w uniksowych powłokach systemowych. Przekierowane wtedy zostaje standardowe wyjście do standardowego wejścia kolejnego procesu (korzystając z symbolu \enquote{|})
+Potoki nienazwane to sposób na komunikację jednokierunkową FIFO (ang. \textit{first in, first out} - pierwszy na wejściu, pierwszy na wyjściu). Zazwyczaj program tworzy taki potok, po czym uruchamia nowe procesy, które otrzymują dostęp do jego końca. 
+Wadą tego rozwiązania jest brak nazwy, który to brak implikuje wymóg pokrewieństwa procesów chcących wymianiać dane \cite{Ste92}.
 
+Inną częstą aplikacją tej metody jest wykorzystanie w uniksowych powłokach systemowych. Przekierowane wtedy zostaje standardowe wyjście do standardowego wejścia kolejnego procesu (korzystając z symbolu \enquote{|}).
+
+Potoki nienazwane są standardem POSIX, wykorzystywanym w systemach uniksowach. Pomysł został zaimplementowany także w innych systemach operacyjnych, takich jak Windows \cite{PIPE_WIN}.
 
 \section{Potoki nazwane}
 
-Potoki nazwane są rozszerzeniem nienazwanych. Różnią się jednak cyklem życia. Nie zostają zniszczone wraz z końcem procesu - istnieją one, dopóki system jest uruchomiony. Można je też jawnie usunąć. Umożliwia to integrację procesów, zapewniając luźniejsze powiązanie niż w przypadku potoków nienazwanych.
+Potoki nazwane (określane też jako kolejki FIFO) są rozszerzeniem nienazwanych, a podczas tworzenia nadawana jest im nazwa oraz należy wyspecyfikować tryb odczytu lub zapisu \cite{Ste92}. Różnią się jednak cyklem życia. Nie zostają zniszczone wraz z końcem procesu - istnieją one, dopóki system jest uruchomiony. Można je też jawnie usunąć. Umożliwia to integrację procesów, zapewniając luźniejsze powiązanie niż w przypadku potoków nienazwanych.
+
+Potoki nazwane, podobnie jak te nienazwane, znajdziemy przede wszystkim w systemach uniksowach, ale także np. w systemie Windows \cite{NAMED_PIPE_WIN}.
 
 
 \section{Pamięć współdzielona}
 
-Pamięć współdzielona jest najszybszą z możliwych form komunikacji międzyprocesowej \cite{Ste92}. Polega wspólnym wykorzystywaniu przestrzeni adresowej. W przesyłaniu tych danych nie pośredniczy jądro systemu. Negatywna cecha tej metody to wymóg, aby programista sam zadbał o synchronizację procesów.
+Pamięć współdzielona jest najszybszą z możliwych form komunikacji międzyprocesowej \cite{Ste92}. Polega wspólnym wykorzystywaniu przestrzeni adresowej. W przesyłaniu tych danych nie pośredniczy jądro systemu, tzn. nie są wykonywane żadne wywołania systemowe. Negatywna cecha tej metody to wymóg, aby programista sam zadbał o synchronizację procesów.
 
+Pomysł współdzielenia pamięci bywa wykorzystywany także wewnątrz jednego programu. Zamiast tworzyć kolejne procesy można użyć wątków, które korzystają ze wspólnej pamięci.
+
+Wsparcie dla pamięci współdzielonej jest szerokie - znajdziemy je w systemach implementujących POSIX, czy systemie Windows.
 
 \section{Gniazda}
 
-Gniazda (ang. \textit{socket}) umożliwiają dwustronną komunikację strumieniową poprzez interfejs sieciowy. Zazwyczaj odnoszą sie do protokołu internetowego. Mamy wtedy do czynienia z adresem, z którym powiązane jest gniazdo. Składa się on z adresu IP oraz portu. Połączyć można procesy na tym samym komputerze, ale także dowolne będące w sieci. 
+Gniazda (ang. \textit{socket}) umożliwiają dwustronną komunikację strumieniową poprzez interfejs sieciowy. Zazwyczaj odnoszą sie do protokołu internetowego. Mamy wtedy do czynienia z adresem, z którym powiązane jest gniazdo. Składa się on z adresu IP oraz portu. Połączyć można procesy na tym samym komputerze, ale także dowolne będące w sieci \cite{sock_prgr}.
 
 Ta metoda komunikacji rzadko zachowuje granice wiadomości (ang. \textit{message boundaries}) tzn. transmitowane mogą być także fragmenty danych, czyli w jednym buforze znaleźć można koniec poprzedniej i początek kolejnej wiadomości. O poprawne dzielenie komunikatów dbają protokoły wyższych warstw, np. protokół UDP pozwala zachować granice wiadomości - są one wysyłanie pojedynczo, nigdy razem, nigdy nie są dzielone.
 
@@ -57,7 +68,7 @@ Protokół ten retransmituje pakiety w razie ich zgubienia, zmienia ich kolejno�
 
 Cechy gwarantujące udaną komunikację spowodowały, że TCP używany jest na bardzo szeroką skalę (np. HTTP, FTP, SSH).
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[height=8cm,keepaspectratio]{img/TCP_handshake.png}
     \caption{Schemat prezentujący trójstronne uzgodnienie (ang. \textit{three-way handshake}). Najpierw klient wysyła (chce zsynchronizować) swój numer sekwencji (SYN). Serwer odpowiada ACK (potwierdza udaną synchronizację) oraz SYN (synchronizacja własnego numeru sekwencji). Na końcu klient potwierdza synchronizację i może nastąpić transmisja właściwych danych. Schemat na podstawie \cite{TCPIP_guide}.}
@@ -67,7 +78,7 @@ Cechy gwarantujące udaną komunikację spowodowały, że TCP używany jest na b
 
 \section{Gniazda dziedziny Uniksa}
 
-Gniazda dziedziny Uniksa są podobne do zwykłych gniazd, jednak cała komunikacja zachodzi wewnątrz jądra systemu operacyjnego, zamiast korzystać z sieci. W tej metodzie komunikacji, system plików jest używany jako przestrzeń adresowa. Procesy traktują gniazda dziedziny Uniksa jako i-węzły (ang. \textit{i-nodes}), więc wiele procesów może komunikować się poprzez otwieranie tego samego gniazda.
+Gniazda dziedziny Uniksa są podobne do zwykłych gniazd, jednak cała komunikacja zachodzi wewnątrz jądra systemu operacyjnego, zamiast korzystać z sieci. W tej metodzie komunikacji, system plików jest używany jako przestrzeń adresowa \cite{unix_sock}. Procesy traktują gniazda dziedziny Uniksa jako i-węzły (ang. \textit{i-nodes}), więc wiele procesów może komunikować się poprzez otwieranie tego samego gniazda.
 
 
 \section{Systemy kolejkowe}
