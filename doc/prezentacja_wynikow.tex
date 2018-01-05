@@ -476,29 +476,52 @@ Implementacja testowa (bez transportu danych) zgodnie z przewidywaniami okazała
 
 \section{Tabela pomiarów}
 
-Poniżej zaprezentowana została tabela (\ref{tab:all_results}). Zawiera średnie czasy wykonania dla różnych metod oraz współczynnik prezentujący krotność względem JNI.
+Poniżej zaprezentowana zostały tabele \ref{tab:all_results1} i \ref{tab:all_results2}. Zawierają średnie czasy wykonania dla różnych metod oraz współczynnik prezentujący krotność względem JNI.
 
-\begin{longtable}{|c|c|c|c|c|c|c|}
+\begin{longtable}{|c|c|c|c|c|}
     \hline
-    \begin{tabular}{@{}c@{}} \textbf{Rozmiar} \\ \textbf{zapytania} \end{tabular} & \begin{tabular}{@{}c@{}} \textbf{Rozmiar} \\ \textbf{odpowiedzi} \end{tabular} & \textbf{CORBA} [$\mu$s] & \textbf{Pliki} [$\mu$s] & \textbf{JNI} [$\mu$s] & \textbf{REST} [$\mu$s] & \textbf{TCP} [$\mu$s] \\
+    \begin{tabular}{@{}c@{}} \textbf{Rozmiar} \\ \textbf{zapytania} \end{tabular} & \begin{tabular}{@{}c@{}} \textbf{Rozmiar} \\ \textbf{odpowiedzi} \end{tabular} & \textbf{CORBA} [$\mu$s] & \textbf{Pliki (SSD)} [$\mu$s] & \textbf{Pliki (ramdysk)} [$\mu$s] \\
     \hline
-    16B & 16B & 1224 (187.2x) & 2579 (394.4x) & 6.5 (1x) & 1496 (228.7x) & 338.9 (51.8x) \\
-    16B & 1KiB & 1207 (235.6x) & 2578 (503.3x) & 5.1 (1x) & 1936 (377.9x) & 340 (66.4x) \\
-    16B & 8KiB & 1179 (119x) & 2588 (261.2x) & 9.9 (1x) & 2089 (210.9x) & 349.4 (35.3x) \\
-    16B & 256KiB & 2449 (14.7x) & 2978 (17.9x) & 166.5 (1x) & 6382 (38.3x) & 919.4 (5.5x) \\
-    16B & 1MiB & 5586 (14.7x) & 3854 (10.1x) & 381.1 (1x) & 13979 (36.7x) & 1976 (5.2x) \\
-    1KiB & 16B & 1147 (237.5x) & 2566 (531.2x) & 4.8 (1x) & 1983 (410.5x) & 351.5 (72.8x) \\
-    1KiB & 1KiB & 1177 (97.1x) & 2571 (212.2x) & 12.1 (1x) & 1501 (123.8x) & 343.3 (28.3x) \\
-    8KiB & 16B & 1324 (271.7x) & 2594 (532.3x) & 4.9 (1x) & 44126 (9055.3x) & 344.2 (70.6x) \\
-    8KiB & 8KiB & 1319 (106.7x) & 2600 (210.3x) & 12.4 (1x) & 43997 (3559x) & 358.1 (29x) \\
-    256KiB & 16B & 2385 (128.1x) & 2639 (141.8x) & 18.6 (1x) & 38275 (2056.2x) & 593.2 (31.9x) \\
-    256KiB & 256KiB & 3199 (19.5x) & 3053 (18.6x) & 163.8 (1x) & 38627 (235.8x) & 1107 (6.8x) \\
-    1MiB & 16B & 5459 (76.9x) & 2834 (39.9x) & 70.9 (1x) & 64170 (904.5x) & 1146 (16.2x) \\
-    1MiB & 1MiB & 7728 (16.3x) & 4326 (9.2x) & 472.8 (1x) & 70718 (149.6x) & 2597 (5.5x) \\
-    128MiB & 128MiB & - & 259100 (2.7x) & 97565 (1x) & - & 89859 (0.9x) \\
+    16B & 16B & 1224 (187.2x) & 2579 (394.4x) & 2498 (382x) \\
+    16B & 1KiB & 1207 (235.6x) & 2578 (503.3x) & 2478 (483.8x) \\
+    16B & 8KiB & 1179 (119x) & 2588 (261.2x) & 2527 (255.1x) \\
+    16B & 256KiB & 2449 (14.7x) & 2978 (17.9x) & 2697 (16.2x) \\
+    16B & 1MiB & 5586 (14.7x) & 3854 (10.1x) & 3176 (8.3x) \\
+    1KiB & 16B & 1147 (237.5x) & 2566 (531.2x) & 2493 (516.2x) \\
+    1KiB & 1KiB & 1177 (97.1x) & 2571 (212.2x) & 2495 (205.9x) \\
+    8KiB & 16B & 1324 (271.7x) & 2594 (532.3x) & 2476 (508x) \\
+    8KiB & 8KiB & 1319 (106.7x) & 2600 (210.3x) & 2580 (208.7x) \\
+    256KiB & 16B & 2385 (128.1x) & 2639 (141.8x) & 2492 (133.9x) \\
+    256KiB & 256KiB & 3199 (19.5x) & 3053 (18.6x) & 2847 (17.4x) \\
+    1MiB & 16B & 5459 (76.9x) & 2834 (39.9x) & 2637 (37.2x) \\
+    1MiB & 1MiB & 7728 (16.3x) & 4326 (9.2x) & 3249 (6.9x) \\
+    128MiB & 128MiB & - & 259100 (2.7x) & 214956 (2.2x) \\
     \hline
-    \caption{Tabela uzyskanych średnich czasów komunikacji. W nawiasach znajduje się współczynnik prezentujący krotność względem JNI.}
-    \label{tab:all_results}
+    \caption{Tabela uzyskanych średnich czasów komunikacji dla technologii CORBA i systemu plików. W nawiasach znajduje się współczynnik prezentujący krotność względem JNI.}
+    \label{tab:all_results1}
+\end{longtable}
+
+\begin{longtable}{|c|c|c|c|c|}
+    \hline
+    \begin{tabular}{@{}c@{}} \textbf{Rozmiar} \\ \textbf{zapytania} \end{tabular} & \begin{tabular}{@{}c@{}} \textbf{Rozmiar} \\ \textbf{odpowiedzi} \end{tabular} & \textbf{JNI} [$\mu$s] & \textbf{REST} [$\mu$s] & \textbf{TCP} [$\mu$s] \\
+    \hline
+    16B & 16B & 6.5 (1x) & 1496 (228.7x) & 338.9 (51.8x) \\
+    16B & 1KiB & 5.1 (1x) & 1936 (377.9x) & 340 (66.4x) \\
+    16B & 8KiB & 9.9 (1x) & 2089 (210.9x) & 349.4 (35.3x) \\
+    16B & 256KiB & 166.5 (1x) & 6382 (38.3x) & 919.4 (5.5x) \\
+    16B & 1MiB & 381.1 (1x) & 13979 (36.7x) & 1976 (5.2x) \\
+    1KiB & 16B & 4.8 (1x) & 1983 (410.5x) & 351.5 (72.8x) \\
+    1KiB & 1KiB & 12.1 (1x) & 1501 (123.8x) & 343.3 (28.3x) \\
+    8KiB & 16B & 4.9 (1x) & 44126 (9055.3x) & 344.2 (70.6x) \\
+    8KiB & 8KiB & 12.4 (1x) & 43997 (3559x) & 358.1 (29x) \\
+    256KiB & 16B & 18.6 (1x) & 38275 (2056.2x) & 593.2 (31.9x) \\
+    256KiB & 256KiB & 163.8 (1x) & 38627 (235.8x) & 1107 (6.8x) \\
+    1MiB & 16B & 70.9 (1x) & 64170 (904.5x) & 1146 (16.2x) \\
+    1MiB & 1MiB & 472.8 (1x) & 70718 (149.6x) & 2597 (5.5x) \\
+    128MiB & 128MiB & 97565 (1x) & - & 89859 (0.9x) \\
+    \hline
+    \caption{Tabela uzyskanych średnich czasów komunikacji dla technologii JNI, REST i TCP. W nawiasach znajduje się współczynnik prezentujący krotność względem JNI.}
+    \label{tab:all_results2}
 \end{longtable}
 
 
