@@ -2,9 +2,9 @@
 
 Procesy mogą być niezależne - jeśli nie oddziałują na inne (nie dzielą żadnych danych) lub współpracujące (ang. \textit{cooperating}) - jeśli mogą wpływać na pozostałe procesy lub inne procesy mogą oddziaływać na nie \cite{Silber06}.
 
-Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. O Zawiera on m.in. integrację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
+Skrót IPC (ang. \textit{inter-process communication}) stosuje się do określenia zbioru sposobów komunikacji pomiędzy procesami systemu operacyjnego. Zawiera on m.in. integrację przez pliki, sygnały, potoki nienazwane, potoki nazwane, pamięć współdzieloną, gniazda, gniazda dziedziny Uniksa, systemy kolejkowe, przekazywanie wiadomości.
 
-Każde rozwiązanie ma swoje wady i zalety. Niektóre działają w architekturze klient - serwer, inne współdzielą zasoby lub wykonują potrzebny program. Czynników poróżniających je jest wiele. To przede wszystkim czas komunikacji dla różnych rozmiarów wiadomości, ale także wspierane systemy operacyjne, możliwość komunikacji sieciowej, asynchroniczność, czy wsparcie dla wielu języków programowania.
+Każde rozwiązanie ma swoje wady i zalety. Niektóre działają w architekturze klient - serwer, inne współdzielą zasoby lub wykonują potrzebny program. Czynników różniących je jest wiele. To przede wszystkim czas komunikacji dla różnych rozmiarów wiadomości, ale także wspierane systemy operacyjne, możliwość komunikacji sieciowej, asynchroniczność, czy wsparcie dla wielu języków programowania.
 
 
 \section{Komunikacja przez pliki}
@@ -13,7 +13,7 @@ Polega na zapisie pliku w miejscu dostępnym także dla innego procesu. Proces z
 
 Możliwe jest zdalne skomunikowanie maszyn. Wykorzystać do tego można protokół transferu plików (FTP - ang. \textit{File Transfer Protocol}). Wymaganie to serwer FTP, z którym łączyć się będą klienty, aby zapisywać i czytać pliki.
 
-Celem systemów plików nie jest działanie w trybie żądanie-odpowiedź, aby zintegrować aplikacje. Można jednak próbować zasymulować takie zachowanie. Przykładem jest wybranie wspólnego katalogu dla programów, które będą go sprawdzać cyklicznie lub też oczekiwać na powiadomienie od systemu operacyjnego. Należy wtedy jeszcze zapewnić synchronizację, aby nie doprowadzić do czytania pliku, kiedy jeszcze nie został ukończony jego zapis albo współbieżnej modyfikacji. Trzeba także rozróżnić pliki, które są żądaniami od odpowiedzi, aby procesy obsłużyły tylko te, które są im przeznaczone.
+Celem systemów plików nie jest działanie w trybie żądanie-odpowiedź, aby zintegrować aplikacje. Można jednak próbować zasymulować takie zachowanie. Przykładem jest wybranie wspólnego katalogu dla programów, które będą go cyklicznie sprawdzać lub też oczekiwać na powiadomienie od systemu operacyjnego. Należy wtedy jeszcze zapewnić synchronizację, aby nie doprowadzić do czytania pliku, kiedy jeszcze nie został ukończony jego zapis. Trzeba także rozróżnić pliki, które są żądaniami od odpowiedzi, aby procesy obsłużyły tylko te, które są im przeznaczone.
 
 
 \section{Sygnały}
@@ -41,7 +41,7 @@ Potoki nazwane, podobnie jak te nienazwane, znajdziemy przede wszystkim w system
 
 \section{Pamięć współdzielona}
 
-Pamięć współdzielona jest najszybszą z możliwych form komunikacji międzyprocesowej \cite{Ste92}. Polega wspólnym wykorzystywaniu przestrzeni adresowej. W przesyłaniu tych danych nie pośredniczy jądro systemu, tzn. nie są wykonywane żadne wywołania systemowe. Negatywna cecha tej metody to wymóg, aby programista sam zadbał o synchronizację procesów.
+Pamięć współdzielona jest najszybszą z możliwych form komunikacji międzyprocesowej \cite{Ste92}. Polega na wspólnym wykorzystywaniu przestrzeni adresowej. W przesyłaniu tych danych nie pośredniczy jądro systemu, tzn. nie są wykonywane żadne wywołania systemowe. Negatywna cecha tej metody to wymóg, aby programista sam zadbał o synchronizację procesów.
 
 Pomysł współdzielenia pamięci bywa wykorzystywany także wewnątrz jednego programu. Zamiast tworzyć kolejne procesy, można użyć wątków, które korzystają ze wspólnej pamięci.
 
@@ -88,7 +88,7 @@ Systemy kolejkowe umożliwiają odłożenie wiadomości na kolejkę, z której w
 
 \section{Przekazywanie wiadomości}
 
-Programy mogą także komunikować się kanałami niezarządzanym przez system operacyjny. Wysyłana jest wiadomość, a za uruchomienie odpowiedniego kodu odpowiada odbiorca i infrastruktura wspomagająca. Ten sposób jest często używany do budowania rozproszonych aplikacji. Komunikacja może być zarówno synchroniczna, jak i asynchroniczna. Abstrakcją innego procesu może być obiekt, ale też na przykład aktor (np. stosowany w Akkce model aktorów \cite{akka}). Przesyłanie wiadomości może być zaimplementowane w dowolny sposób.
+Programy mogą także komunikować się kanałami niezarządzanymi przez system operacyjny. Wysyłana jest wiadomość, a za uruchomienie odpowiedniego kodu odpowiada odbiorca i infrastruktura wspomagająca. Ten sposób jest często używany do budowania rozproszonych aplikacji. Komunikacja może być zarówno synchroniczna, jak i asynchroniczna. Abstrakcją innego procesu może być obiekt, ale też na przykład aktor (np. stosowany w Akkce model aktorów \cite{akka}). Przesyłanie wiadomości może być zaimplementowane w dowolny sposób.
 
 
 \subsection{Zdalne wykonywanie procedur}
@@ -98,7 +98,7 @@ Zdalne wykonywanie procedur (RPC - ang. \textit{remote procedure call}) to proto
 
 \subsection{Java RMI}
 
-Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiednikiem RPC dla Javy. Technologia ta korzysta z serializacji Javy oraz rozproszonego odśmiecania pamięci (ang. \textit{distributed garbage collection}). Pozwala na zdalne wykonywanie metod na obiektach, które mogą znajdować się na innych maszynach wirtualnych Javy \cite{JAVA_RMI}. Wymaganiem jest wcześniejsza rejestracja takich obiektów pod wybranymi nazwami w rejestrze \textit{RMI Registry}. Klient może pobrać tzw. \textit{stub}, czyli obiekt umożliwiający komunikację ze zdalną implementacją, mający taki sam interfejs. Wywoływanie metod jest identyczne jak w przypadku lokalnych obiektów. Rejestr nie pośredniczy w komunikacji. Wadą tej technologii jest brak wsparcia dla innych języków programowania.
+Java RMI (ang. \textit{Java remote method invocation}) jest obiektowym odpowiednikiem RPC dla Javy. Technologia ta korzysta z serializacji Javy oraz rozproszonego odśmiecania pamięci (ang. \textit{distributed garbage collection}). Pozwala na zdalne wykonywanie metod na obiektach, które mogą znajdować się na innych maszynach wirtualnych Javy \cite{JAVA_RMI}. Warunkiem jest wcześniejsza rejestracja takich obiektów pod wybranymi nazwami w rejestrze \textit{RMI Registry}. Klient może pobrać tzw. \textit{stub}, czyli obiekt umożliwiający komunikację ze zdalną implementacją, mający taki sam interfejs. Wywoływanie metod jest identyczne jak w przypadku lokalnych obiektów. Rejestr nie pośredniczy w komunikacji. Wadą tej technologii jest brak wsparcia dla innych języków programowania.
 
 
 \subsection{CORBA}
@@ -108,7 +108,7 @@ CORBA jest standardem zdefiniowanym przez OMG (ang. \textit{Object Management Gr
 CORBA wprowadza warstwę abstrakcji, która ukrywa różnice pomiędzy systemami. Wykorzystuje język opisu interfejsu (IDL - ang. \textit{Interface Description Language}). Każdy język programowania kompiluje pliki IDL na kod zajmujący się przekazaniem metod, a w przypadku języków interpretowanych, IDL jest interpretowany w czasie wykonania. CORBA specyfikuje sposób mapowania IDL dla języków programowania takich jak np. C, C++, Java, Ada, COBOL, Lisp, Object Pascal, Python, Ruby czy Smalltalk. Zazwyczaj implementacja ORB (ang. \textit{Object Request Broker}) dostarcza kompilator IDL.
 
 
-\begin{lstlisting}[caption={Przykład użycia IDL},captionpos=b]
+\begin{lstlisting}[caption={Przykład użycia IDL.},captionpos=b]
     module ModuleExample {
         interface Math  {
             double sum(in double x, in double y);
@@ -124,7 +124,7 @@ W technologii CORBA istnieje jawny podział na klienty i serwery. Klient posiada
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/CORBA_architecture.png}
-    \caption{Schemat architektury aplikacji korzystającej z technologii CORBA \cite{Saw02}.}
+    \caption{Schemat architektury aplikacji korzystającej z technologii CORBA (źródło~\cite{Saw02}).}
     \label{fig:CORBA_architecture}
 \end{figure}
 
@@ -164,7 +164,7 @@ REST jest stylem architektonicznym służącym do reprezentacji zasobów oraz ic
 
 Wykorzystywane są metody HTTP, które wykonują akcje zgodne ze specyfikacją \cite{RFC7231}. Zasoby adresowane są za pomocą URI. REST nie jest protokołem, brakuje więc standardu jasno go opisującego. Formatem danych najczęściej jest JSON. Metody takie jak na przykład GET, PUT, DELETE są idempotentne, to znaczy, że wielokrotne ich wywołanie powoduje identyczny efekt jak jednokrotne.
 
-Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application State}). Odpowiedzi serwera zwierają wtedy linki do innych zasobów, umożliwiając przejście wszystkich powiązań pomiędzy obiektami przez klienta. Analogicznie działają hiperłącza zamieszczone na stronach internetowych, dzięki czemu użytkownik może się nawigować, znając tylko jeden adres.
+Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application State}). Odpowiedzi serwera zawierają wtedy linki do innych zasobów, umożliwiając przejście wszystkich powiązań pomiędzy obiektami przez klienta. Analogicznie działają hiperłącza zamieszczone na stronach internetowych, dzięki czemu użytkownik może się nawigować, znając tylko jeden adres.
 
 \begin{table}[h!]
   \centering
@@ -182,7 +182,7 @@ Rozwinięciem jest HATEOAS (ang. \textit{Hypermedia As The Engine Of Application
     \textbf{DELETE} & Usuwa zasób & Usuwa całą kolekcję \\
     \hline
   \end{tabular}
-  \caption{Sposób działania przykładowych metod HTTP na zasobach}
+  \caption{Sposób działania przykładowych metod HTTP na zasobach. Opracowanie własne.}
 \end{table}
 
 
@@ -199,14 +199,14 @@ HTTP (ang. \textit{Hypertext Transfer Protocol}) to bezstanowy protokół przesy
 \end{itemize}
 
 
-\begin{lstlisting}[caption={Przykład żądania HTTP},captionpos=b]
+\begin{lstlisting}[caption={Przykład żądania HTTP.},captionpos=b]
     GET /index.html HTTP/1.1
     Host: www.example.com
 \end{lstlisting}
 
 Serwer zwraca odpowiedź lub informuje o wystąpieniu błędu:
 
-\begin{lstlisting}[caption={Przykład odpowiedzi serwera ze statusem 200 OK},captionpos=b]
+\begin{lstlisting}[caption={Przykład odpowiedzi serwera ze statusem 200 OK.},captionpos=b]
     HTTP/1.1 200 OK
     Date: Mon, 11 May 2017 21:17:46 GMT
     Content-Type: text/html; charset=UTF-8
@@ -239,7 +239,7 @@ Obowiązuje je ścisła struktura, wiadomość składa się z \cite{SOAP}:
     \item Fault - dostarcze informacje o błędach, jeśli zaszły w trakcie przetwarzania
 \end{itemize}
 
-\begin{lstlisting}[caption={Przykład zapytania, które jest zgodne z protokołem SOAP},captionpos=b]
+\begin{lstlisting}[caption={Przykład zapytania, które jest zgodne z protokołem SOAP.},captionpos=b]
     <?xml version="1.0" encoding="UTF-8"?>
     <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
             xmlns:a="http://www.example.org/stocks">

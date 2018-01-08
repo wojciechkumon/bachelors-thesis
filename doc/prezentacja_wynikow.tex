@@ -16,7 +16,7 @@ Wszystkie uruchomienia korzystały z tej samej platformy:
 
 \section{Rozkład danych}
 
-Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzymanych wyników obliczona została średnia arytmetyczna oraz odchylenie standardowe, ponieważ ich wykresy zbliżone są rozkładu normalnego. Poniżej znajdą się diagramy, które to ukazują (dla wybranych metod).
+Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzymanych wyników obliczona została średnia arytmetyczna oraz odchylenie standardowe, ponieważ ich wykresy zbliżone są do rozkładu normalnego. Poniżej znajdują się diagramy, które to ukazują (dla wybranych metod).
 
 
 \pgfmathdeclarefunction{gauss}{2}{%
@@ -26,7 +26,7 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 \begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=6.5cm,
+    height=6.35cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -83,14 +83,14 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
-\caption{Diagram przedstawiający przykładowy rozkład czasów wykonania dla TCP.}
+\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla TCP. Krzywa prezentuje rozkład normalny ($\mu=352, \sigma=46$).}
 \end{figure}
 
 
 \begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=6.5cm,
+    height=6.35cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -147,14 +147,14 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
-\caption{Diagram przedstawiający przykładowy rozkład czasów wykonania dla plików.}
+\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla plików. Krzywa prezentuje rozkład normalny ($\mu=2653, \sigma=111$).}
 \end{figure}
 
 
 \begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=6.5cm,
+    height=6.35cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -211,7 +211,7 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
-\caption{Diagram przedstawiający przykładowy rozkład czasów wykonania dla REST.}
+\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla REST. Krzywa prezentuje rozkład normalny ($\mu=1928, \sigma=133$).}
 \end{figure}
 
 

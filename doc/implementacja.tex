@@ -4,7 +4,7 @@ Założeniem projektu było stworzenie konfigurowalnej platformy umożliwiające
 
 Dane wejściowe to m.in. wybrany sposób komunikacji oraz jego konfiguracja, a także rozmiar danych do wysłania i odbioru. Aplikacja wykona pomiary oraz zapisze wyniki w formacie CSV.
 
-Wartość, która jest istotna to czas, jaki zajęła dwukierunkowa komunikacja. Cechuje się ona nanosekundową precyzją, lecz jej rozdzielczość jest większa. Wynika to działania metody \textit{System.nanoTime()} w Javie.
+Wartość, która jest istotna to czas, jaki zajęła dwukierunkowa komunikacja. Cechuje się ona nanosekundową precyzją, lecz jej rozdzielczość jest większa. Wynika to z działania metody \textit{System.nanoTime()} w Javie.
 
 \begin{lstlisting}[caption={Metoda klasy abstrakcyjnej AbstractTransferTester, która jest wykorzystywana przez wszystkie sposoby komunikacji do wykonania pomiarów (implementowane/przeciążane są ostatnie 3 metody).},captionpos=b]
     public Metrics test(TestProps testProps) {
@@ -33,9 +33,9 @@ Wartość, która jest istotna to czas, jaki zajęła dwukierunkowa komunikacja.
 \end{lstlisting}
 
 
-Aby zachować wiarygodność testów, przeprowadzone zostały wielokrotnie - każda wykorzystana konfiguracja testowa była wykonana co najmniej 1000-krotnie.
+Aby zachować wiarygodność testów, przeprowadzone zostały one wielokrotnie - każda wykorzystana konfiguracja testowa była wykonana co najmniej 1000-krotnie.
 
-Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, aby \enquote{rozgrzać maszynę wirtualną}. To znaczy, aby uzyskać pełną wydajność. Celem jest wcześniejsze załadowanie klas do pamięci oraz poczekanie aż JIT (ang. \textit{just-in-time compilation} - kompilacja tuż przed wykonaniem kodu) dokona kompilacji do kodu natywnego oraz optymalizacji.
+Przed właściwym testowaniem zawsze następowały uruchomienia niepomiarowe, aby \enquote{rozgrzać maszynę wirtualną}, czyli uzyskać pełną wydajność. Celem jest wcześniejsze załadowanie klas do pamięci oraz poczekanie aż JIT (ang. \textit{just-in-time compilation} - kompilacja tuż przed wykonaniem kodu) dokona kompilacji do kodu natywnego oraz optymalizacji.
 
 \label{data_generation}
 Dane przesyłane w zapytaniach to losowe bajty (oparte o klasę \texttt{java.util.Random}) oraz rozmiar oczekiwanej odpowiedzi, aby dynamicznie sterować wielkościami komunikatów - bez zmiany konfiguracji serwerów oczekujących na klienta.
@@ -66,7 +66,7 @@ Strona serwerowa wykorzystuje interfejs programistyczny POSIX. Klient opiera si�
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/tcp_impl_diagram.png}
-    \caption{Diagram prezentujący działanie własnego protokołu opartego na TCP}
+    \caption{Diagram prezentujący działanie własnego protokołu opartego na TCP.}
 \end{figure}
 
 Sam protokół należy do typu żądanie/odpowiedź - to znaczy za każdym razem otwierane jest gniazdo, a po otrzymaniu odpowiedzi zamykane. Jego działanie wygląda następująco:
@@ -86,14 +86,14 @@ Serwer odpowiada bajtami odpowiedzi w rozmiarze określonym przez klienta (sam j
 Aby mogła zaistnieć komunikacja wykorzystująca REST, należało wcześniej wybrać format danych i~URI.
 
 Serwer wystawia zasób pod adresem \texttt{/testResult}. Dane transferowane są w formacie JSON:
-\begin{lstlisting}[caption={Format danych wysyłany przez klienta},captionpos=b]
+\begin{lstlisting}[caption={Format danych wysyłany przez klienta.},captionpos=b]
     {
         "responseSize": 1024,
         "data": "ABCDEFGH..."
     }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Format danych zwracany przez serwer},captionpos=b]
+\begin{lstlisting}[caption={Format danych zwracany przez serwer.},captionpos=b]
     {
         "result": "ABCDEF..."
     }
@@ -102,7 +102,7 @@ Serwer wystawia zasób pod adresem \texttt{/testResult}. Dane transferowane są 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{img/rest_impl_diagram.png}
-    \caption{Diagram prezentujący komunikację klienta z serwerem HTTP}
+    \caption{Diagram prezentujący komunikację klienta z serwerem HTTP.}
 \end{figure}
 
 Implementacja strony serwerowej wykorzystuje bibliotekę ngrest (\url{https://github.com/loentar/ngrest}), służącą do tworzenia serwisów RESTowych.
@@ -116,7 +116,7 @@ Aplikacje, które należy zintegrować, opierając się na specyfikacji Corby, 
 
 Komunikacja pomija serwis nazw - klient zna IOR, do którego wysyła zapytania.
 
-\begin{lstlisting}[caption={Zastosowany interfejs (IDL)},captionpos=b]
+\begin{lstlisting}[caption={Zastosowany interfejs (IDL).},captionpos=b]
     module pl {
         module kumon {
             module transfertester {
@@ -213,6 +213,8 @@ Implementacja w C otrzymuje żądanie i oczekiwaną długość odpowiedzi, jedn
 Ciekawy do sprawdzenia jest sam narzut platformy testowej, który nie wynika z warstwy transportowej. Aby tego dokonać, stworzony został test działający jedynie w pamięci wirtualnej maszyny Javy, która nie komunikuje się z niczym na zewnątrz.
 
 Uniknięcie optymalizacji (aby cała alokacja tablicy nie została pominięta) zostało osiągnięte przez kontrolę rozmiaru danych.
+
+\clearpage
 
 \begin{lstlisting}[caption={Test sprawdzający narzut samej platformy.},captionpos=b]
     protected void execute(TestProps testProps) throws TesterException {
