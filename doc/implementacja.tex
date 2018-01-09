@@ -175,6 +175,8 @@ Serwer C++ wykorzystuje \textit{inotify} (podsystem jądra Linuksa, który słu�
 
 Java Native Interface wymaga stworzenia pomostu między maszyną wirtualną Javy a kodem natywnym. Do komunikacji użyty został poniższy interfejs.
 
+\clearpage
+
 \begin{lstlisting}[caption={Metoda javy, która wymaga natywnej implementacji.},captionpos=b]
     public class JniExecutor {
         public native byte[] requestJni(byte[] requestBytes, int responseSize);
