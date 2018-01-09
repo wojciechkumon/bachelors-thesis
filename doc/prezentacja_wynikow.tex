@@ -16,7 +16,7 @@ Wszystkie uruchomienia korzystały z tej samej platformy:
 
 \section{Rozkład danych}
 
-Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzymanych wyników obliczona została średnia arytmetyczna oraz odchylenie standardowe, ponieważ ich wykresy zbliżone są do rozkładu normalnego. Poniżej znajdują się diagramy, które to ukazują (dla wybranych metod).
+Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzymanych wyników została obliczona średnia arytmetyczna oraz odchylenie standardowe, ponieważ ich wykresy zbliżone są do rozkładu normalnego. Poniżej znajdują się diagramy, które to ukazują (dla wybranych metod).
 
 
 \pgfmathdeclarefunction{gauss}{2}{%
@@ -26,7 +26,7 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 \begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=6.35cm,
+    height=5.85cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -83,14 +83,14 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
-\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla TCP. Krzywa prezentuje rozkład normalny ($\mu=352, \sigma=46$).}
+\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla TCP. Krzywa prezentuje rozkład normalny ($\mu=352, \sigma=46$). Opracowanie własne.}
 \end{figure}
 
 
 \begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=6.35cm,
+    height=5.85cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -147,14 +147,14 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
-\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla plików. Krzywa prezentuje rozkład normalny ($\mu=2653, \sigma=111$).}
+\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla plików. Krzywa prezentuje rozkład normalny ($\mu=2653, \sigma=111$). Opracowanie własne.}
 \end{figure}
 
 
 \begin{figure}[H]
 \begin{tikzpicture}
 \begin{axis}[
-    height=6.35cm,
+    height=5.85cm,
     width=15cm,
     grid=major,
     ylabel={Wystąpienia w przedziale},
@@ -211,7 +211,7 @@ Każda konfiguracja testowa wykonana została co najmniej 1000-krotnie. Z otrzym
 
 \end{axis}
 \end{tikzpicture}
-\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla REST. Krzywa prezentuje rozkład normalny ($\mu=1928, \sigma=133$).}
+\caption{Diagram przedstawiający przykładowy rozkład czasów przesyłania danych dla REST. Krzywa prezentuje rozkład normalny ($\mu=1928, \sigma=133$). Opracowanie własne.}
 \end{figure}
 
 
@@ -263,7 +263,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{Zestawienie średnich wyników dla żądań 1KiB i odpowiedzi 1KiB.}
+\caption{Zestawienie średnich wyników dla żądań 1KiB i odpowiedzi 1KiB (opracowanie własne).}
 \label{fig:chart_1024_1024}
 \end{figure}
 
@@ -275,7 +275,7 @@ Większość porównań dla innych rozmiarów danych jest proporcjonalna do wyni
 \begin{axis}[
     title = {Żądanie 16B, odpowiedź 1MiB},
     width=15cm,
-    height=8cm,
+    height=7.5cm,
     xtick={1,...,7},
     xticklabels={
         CORBA,
@@ -313,7 +313,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{Zestawienie średnich wyników dla żądań 16B i odpowiedzi 1MiB.}
+\caption{Zestawienie średnich wyników dla żądań 16B i odpowiedzi 1MiB (opracowanie własne).}
 \label{fig:chart_16_1048576}
 \end{figure}
 
@@ -322,7 +322,7 @@ table [y error=error] {
 \begin{axis}[
     title = {Żądanie 1MiB, odpowiedź 16B},
     width=15cm,
-    height=8cm,
+    height=7.5cm,
     xtick={1,...,7},
     xticklabels={
         CORBA,
@@ -360,7 +360,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{Zestawienie średnich wyników dla żądań 1MiB i odpowiedzi 16B.}
+\caption{Zestawienie średnich wyników dla żądań 1MiB i odpowiedzi 16B (opracowanie własne).}
 \label{fig:chart_1048576_16}
 \end{figure}
 
@@ -373,7 +373,7 @@ Dostrzec można również wielką dysproporcję w przypadku RESTa - prawdopodob
 \begin{axis}[
     title = {Żądanie 16B, odpowiedź 16B},
     width=15cm,
-    height=8cm,
+    height=7.5cm,
     xtick={1,...,7},
     xticklabels={
         CORBA,
@@ -411,7 +411,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{Zestawienie średnich wyników dla żądań 16B i odpowiedzi 16B.}
+\caption{Zestawienie średnich wyników dla żądań 16B i odpowiedzi 16B (opracowanie własne).}
 \label{fig:chart_16_16}
 \end{figure}
 
@@ -426,7 +426,7 @@ Ramdysk zgodnie z oczekiwaniami umożliwił szybszą komunikację niż dysk SSD.
 \begin{axis}[
     title = {Żądanie 128MiB, odpowiedź 128MiB},
     width=15cm,
-    height=8cm,
+    height=7.5cm,
     xtick={1,...,7},
     xticklabels={
         Pliki,
@@ -460,7 +460,7 @@ table [y error=error] {
 };
 \end{axis}
 \end{tikzpicture}
-\caption{Zestawienie średnich wyników dla żądań 128MiB i odpowiedzi 128MiB.}
+\caption{Zestawienie średnich wyników dla żądań 128MiB i odpowiedzi 128MiB (opracowanie własne).}
 \label{fig:chart_134217728_134217728}
 \end{figure}
 
